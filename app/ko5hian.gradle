@@ -1,0 +1,15 @@
+
+class Ko5hianConfiguration {
+    def outPackage
+    def viewGroups
+    def views
+}
+
+project.metaClass.ko5hian = { Closure conf ->
+    def configuration = new Ko5hianConfiguration()
+
+    conf.delegate = configuration
+    conf()
+
+
+}

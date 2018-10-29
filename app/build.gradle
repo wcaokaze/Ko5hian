@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply from: 'ko5hian.gradle'
 
 android {
     compileSdkVersion 27
@@ -21,6 +22,29 @@ android {
         }
     }
 }
+
+ko5hian {
+    outPackage = 'ko5hian'
+
+    viewGroups = [
+            'android.widget.FrameLayout',
+
+            [
+                    className: 'android.widget.LinearLayout',
+                    lParamsClassName: 'android.widget.LinearLayout.LayoutParams'
+            ],
+    ]
+
+    views = [
+            'android.widget.FrameLayout',
+
+            [
+                    className: 'android.widget.TextView',
+                    instantiation: 'android.widget.TextView(context)'
+            ],
+    ]
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
