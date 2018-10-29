@@ -11,5 +11,91 @@ project.metaClass.ko5hian = { Closure conf ->
     conf.delegate = configuration
     conf()
 
+    def parsedConfiguration = parseConfiguration(configuration)
+}
 
+class ParsedConfiguration {
+    String outPackage
+    List<ViewGroupConfiguration> viewGroups
+    List<ViewConfiguration> views
+
+    static class ViewGroupConfiguration {
+        String className
+        String lParamsClassName
+        String lParamsInstantiatorExpression
+    }
+
+    static class ViewConfiguration {
+        String className
+        String instantiatorExpression
+    }
+}
+
+static ParsedConfiguration parseConfiguration(Ko5hianConfiguration conf) {
+    def outPackage
+
+    if (conf.outPackage instanceof String) {
+        outPackage = conf.outPackage
+    } else {
+        outPackage = 'ko5hian'
+    }
+
+    // -------------------------------------------------------------------------
+
+    def viewGroups = []
+
+    if (conf.viewGroups instanceof List) {
+        for (def viewGroupConf : conf.viewGroups) {
+            if (viewGroupConf instanceof String) {
+                viewGroupConf = [ className: viewGroupConf ]
+            }
+
+            if (!(viewGroupConf instanceof Map)) continue
+
+            def className = viewGroupConf['className']
+
+            if (!(className instanceof String)) continue
+
+            def lParamsClassName = viewGroupConf['lParamsClassName'] ?:
+                    "${className}.LayoutParams"
+
+            def lParamsInstantiatorExpression = viewGroupConf['lParamsInstantiation'] ?:
+                    "$lParamsClassName(WRAP_CONTENT, WRAP_CONTENT)"
+
+            viewGroups << new ParsedConfiguration.ViewGroupConfiguration(
+                    className: className,
+                    lParamsClassName: lParamsClassName,
+                    lParamsInstantiatorExpression: lParamsInstantiatorExpression
+            )
+        }
+    }
+
+    // -------------------------------------------------------------------------
+
+    def views = []
+
+    if (conf.views instanceof List) {
+        for (def viewConf : conf.views) {
+            if (viewConf instanceof String) {
+                viewConf = [ className: viewConf ]
+            }
+
+            if (!(viewConf instanceof Map)) continue
+
+            def className = viewConf['className']
+
+            if (!(className instanceof String)) continue
+
+            def instantiatorExpression = viewConf['instantiation'] ?:
+                    "$className(context)"
+
+            views << new ParsedConfiguration.ViewConfiguration(
+                    className: className,
+                    instantiatorExpression: instantiatorExpression
+            )
+        }
+    }
+
+    return new ParsedConfiguration(
+            outPackage: outPackage, viewGroups: viewGroups, views: views)
 }
