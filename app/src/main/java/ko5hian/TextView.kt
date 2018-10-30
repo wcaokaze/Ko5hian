@@ -12,6 +12,13 @@ fun TextViewOn<android.widget.FrameLayout>.lParams(operation: (@Ko5hian android.
     return lParams
 }
 
+inline fun Ko5hianRoot.`textView`(initializer: (@Ko5hian android.widget.TextView).() -> Unit): android.widget.TextView {
+    val v = android.widget.TextView(context)
+    v.layoutParams = android.view.ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    v.initializer()
+    return v
+}
+
 inline fun android.widget.FrameLayout.`textView`(initializer: (@Ko5hian TextViewOn<android.widget.FrameLayout>).() -> Unit): TextViewOn<android.widget.FrameLayout> {
     val v = android.widget.TextView(context)
     v.layoutParams = android.widget.FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
