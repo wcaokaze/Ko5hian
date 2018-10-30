@@ -8,14 +8,14 @@ val TextViewOn<android.widget.FrameLayout>.parentView: android.widget.FrameLayou
 
 val TextViewOn<android.widget.FrameLayout>.lParams: android.widget.FrameLayout.LayoutParams get() = layoutParams as android.widget.FrameLayout.LayoutParams
 
-fun TextViewOn<android.widget.FrameLayout>.lParams(operation: (@Ko5hian android.widget.FrameLayout.LayoutParams).() -> Unit): android.widget.FrameLayout.LayoutParams {
+fun TextViewOn<android.widget.FrameLayout>.lParams(operation: (@Ko5hianViewDslMarker android.widget.FrameLayout.LayoutParams).() -> Unit): android.widget.FrameLayout.LayoutParams {
     val lParams = lParams
     layoutParams = lParams.apply(operation)
     return lParams
 }
 
 @ExperimentalContracts
-inline fun Ko5hianRoot.`textView`(initializer: (@Ko5hian android.widget.TextView).() -> Unit): android.widget.TextView {
+inline fun Ko5hianRoot.`textView`(initializer: (@Ko5hianViewDslMarker android.widget.TextView).() -> Unit): android.widget.TextView {
     contract {
         callsInPlace(initializer, InvocationKind.EXACTLY_ONCE)
     }
@@ -27,7 +27,7 @@ inline fun Ko5hianRoot.`textView`(initializer: (@Ko5hian android.widget.TextView
 }
 
 @ExperimentalContracts
-inline fun android.widget.FrameLayout.`textView`(initializer: (@Ko5hian TextViewOn<android.widget.FrameLayout>).() -> Unit): TextViewOn<android.widget.FrameLayout> {
+inline fun android.widget.FrameLayout.`textView`(initializer: (@Ko5hianViewDslMarker TextViewOn<android.widget.FrameLayout>).() -> Unit): TextViewOn<android.widget.FrameLayout> {
     contract {
         callsInPlace(initializer, InvocationKind.EXACTLY_ONCE)
     }
