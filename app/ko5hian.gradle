@@ -12,7 +12,15 @@ project.metaClass.ko5hian = { Closure conf ->
     conf()
 
     def parsedConfiguration = parseConfiguration(configuration)
+
+    def generator = new Ko5hianGenerator(
+            /* outDir = */ file("$buildDir/generated/source/ko5hian/src/"),
+            /* conf   = */ parsedConfiguration)
+
+    generator.writeRuntime()
 }
+
+// =============================================================================
 
 class ParsedConfiguration {
     String outPackage
@@ -40,7 +48,7 @@ static ParsedConfiguration parseConfiguration(Ko5hianConfiguration conf) {
         outPackage = 'ko5hian'
     }
 
-    // -------------------------------------------------------------------------
+    // --------
 
     def viewGroups = []
 
@@ -70,7 +78,7 @@ static ParsedConfiguration parseConfiguration(Ko5hianConfiguration conf) {
         }
     }
 
-    // -------------------------------------------------------------------------
+    // --------
 
     def views = []
 
@@ -98,4 +106,72 @@ static ParsedConfiguration parseConfiguration(Ko5hianConfiguration conf) {
 
     return new ParsedConfiguration(
             outPackage: outPackage, viewGroups: viewGroups, views: views)
+}
+
+// =============================================================================
+
+class Ko5hianGenerator {
+    static final def KO5HIAN_VERSION = '0.0.1'
+
+    private static final def FILE_HEADER =
+            '// Ko5hian Version: ' + KO5HIAN_VERSION
+
+    private final File outDir
+    private final ParsedConfiguration conf
+
+    private final File runtimeFile
+
+    Ko5hianGenerator(File outDir, ParsedConfiguration conf) {
+        this.outDir = outDir
+        this.conf   = conf
+        runtimeFile = new File(outDir, "ko5hian/runtime.kt")
+    }
+
+    private boolean shouldWriteRuntime() {
+        if (!runtimeFile.exists()) return true
+
+        def lines
+
+        try {
+            lines = runtimeFile.readLines()
+        } catch (Exception ignored) {
+            runtimeFile.delete()
+            return true
+        }
+
+        if (lines.isEmpty()) return true
+
+        return lines.first() != FILE_HEADER
+    }
+
+    def writeRuntime() {
+        if (!shouldWriteRuntime()) return
+
+        runtimeFile.parentFile.mkdirs()
+
+        runtimeFile.text = FILE_HEADER + """
+            |package ko5hian
+            |
+            |import android.content.Context
+            |import android.view.View
+            |
+            |import kotlin.contracts.*
+            |
+            |@DslMarker
+            |@Target(AnnotationTarget.TYPE)
+            |annotation class Ko5hianViewDslMarker
+            |
+            |@ExperimentalContracts
+            |inline fun <V : View> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
+            |    contract {
+            |        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+            |    }
+            |
+            |    return Ko5hianRoot(context).builder()
+            |}
+            |
+            |const val MATCH_PARENT = android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            |const val WRAP_CONTENT = android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        |""".stripMargin()
+    }
 }
