@@ -161,6 +161,8 @@ class Ko5hianGenerator {
             |@Target(AnnotationTarget.TYPE)
             |annotation class Ko5hianViewDslMarker
             |
+            |inline class Ko5hianRoot(val context: Context)
+            |
             |@ExperimentalContracts
             |inline fun <V : View> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
             |    contract {
