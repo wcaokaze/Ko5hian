@@ -233,6 +233,18 @@ class Ko5hianGenerator {
                                 "get() = parent as $viewGroup.fullyClassName\n"
                 )
             }
+
+            file.append('\n')
+
+            for (def viewGroup : conf.viewGroups) {
+                def blank = blank(viewGroup.blankCount)
+
+                file.append(
+                        "val ${view.className}On<$viewGroup.fullyClassName$blank>" +
+                                ".lParams: $viewGroup.lParamsClassName$blank " +
+                                "get() = layoutParams as $viewGroup.lParamsClassName\n"
+                )
+            }
         }
     }
 }
