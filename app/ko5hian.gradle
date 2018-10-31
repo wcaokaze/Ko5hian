@@ -18,6 +18,7 @@ project.metaClass.ko5hian = { Closure conf ->
             /* conf   = */ parsedConfiguration)
 
     generator.writeRuntime()
+    generator.writeKo5hian()
 }
 
 // =============================================================================
@@ -28,12 +29,15 @@ class ParsedConfiguration {
     List<ViewConfiguration> views
 
     static class ViewGroupConfiguration {
+        int blankCount
+        String fullyClassName
         String className
         String lParamsClassName
         String lParamsInstantiatorExpression
     }
 
     static class ViewConfiguration {
+        String fullyClassName
         String className
         String instantiatorExpression
     }
@@ -60,21 +64,31 @@ static ParsedConfiguration parseConfiguration(Ko5hianConfiguration conf) {
 
             if (!(viewGroupConf instanceof Map)) continue
 
-            def className = viewGroupConf['className']
+            def fullyClassName = viewGroupConf['className']
 
-            if (!(className instanceof String)) continue
+            if (!(fullyClassName instanceof String)) continue
+            if (fullyClassName.endsWith('.')) continue
+
+            def className = fullyClassName.split('\\.').last()
 
             def lParamsClassName = viewGroupConf['lParamsClassName'] ?:
-                    "${className}.LayoutParams"
+                    "${fullyClassName}.LayoutParams"
 
             def lParamsInstantiatorExpression = viewGroupConf['lParamsInstantiation'] ?:
                     "$lParamsClassName(WRAP_CONTENT, WRAP_CONTENT)"
 
             viewGroups << new ParsedConfiguration.ViewGroupConfiguration(
+                    fullyClassName: fullyClassName,
                     className: className,
                     lParamsClassName: lParamsClassName,
                     lParamsInstantiatorExpression: lParamsInstantiatorExpression
             )
+        }
+
+        def maxClassNameCharCount = viewGroups.collect { it.className.length() }.max()
+
+        for (def viewGroup : viewGroups) {
+            viewGroup.blankCount = maxClassNameCharCount - viewGroup.className.length()
         }
     }
 
@@ -90,14 +104,18 @@ static ParsedConfiguration parseConfiguration(Ko5hianConfiguration conf) {
 
             if (!(viewConf instanceof Map)) continue
 
-            def className = viewConf['className']
+            def fullyClassName = viewConf['className']
 
-            if (!(className instanceof String)) continue
+            if (!(fullyClassName instanceof String)) continue
+            if (fullyClassName.endsWith('.')) continue
+
+            def className = fullyClassName.split('\\.').last()
 
             def instantiatorExpression = viewConf['instantiation'] ?:
-                    "$className(context)"
+                    "$fullyClassName(context)"
 
             views << new ParsedConfiguration.ViewConfiguration(
+                    fullyClassName: fullyClassName,
                     className: className,
                     instantiatorExpression: instantiatorExpression
             )
@@ -149,31 +167,72 @@ class Ko5hianGenerator {
 
         runtimeFile.parentFile.mkdirs()
 
-        runtimeFile.text = FILE_HEADER + """
-            |package ko5hian
-            |
-            |import android.content.Context
-            |import android.view.View
-            |
-            |import kotlin.contracts.*
-            |
-            |@DslMarker
-            |@Target(AnnotationTarget.TYPE)
-            |annotation class Ko5hianViewDslMarker
-            |
-            |inline class Ko5hianRoot(val context: Context)
-            |
-            |@ExperimentalContracts
-            |inline fun <V : View> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
-            |    contract {
-            |        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
-            |    }
-            |
-            |    return Ko5hianRoot(context).builder()
-            |}
-            |
-            |const val MATCH_PARENT = android.view.ViewGroup.LayoutParams.MATCH_PARENT
-            |const val WRAP_CONTENT = android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-        |""".stripMargin()
+        runtimeFile.text = FILE_HEADER +
+                """
+                |package ko5hian
+                |
+                |import android.content.Context
+                |import android.view.View
+                |
+                |import kotlin.contracts.*
+                |
+                |@DslMarker
+                |@Target(AnnotationTarget.TYPE)
+                |annotation class Ko5hianViewDslMarker
+                |
+                |inline class Ko5hianRoot(val context: Context)
+                |
+                |@ExperimentalContracts
+                |inline fun <V : View> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
+                |    contract {
+                |        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+                |    }
+                |
+                |    return Ko5hianRoot(context).builder()
+                |}
+                |
+                |const val MATCH_PARENT = android.view.ViewGroup.LayoutParams.MATCH_PARENT
+                |const val WRAP_CONTENT = android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                |""".stripMargin()
+    }
+
+    private static String blank(int count) {
+        def builder = new StringBuilder()
+
+        for (int i = 0; i < count; i++) {
+            builder << ' '
+        }
+
+        return builder.toString()
+    }
+
+    def writeKo5hian() {
+        def packageDir = new File(outDir, conf.outPackage.replace('.', '/'))
+
+        packageDir.mkdirs()
+
+        for (def view : conf.views) {
+            def file = new File(packageDir, view.className + '.kt')
+
+            file.text = FILE_HEADER +
+                    """
+                    |package $conf.outPackage
+                    |
+                    |import kotlin.contracts.*
+                    |
+                    |typealias ${view.className}On<P> = $view.fullyClassName
+                    |
+                    |""".stripMargin()
+
+            for (def viewGroup : conf.viewGroups) {
+                def blank = blank(viewGroup.blankCount)
+
+                file.append(
+                        "val ${view.className}On<$viewGroup.fullyClassName$blank>" +
+                                ".parentView: $viewGroup.fullyClassName$blank " +
+                                "get() = parent as $viewGroup.fullyClassName\n"
+                )
+            }
+        }
     }
 }
