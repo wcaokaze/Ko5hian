@@ -247,8 +247,6 @@ class Ko5hianGenerator {
             }
 
             for (def viewGroup : conf.viewGroups) {
-                def blank = blank(viewGroup.blankCount)
-
                 file.append(
                         """
                         |inline fun ${view.className}On<$viewGroup.fullyClassName>.lParams
@@ -262,6 +260,37 @@ class Ko5hianGenerator {
                         |""".stripMargin()
                 )
             }
+
+            for (def viewGroup : conf.viewGroups) {
+                def functionName = getFunctionNameFor(view.className)
+
+                file.append(
+                        """
+                        |@ExperimentalContracts
+                        |inline fun ${viewGroup.fullyClassName}.`$functionName`
+                        |        (initializer: (@Ko5hianViewDslMarker ${view.className}On<$viewGroup.fullyClassName>).() -> Unit)
+                        |        : ${view.className}On<$viewGroup.fullyClassName>
+                        |{
+                        |    contract {
+                        |        callsInPlace(initializer, InvocationKind.EXACTLY_ONCE)
+                        |    }
+                        |
+                        |    val v = $view.instantiatorExpression
+                        |    v.layoutParams = $viewGroup.lParamsInstantiatorExpression
+                        |    v.initializer()
+                        |    return v
+                        |}
+                        |""".stripMargin()
+                )
+            }
         }
+    }
+
+    private static String getFunctionNameFor(String className) {
+        def i = className.chars.findIndexOf { !it.isUpperCase() } - 1
+
+        if (i < 1) return className
+
+        return className.substring(0, i).toLowerCase() + className.substring(i)
     }
 }
