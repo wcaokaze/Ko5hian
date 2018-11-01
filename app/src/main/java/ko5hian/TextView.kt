@@ -4,11 +4,11 @@ import kotlin.contracts.*
 
 typealias TextViewOn<P> = android.widget.TextView
 
-val TextViewOn<android.widget.FrameLayout>.parentView: android.widget.FrameLayout get() = parent as android.widget.FrameLayout
+inline val TextViewOn<android.widget.FrameLayout>.parentView: android.widget.FrameLayout get() = parent as android.widget.FrameLayout
 
-val TextViewOn<android.widget.FrameLayout>.lParams: android.widget.FrameLayout.LayoutParams get() = layoutParams as android.widget.FrameLayout.LayoutParams
+inline val TextViewOn<android.widget.FrameLayout>.lParams: android.widget.FrameLayout.LayoutParams get() = layoutParams as android.widget.FrameLayout.LayoutParams
 
-fun TextViewOn<android.widget.FrameLayout>.lParams(operation: (@Ko5hianViewDslMarker android.widget.FrameLayout.LayoutParams).() -> Unit): android.widget.FrameLayout.LayoutParams {
+inline fun TextViewOn<android.widget.FrameLayout>.lParams(operation: (@Ko5hianViewDslMarker android.widget.FrameLayout.LayoutParams).() -> Unit): android.widget.FrameLayout.LayoutParams {
     val lParams = lParams
     layoutParams = lParams.apply(operation)
     return lParams

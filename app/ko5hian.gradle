@@ -228,7 +228,7 @@ class Ko5hianGenerator {
                 def blank = blank(viewGroup.blankCount)
 
                 file.append(
-                        "val ${view.className}On<$viewGroup.fullyClassName>$blank" +
+                        "inline val ${view.className}On<$viewGroup.fullyClassName>$blank" +
                                 ".parentView: $viewGroup.fullyClassName$blank " +
                                 "get() = parent as $viewGroup.fullyClassName\n"
                 )
@@ -240,7 +240,7 @@ class Ko5hianGenerator {
                 def blank = blank(viewGroup.blankCount)
 
                 file.append(
-                        "val ${view.className}On<$viewGroup.fullyClassName>$blank" +
+                        "inline val ${view.className}On<$viewGroup.fullyClassName>$blank" +
                                 ".lParams: $viewGroup.lParamsClassName$blank " +
                                 "get() = layoutParams as $viewGroup.lParamsClassName\n"
                 )
@@ -251,7 +251,7 @@ class Ko5hianGenerator {
 
                 file.append(
                         """
-                        |fun ${view.className}On<$viewGroup.fullyClassName>.lParams
+                        |inline fun ${view.className}On<$viewGroup.fullyClassName>.lParams
                         |        (operation: (@Ko5hianViewDslMarker $viewGroup.lParamsClassName).() -> Unit)
                         |        : $viewGroup.lParamsClassName
                         |{
