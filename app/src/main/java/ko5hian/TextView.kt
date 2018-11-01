@@ -8,7 +8,12 @@ inline val TextViewOn<android.widget.FrameLayout>.parentView: android.widget.Fra
 
 inline val TextViewOn<android.widget.FrameLayout>.lParams: android.widget.FrameLayout.LayoutParams get() = layoutParams as android.widget.FrameLayout.LayoutParams
 
+@ExperimentalContracts
 inline fun TextViewOn<android.widget.FrameLayout>.lParams(operation: (@Ko5hianViewDslMarker android.widget.FrameLayout.LayoutParams).() -> Unit): android.widget.FrameLayout.LayoutParams {
+    contract {
+        callsInPlace(operation, InvocationKind.EXACTLY_ONCE)
+    }
+
     val lParams = lParams
     layoutParams = lParams.apply(operation)
     return lParams

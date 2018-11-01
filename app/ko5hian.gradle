@@ -249,10 +249,15 @@ class Ko5hianGenerator {
             for (def viewGroup : conf.viewGroups) {
                 file.append(
                         """
+                        |@ExperimentalContracts
                         |inline fun ${view.className}On<$viewGroup.fullyClassName>.lParams
                         |        (operation: (@Ko5hianViewDslMarker $viewGroup.lParamsClassName).() -> Unit)
                         |        : $viewGroup.lParamsClassName
                         |{
+                        |    contract {
+                        |        callsInPlace(operation, InvocationKind.EXACTLY_ONCE)
+                        |    }
+                        |    
                         |    val lParams = lParams
                         |    layoutParams = lParams.apply(operation)
                         |    return lParams
