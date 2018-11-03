@@ -129,10 +129,9 @@ static ParsedConfiguration parseConfiguration(Ko5hianConfiguration conf) {
 // =============================================================================
 
 class Ko5hianGenerator {
-    static final def KO5HIAN_VERSION = '0.0.1'
+    static final def KO5HIAN_VERSION = '0.1.0'
 
-    private static final def FILE_HEADER =
-            '// Ko5hian Version: ' + KO5HIAN_VERSION
+    private static final def FILE_HEADER = "// Ko5hian Version: $KO5HIAN_VERSION"
 
     private final File outDir
     private final ParsedConfiguration conf
@@ -167,33 +166,52 @@ class Ko5hianGenerator {
 
         runtimeFile.parentFile.mkdirs()
 
-        runtimeFile.text = FILE_HEADER +
-                """
-                |package ko5hian
-                |
-                |import android.content.Context
-                |import android.view.View
-                |
-                |import kotlin.contracts.*
-                |
-                |@DslMarker
-                |@Target(AnnotationTarget.TYPE)
-                |annotation class Ko5hianViewDslMarker
-                |
-                |inline class Ko5hianRoot(val context: Context)
-                |
-                |@ExperimentalContracts
-                |inline fun <V : View> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
-                |    contract {
-                |        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
-                |    }
-                |
-                |    return Ko5hianRoot(context).builder()
-                |}
-                |
-                |const val MATCH_PARENT = android.view.ViewGroup.LayoutParams.MATCH_PARENT
-                |const val WRAP_CONTENT = android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-                |""".stripMargin()
+        runtimeFile.text = """
+            |$FILE_HEADER
+            |package ko5hian
+            |
+            |import android.content.Context
+            |import android.view.View
+            |import android.view.ViewGroup
+            |
+            |import kotlin.contracts.*
+            |
+            |@DslMarker
+            |@Retention(AnnotationRetention.SOURCE)
+            |@Target(AnnotationTarget.TYPE)
+            |annotation class Ko5hianViewDslMarker
+            |
+            |inline class Ko5hianRoot(val context: Context)
+            |
+            |class Ko5hianViewHolder<V : View, L : ViewGroup.LayoutParams>(
+            |    val context: Context,
+            |    val view: V,
+            |    val layout: L
+            |)
+            |
+            |@ExperimentalContracts
+            |inline fun <V : View> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
+            |    contract {
+            |        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+            |    }
+            |
+            |    return Ko5hianRoot(context).builder()
+            |}
+            |
+            |@ExperimentalContracts
+            |inline fun <V : View> ko5hian(view: V, builder: Ko5hianViewHolder<V, *>.() -> V): V {
+            |    contract {
+            |        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+            |    }
+            |
+            |    val vh = Ko5hianViewHolder(view.context, view, view.layoutParams)
+            |    vh.builder()
+            |    return view
+            |}
+            |
+            |const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
+            |const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
+            |""".stripMargin()
     }
 
     private static String blank(int count) {
@@ -213,79 +231,57 @@ class Ko5hianGenerator {
 
         for (def view : conf.views) {
             def file = new File(packageDir, view.className + '.kt')
+            def functionName = getFunctionNameFor(view.className)
 
-            file.text = FILE_HEADER +
-                    """
-                    |package $conf.outPackage
+            file.text = """
+                |$FILE_HEADER
+                |package $conf.outPackage
+                |""".stripMargin()
+
+            if (conf.outPackage != 'ko5hian') {
+                file.append('\nimport ko5hian\n')
+            }
+
+            file.append("""
+                |import kotlin.contracts.*
+                |
+                |@ExperimentalContracts
+                |inline fun Ko5hianRoot.`$functionName`(
+                |        builder: Ko5hianViewHolder<$view.fullyClassName,
+                |                android.view.ViewGroup.LayoutParams>.() -> Unit
+                |): $view.fullyClassName {
+                |    contract {
+                |        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+                |    }
+                |
+                |    val v = $view.instantiatorExpression
+                |    val l = android.view.ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+                |    v.layoutParams = l
+                |    val vh = Ko5hianViewHolder(context, v, l)
+                |    vh.builder()
+                |    return v
+                |}
+                |""".stripMargin())
+
+            for (def viewGroup : conf.viewGroups) {
+                file.append("""
+                    |@ExperimentalContracts @JvmName("${functionName}For$viewGroup.className")
+                    |inline fun Ko5hianViewHolder<$viewGroup.fullyClassName, *>.`$functionName`(
+                    |        builder: Ko5hianViewHolder<$view.fullyClassName,
+                    |                $viewGroup.lParamsClassName>.() -> Unit
+                    |): $view.fullyClassName {
+                    |    contract {
+                    |        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+                    |    }
                     |
-                    |import kotlin.contracts.*
-                    |
-                    |typealias ${view.className}On<P> = $view.fullyClassName
-                    |
+                    |    val v = $view.instantiatorExpression
+                    |    val l = $viewGroup.lParamsInstantiatorExpression
+                    |    v.layoutParams = l
+                    |    val vh = Ko5hianViewHolder(context, v, l)
+                    |    vh.builder()
+                    |    return v
+                    |}
                     |""".stripMargin()
-
-            for (def viewGroup : conf.viewGroups) {
-                def blank = blank(viewGroup.blankCount)
-
-                file.append(
-                        "inline val ${view.className}On<$viewGroup.fullyClassName>$blank" +
-                                ".parentView: $viewGroup.fullyClassName$blank " +
-                                "get() = parent as $viewGroup.fullyClassName\n"
-                )
-            }
-
-            file.append('\n')
-
-            for (def viewGroup : conf.viewGroups) {
-                def blank = blank(viewGroup.blankCount)
-
-                file.append(
-                        "inline val ${view.className}On<$viewGroup.fullyClassName>$blank" +
-                                ".lParams: $viewGroup.lParamsClassName$blank " +
-                                "get() = layoutParams as $viewGroup.lParamsClassName\n"
-                )
-            }
-
-            for (def viewGroup : conf.viewGroups) {
-                file.append(
-                        """
-                        |@ExperimentalContracts
-                        |inline fun ${view.className}On<$viewGroup.fullyClassName>.lParams
-                        |        (operation: (@Ko5hianViewDslMarker $viewGroup.lParamsClassName).() -> Unit)
-                        |        : $viewGroup.lParamsClassName
-                        |{
-                        |    contract {
-                        |        callsInPlace(operation, InvocationKind.EXACTLY_ONCE)
-                        |    }
-                        |    
-                        |    val lParams = lParams
-                        |    layoutParams = lParams.apply(operation)
-                        |    return lParams
-                        |}
-                        |""".stripMargin()
-                )
-            }
-
-            for (def viewGroup : conf.viewGroups) {
-                def functionName = getFunctionNameFor(view.className)
-
-                file.append(
-                        """
-                        |@ExperimentalContracts
-                        |inline fun ${viewGroup.fullyClassName}.`$functionName`
-                        |        (initializer: (@Ko5hianViewDslMarker ${view.className}On<$viewGroup.fullyClassName>).() -> Unit)
-                        |        : ${view.className}On<$viewGroup.fullyClassName>
-                        |{
-                        |    contract {
-                        |        callsInPlace(initializer, InvocationKind.EXACTLY_ONCE)
-                        |    }
-                        |
-                        |    val v = $view.instantiatorExpression
-                        |    v.layoutParams = $viewGroup.lParamsInstantiatorExpression
-                        |    v.initializer()
-                        |    return v
-                        |}
-                        |""".stripMargin()
                 )
             }
         }
