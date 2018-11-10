@@ -5,18 +5,37 @@ class ParsedConfiguration(
     val viewGroups: List<ViewGroupConfiguration>,
     val views: List<ViewConfiguration>
 ) {
+    fun getIngredientsHash() = buildString {
+        append(Ko5hianGenerator.KO5HIAN_VERSION)
+        append(outPackage)
+
+        for (vgConf in viewGroups) {
+            append(vgConf.getIngredientsHash())
+        }
+
+        for (vConf in views) {
+            append(vConf.getIngredientsHash())
+        }
+    }
+
     class ViewGroupConfiguration(
         val fullyClassName: String,
         val className: String,
         val lParamsClassName: String,
         val lParamsInstantiatorExpression: String
-    )
+    ) {
+        fun getIngredientsHash() = fullyClassName + className +
+                lParamsClassName + lParamsInstantiatorExpression
+    }
 
     class ViewConfiguration(
         val fullyClassName: String,
         val className: String,
         val instantiatorExpression: String
-    )
+    ) {
+        fun getIngredientsHash()
+                = fullyClassName + className + instantiatorExpression
+    }
 }
 
 fun parseConfiguration(conf: Ko5hianConfiguration): ParsedConfiguration {

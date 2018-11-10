@@ -24,14 +24,27 @@ class Ko5hian implements Plugin<Project> {
             generateInto(outDir, configurator.configurations)
         }
 
-        outDir.deleteDir()
-        outDir.mkdirs()
-
         project.android.sourceSets.main.java  .srcDirs += outDir
         project.android.sourceSets.main.kotlin.srcDirs += outDir
     }
 
     private def generateInto(File outDir, List<Ko5hianConfiguration> configurations) {
+        def parsedConfigs = configurations
+                .collect { ParsedConfigurationKt.parseConfiguration(it) }
+
+        def hash = parsedConfigs.collect { it.ingredientsHash } .join()
+        def hashFile = new File(outDir, 'hash')
+
+        try {
+            if (hashFile.text == hash) return
+        } catch (IOException ignored) {
+        }
+
+        outDir.deleteDir()
+        outDir.mkdirs()
+
+        hashFile.text = hash
+
         for (def config : configurations) {
             def parsedConfig = ParsedConfigurationKt.parseConfiguration(config)
 

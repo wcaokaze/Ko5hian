@@ -1,1 +1,1 @@
-include ':ko5hian'
+include ':ko5hian', ':app'
