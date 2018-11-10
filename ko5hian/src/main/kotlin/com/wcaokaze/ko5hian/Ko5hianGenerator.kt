@@ -2,8 +2,8 @@ package com.wcaokaze.ko5hian
 
 import java.io.*
 
-internal class Ko5hianGenerator(private val outDir: File,
-                                private val conf: ParsedConfiguration)
+class Ko5hianGenerator(private val outDir: File,
+                       private val conf: ParsedConfiguration)
 {
     companion object {
         val KO5HIAN_VERSION = "0.1.0"
@@ -12,19 +12,7 @@ internal class Ko5hianGenerator(private val outDir: File,
 
     private val runtimeFile = File(outDir, "ko5hian/runtime.kt")
 
-    private fun shouldWriteRuntime(): Boolean {
-        if (!runtimeFile.exists()) return true
-
-        return try {
-            runtimeFile.useLines { it.first() != FILE_HEADER }
-        } catch (e: IOException) {
-            true
-        }
-    }
-
     fun writeRuntime() {
-        if (!shouldWriteRuntime()) return
-
         runtimeFile.parentFile.mkdirs()
 
         runtimeFile.writeText("""

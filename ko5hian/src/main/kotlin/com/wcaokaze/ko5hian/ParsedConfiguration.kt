@@ -1,6 +1,6 @@
 package com.wcaokaze.ko5hian
 
-internal class ParsedConfiguration(
+class ParsedConfiguration(
     val outPackage: String,
     val viewGroups: List<ViewGroupConfiguration>,
     val views: List<ViewConfiguration>
@@ -19,7 +19,7 @@ internal class ParsedConfiguration(
     )
 }
 
-internal fun parseConfiguration(conf: Ko5hianConfiguration): ParsedConfiguration {
+fun parseConfiguration(conf: Ko5hianConfiguration): ParsedConfiguration {
     val outPackage = parseOutPackage(conf)
     val viewGroups = parseViewGroupConf(conf)
     val views = parseViewConf(conf)
@@ -28,7 +28,7 @@ internal fun parseConfiguration(conf: Ko5hianConfiguration): ParsedConfiguration
 }
 
 private fun parseOutPackage(conf: Ko5hianConfiguration)
-        = conf.outPackage as? String ?: conf.name
+        = conf.outPackage as? String ?: "ko5hian"
 
 private fun parseViewGroupConf(conf: Ko5hianConfiguration)
         : List<ParsedConfiguration.ViewGroupConfiguration>

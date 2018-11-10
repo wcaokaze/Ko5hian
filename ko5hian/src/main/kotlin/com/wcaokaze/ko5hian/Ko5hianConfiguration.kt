@@ -1,7 +1,7 @@
 package com.wcaokaze.ko5hian
 
-class Ko5hianConfiguration(val name: String) {
-    var outPackage: Any? = name
+class Ko5hianConfiguration {
+    var outPackage: Any? = null
     var viewGroups: Any? = null
     var views:      Any? = null
 }

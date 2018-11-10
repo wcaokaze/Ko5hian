@@ -23,29 +23,24 @@ android {
     }
 }
 
-ko5hian {
-    ko5hian {
-        viewGroups = [
-                'android.widget.FrameLayout',
+ko5hian.outputConfig {
+    viewGroups = [
+            'android.widget.FrameLayout',
 
-                [
-                        className       : 'android.widget.LinearLayout',
-                        lParamsClassName: 'android.widget.LinearLayout.LayoutParams'
-                ],
-        ]
+            [
+                    className       : 'android.widget.LinearLayout',
+                    lParamsClassName: 'android.widget.LinearLayout.LayoutParams'
+            ],
+    ]
 
-        views = [
-                'android.widget.FrameLayout',
+    views = [
+            'android.widget.FrameLayout',
 
-                [
-                        className    : 'android.widget.TextView',
-                        instantiation: 'android.widget.TextView(context)'
-                ],
-        ]
-    }
-
-    'com.wcaokaze.ko5hian' {
-    }
+            [
+                    className    : 'android.widget.TextView',
+                    instantiation: 'android.widget.TextView(context)'
+            ],
+    ]
 }
 
 
