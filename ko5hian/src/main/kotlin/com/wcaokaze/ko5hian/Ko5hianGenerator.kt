@@ -76,13 +76,15 @@ class Ko5hianGenerator(private val outDir: File,
                 it.write("""
                     $FILE_HEADER
                     package ${conf.outPackage}
+
                 """.trimIndent())
 
                 if (conf.outPackage != "ko5hian") {
-                    it.write("\nimport ko5hian\n")
+                    it.write("import ko5hian")
                 }
 
                 it.write("""
+
                     import kotlin.contracts.*
 
                     @ExperimentalContracts
@@ -101,10 +103,12 @@ class Ko5hianGenerator(private val outDir: File,
                         vh.builder()
                         return v
                     }
+
                 """.trimIndent())
 
                 for (viewGroup in conf.viewGroups) {
                     it.write("""
+
                         @ExperimentalContracts
                         @JvmName("${functionName}For${viewGroup.className}")
                         inline fun Ko5hianViewHolder<${viewGroup.fullyClassName}, *>.`$functionName`(
@@ -122,6 +126,7 @@ class Ko5hianGenerator(private val outDir: File,
                             vh.builder()
                             return v
                         }
+
                     """.trimIndent())
                 }
             }
