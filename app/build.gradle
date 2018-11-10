@@ -27,20 +27,12 @@ ko5hian {
     outputConfig {
         viewGroups = [
                 'android.widget.FrameLayout',
-
-                [
-                        className       : 'android.widget.LinearLayout',
-                        lParamsClassName: 'android.widget.LinearLayout.LayoutParams'
-                ],
+                [className: 'android.widget.LinearLayout', lParamsClassName: 'android.widget.LinearLayout.LayoutParams'],
         ]
 
         views = [
                 'android.widget.FrameLayout',
-
-                [
-                        className    : 'android.widget.TextView',
-                        instantiation: 'android.widget.TextView(context)'
-                ],
+                [className: 'android.widget.TextView', instantiation: 'android.widget.TextView(context)'],
         ]
     }
 
@@ -54,6 +46,7 @@ ko5hian {
         views = [
                 'android.widget.TextView',
                 'android.widget.EditText',
+                'com.wcaokaze.android.ko5hian.widget.SOMEView',
         ]
     }
 }

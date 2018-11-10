@@ -145,10 +145,12 @@ class Ko5hianGenerator(private val outDir: File,
      * HOGEView -> hogeView
      */
     private fun getFunctionNameFor(className: String): String {
-        val i = className.indexOfFirst { !it.isUpperCase() } - 1
+        val i = className.indexOfFirst { !it.isUpperCase() }
 
-        if (i < 1) return className
-
-        return className.substring(0, i).toLowerCase() + className.substring(i)
+        return when {
+            i  < 1 -> className
+            i == 1 -> className.first()            .toLowerCase() + className.drop(1)
+            else   -> className.substring(0, i - 1).toLowerCase() + className.substring(i - 1)
+        }
     }
 }
