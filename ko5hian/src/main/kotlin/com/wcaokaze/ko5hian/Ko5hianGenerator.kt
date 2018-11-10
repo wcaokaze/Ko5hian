@@ -28,10 +28,11 @@ class Ko5hianGenerator(private val outDir: File,
             @DslMarker
             @Retention(AnnotationRetention.SOURCE)
             @Target(AnnotationTarget.TYPE)
-            annotation class Ko5hianViewDslMarker
+            annotation class Ko5hianMarker
 
             inline class Ko5hianRoot(val context: Context)
 
+            @Ko5hianMarker
             class Ko5hianViewHolder<V : View, L : ViewGroup.LayoutParams>(
                 val context: Context,
                 val view: V,
@@ -80,7 +81,14 @@ class Ko5hianGenerator(private val outDir: File,
                 """.trimIndent())
 
                 if (conf.outPackage != "ko5hian") {
-                    it.write("import ko5hian")
+                    it.write("""
+
+                        import ko5hian.Ko5hianRoot
+                        import ko5hian.Ko5hianViewHolder
+                        import ko5hian.MATCH_PARENT
+                        import ko5hian.WRAP_CONTENT
+
+                    """.trimIndent())
                 }
 
                 it.write("""
