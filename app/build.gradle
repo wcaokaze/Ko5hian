@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply from: 'ko5hian.gradle'
+apply plugin: 'com.wcaokaze.ko5hian'
 
 android {
     compileSdkVersion 27
@@ -24,25 +24,31 @@ android {
 }
 
 ko5hian {
-    outPackage = 'ko5hian'
+    outputConfig {
+        viewGroups = [
+                'android.widget.FrameLayout',
+                [className: 'android.widget.LinearLayout', lParamsClassName: 'android.widget.LinearLayout.LayoutParams'],
+        ]
 
-    viewGroups = [
-            'android.widget.FrameLayout',
+        views = [
+                'android.widget.FrameLayout',
+                [className: 'android.widget.TextView', instantiation: 'android.widget.TextView(context)'],
+        ]
+    }
 
-            [
-                    className: 'android.widget.LinearLayout',
-                    lParamsClassName: 'android.widget.LinearLayout.LayoutParams'
-            ],
-    ]
+    outputConfig {
+        outPackage = 'com.wcaokaze.ko5hian'
 
-    views = [
-            'android.widget.FrameLayout',
+        viewGroups = [
+                'android.widget.FrameLayout',
+        ]
 
-            [
-                    className: 'android.widget.TextView',
-                    instantiation: 'android.widget.TextView(context)'
-            ],
-    ]
+        views = [
+                'android.widget.TextView',
+                'android.widget.EditText',
+                'com.wcaokaze.android.ko5hian.widget.SOMEView',
+        ]
+    }
 }
 
 
