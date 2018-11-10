@@ -1,5 +1,4 @@
 *.swp
-app/app.iml
 .gradle/
 .idea/
 build/
