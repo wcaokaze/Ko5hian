@@ -19,6 +19,7 @@ apply plugin: 'maven'
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
 }
 
 def localRepo = new File(rootDir, 'repository')
