@@ -1,0 +1,43 @@
+buildscript {
+    ext.kotlin_version = '1.3.0'
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'kotlin'
+apply plugin: 'maven'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+}
+
+def localRepo = new File(rootDir, 'repository')
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository url: "file://${localRepo.absolutePath}"
+            pom.version = '1.0.0'
+            pom.groupId = 'com.wcaokaze'
+            pom.artifactId = 'ko5hian'
+        }
+    }
+}
+
+jar.baseName = 'ko5hian'
+
+compileKotlin.dependsOn -= 'compileJava'
+compileGroovy.dependsOn compileKotlin
+compileGroovy.classpath += files(compileKotlin.destinationDir)
+classes.dependsOn compileGroovy
