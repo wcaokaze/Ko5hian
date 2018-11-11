@@ -128,7 +128,7 @@ Install
 ```groovy
 buildscript {
    repositories {
-      maven { url 'https://dl.bintray.com/wcaokaze/ko5hian' }
+      maven { url 'https://dl.bintray.com/wcaokaze/maven' }
    }
 
    dependencies {
