@@ -27,7 +27,7 @@ class Ko5hianGenerator(private val outDir: File,
 
             @DslMarker
             @Retention(AnnotationRetention.SOURCE)
-            @Target(AnnotationTarget.TYPE)
+            @Target(AnnotationTarget.CLASS)
             annotation class Ko5hianMarker
 
             inline class Ko5hianRoot(val context: Context)
@@ -37,25 +37,54 @@ class Ko5hianGenerator(private val outDir: File,
                 val context: Context,
                 val view: V,
                 val layout: L
-            )
+            ) {
+                private val displayDensity = context.resources.displayMetrics.density
+
+                fun dip(dip: Int): Int {
+                    val px = (dip * displayDensity).toInt()
+
+                    return when {
+                        px != 0 -> px
+                        dip < 0 -> -1
+                        else    ->  1
+                    }
+                }
+            }
 
             @ExperimentalContracts
             inline fun <V : View> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
-                contract {
-                    callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
-                }
+                contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
                 return Ko5hianRoot(context).builder()
             }
 
-            @ExperimentalContracts
-            inline fun <V : View> ko5hian(view: V, builder: Ko5hianViewHolder<V, *>.() -> V): V {
-                contract {
-                    callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
-                }
+            @ExperimentalContracts @JvmName("ko5hianWithoutLParamsType")
+            inline fun <V : View> ko5hian(view: V, builder: Ko5hianViewHolder<V, *>.() -> Unit): V {
+                contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
+                @Suppress("UNCHECKED_CAST")
                 val vh = Ko5hianViewHolder(view.context, view, view.layoutParams)
+
                 vh.builder()
+
+                view.layoutParams = vh.layout
+
+                return view
+            }
+
+            @ExperimentalContracts
+            inline fun <V : View, L : ViewGroup.LayoutParams>
+                  ko5hian(view: View, builder: Ko5hianViewHolder<V, L>.() -> Unit): V
+            {
+                contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
+
+                @Suppress("UNCHECKED_CAST")
+                val vh = Ko5hianViewHolder(view.context, view as V, view.layoutParams as L)
+
+                vh.builder()
+
+                view.layoutParams = vh.layout
+
                 return view
             }
 
@@ -100,9 +129,7 @@ class Ko5hianGenerator(private val outDir: File,
                             builder: Ko5hianViewHolder<${view.fullyClassName},
                                     android.view.ViewGroup.LayoutParams>.() -> Unit
                     ): ${view.fullyClassName} {
-                        contract {
-                            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
-                        }
+                        contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
                         val v = ${view.instantiatorExpression}
                         val l = android.view.ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
@@ -123,9 +150,7 @@ class Ko5hianGenerator(private val outDir: File,
                                 builder: Ko5hianViewHolder<${view.fullyClassName},
                                         ${viewGroup.lParamsClassName}>.() -> Unit
                         ): ${view.fullyClassName} {
-                            contract {
-                                callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
-                            }
+                            contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
                             val v = ${view.instantiatorExpression}
                             val l = ${viewGroup.lParamsInstantiatorExpression}
