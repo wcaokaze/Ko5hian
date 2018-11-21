@@ -36,10 +36,9 @@ class Ko5hianGenerator(private val outDir: File,
             class Ko5hianViewHolder<V : View, L : ViewGroup.LayoutParams>(
                 val context: Context,
                 val view: V,
-                val layout: L
+                val layout: L,
+                val displayDensity: Float
             ) {
-                private val displayDensity = context.resources.displayMetrics.density
-
                 fun dip(dip: Int): Int {
                     val px = (dip * displayDensity).toInt()
 
@@ -63,7 +62,8 @@ class Ko5hianGenerator(private val outDir: File,
                 contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
                 @Suppress("UNCHECKED_CAST")
-                val vh = Ko5hianViewHolder(view.context, view, view.layoutParams)
+                val vh = Ko5hianViewHolder(view.context, view, view.layoutParams,
+                        view.context.resources.displayMetrics.density)
 
                 vh.builder()
 
@@ -79,7 +79,8 @@ class Ko5hianGenerator(private val outDir: File,
                 contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
                 @Suppress("UNCHECKED_CAST")
-                val vh = Ko5hianViewHolder(view.context, view as V, view.layoutParams as L)
+                val vh = Ko5hianViewHolder(view.context, view as V, view.layoutParams as L,
+                        view.context.resources.displayMetrics.density)
 
                 vh.builder()
 
@@ -133,8 +134,12 @@ class Ko5hianGenerator(private val outDir: File,
 
                         val v = ${view.instantiatorExpression}
                         val l = android.view.ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+
                         v.layoutParams = l
-                        val vh = Ko5hianViewHolder(context, v, l)
+
+                        val vh = Ko5hianViewHolder(context, v, l,
+                                context.resources.displayMetrics.density)
+
                         vh.builder()
                         return v
                     }
@@ -155,7 +160,7 @@ class Ko5hianGenerator(private val outDir: File,
                             val v = ${view.instantiatorExpression}
                             val l = ${viewGroup.lParamsInstantiatorExpression}
                             v.layoutParams = l
-                            val vh = Ko5hianViewHolder(context, v, l)
+                            val vh = Ko5hianViewHolder(context, v, l, displayDensity)
                             vh.builder()
                             return v
                         }
