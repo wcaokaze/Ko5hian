@@ -5,10 +5,19 @@ import org.gradle.api.*
 class Ko5hian implements Plugin<Project> {
     private File ko5hianRootDir
     private File ko5hianSrcDir
+    private File projectSrcDir
 
     void apply(Project project) {
         ko5hianRootDir = project.file("$project.buildDir/generated/source/ko5hian/")
         ko5hianSrcDir = new File(ko5hianRootDir, 'src/')
+
+        def projectSrcDirs = project.android.sourceSets.main.java.srcDirs
+
+        if (projectSrcDirs.isEmpty()) {
+            projectSrcDir = ko5hianSrcDir
+        } else {
+            projectSrcDir = projectSrcDirs[0]
+        }
 
         project.metaClass.getKo5hian = {
             new Ko5hianConfigurator() {
@@ -49,11 +58,11 @@ class Ko5hian implements Plugin<Project> {
 
         hashFile.text = hash
 
+        def runtimeFileGenerator = new RuntimeFileGenerator(projectSrcDir)
+        runtimeFileGenerator.generate()
+
         for (def config : configurations) {
             def parsedConfig = ParsedConfigurationKt.parseConfiguration(config)
-
-            def runtimeFileGenerator = new RuntimeFileGenerator(ko5hianSrcDir)
-            runtimeFileGenerator.generate()
 
             def generator = new Ko5hianGenerator(ko5hianSrcDir, parsedConfig)
             generator.writeKo5hian()

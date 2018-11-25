@@ -180,6 +180,8 @@ class RuntimeFileGenerator(outDir: File) {
    private fun generateImageViews() {
       imageViewsFile.writeText("""
          ${Ko5hianGenerator.FILE_HEADER}
+         // This is a sample. You can add extensions like the follow.
+
          package ko5hian
 
          import android.widget.ImageView
