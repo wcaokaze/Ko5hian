@@ -52,9 +52,10 @@ class Ko5hian implements Plugin<Project> {
         for (def config : configurations) {
             def parsedConfig = ParsedConfigurationKt.parseConfiguration(config)
 
-            def generator = new Ko5hianGenerator(ko5hianSrcDir, parsedConfig)
+            def runtimeFileGenerator = new RuntimeFileGenerator(ko5hianSrcDir)
+            runtimeFileGenerator.generate()
 
-            generator.writeRuntime()
+            def generator = new Ko5hianGenerator(ko5hianSrcDir, parsedConfig)
             generator.writeKo5hian()
         }
     }
