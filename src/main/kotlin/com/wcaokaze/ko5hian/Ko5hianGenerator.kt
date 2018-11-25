@@ -75,7 +75,7 @@ class Ko5hianGenerator(private val outDir: File,
                      val v = ${view.instantiatorExpression}
                      val l = ${viewGroup.lParamsInstantiatorExpression}
                      v.layoutParams = l
-                     val vh = Ko5hianViewHolder(context, v, l)
+                     val vh = createChild(v, l)
                      vh.builder()
                      return v
                   }

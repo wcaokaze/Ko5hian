@@ -70,7 +70,7 @@ class RuntimeFileGenerator(outDir: File) {
             val context: Context,
             val view: V,
             val layout: L,
-            val displayDensity: Float
+            private val displayDensity: Float
          ) {
             constructor(context: Context, view: V, layout: L) : this(
                   context, view, layout,
@@ -189,10 +189,10 @@ class RuntimeFileGenerator(outDir: File) {
          val Ko5hianViewHolder<ImageView, *>.CENTER        get() = ImageView.ScaleType.CENTER
          val Ko5hianViewHolder<ImageView, *>.CENTER_CROP   get() = ImageView.ScaleType.CENTER_CROP
          val Ko5hianViewHolder<ImageView, *>.CENTER_INSIDE get() = ImageView.ScaleType.CENTER_INSIDE
-         val Ko5hianViewHolder<ImageView, *>.FIX_CENTER    get() = ImageView.ScaleType.FIX_CENTER
-         val Ko5hianViewHolder<ImageView, *>.FIX_END       get() = ImageView.ScaleType.FIX_END
-         val Ko5hianViewHolder<ImageView, *>.FIX_START     get() = ImageView.ScaleType.FIX_START
-         val Ko5hianViewHolder<ImageView, *>.FIX_XY        get() = ImageView.ScaleType.FIX_XY
+         val Ko5hianViewHolder<ImageView, *>.FIT_CENTER    get() = ImageView.ScaleType.FIT_CENTER
+         val Ko5hianViewHolder<ImageView, *>.FIT_END       get() = ImageView.ScaleType.FIT_END
+         val Ko5hianViewHolder<ImageView, *>.FIT_START     get() = ImageView.ScaleType.FIT_START
+         val Ko5hianViewHolder<ImageView, *>.FIT_XY        get() = ImageView.ScaleType.FIT_XY
          val Ko5hianViewHolder<ImageView, *>.MATRIX        get() = ImageView.ScaleType.MATRIX
       """.trimIndent())
    }
