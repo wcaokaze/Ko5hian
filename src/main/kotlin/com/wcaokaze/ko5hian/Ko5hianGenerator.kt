@@ -6,7 +6,7 @@ class Ko5hianGenerator(private val outDir: File,
                        private val conf: ParsedConfiguration)
 {
    companion object {
-      val KO5HIAN_VERSION = "1.0.1"
+      val KO5HIAN_VERSION = "1.1.0"
       val FILE_HEADER = "// Ko5hian Version: $KO5HIAN_VERSION"
    }
 
