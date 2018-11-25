@@ -16,8 +16,8 @@ class Ko5hianGenerator(private val outDir: File,
       packageDir.mkdirs()
 
       for (view in conf.views) {
-         val file = File(packageDir, "${view.className}.kt")
          val functionName = getFunctionNameFor(view.className)
+         val file = File(packageDir, "$functionName.kt")
 
          file.writer().use {
             it.write("""
