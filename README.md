@@ -80,9 +80,9 @@ Ko5hian makes it the follow:
 linearLayout {
    button {
       layout.width = WRAP_CONTENT
-      layout.marginStart = dip( 5)
-      layout.topMargin   = dip(10)
-      layout.marginEnd   = dip( 5)
+      layout.marginStart =  5.dip
+      layout.topMargin   = 10.dip
+      layout.marginEnd   =  5.dip
       view.text = "Login"
       view.textSize = 26.0f
    }
@@ -132,7 +132,7 @@ buildscript {
    }
 
    dependencies {
-      classpath 'com.wcaokaze:ko5hian:1.0.0'
+      classpath 'com.wcaokaze:ko5hian:1.2.0'
    }
 }
 
