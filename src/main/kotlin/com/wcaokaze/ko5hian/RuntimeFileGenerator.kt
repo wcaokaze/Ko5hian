@@ -74,7 +74,7 @@ class RuntimeFileGenerator(outDir: File) {
          ) {
             constructor(context: Context, view: V, layout: L) : this(
                   context, view, layout,
-                  view.context.resources.displayMetrics.density
+                  context.resources.displayMetrics.density
             )
 
             fun <CV : View, CL : ViewGroup.LayoutParams>
@@ -86,13 +86,13 @@ class RuntimeFileGenerator(outDir: File) {
                )
             }
 
-            fun dip(dip: Int): Int {
-               val px = (dip * displayDensity).toInt()
+            val Int.dip: Int get() {
+               val px = (this * displayDensity).toInt()
 
                return when {
-                  px != 0 -> px
-                  dip < 0 -> -1
-                  else    ->  1
+                  px  != 0 -> px
+                  this < 0 -> -1
+                  else     ->  1
                }
             }
          }
@@ -163,6 +163,7 @@ class RuntimeFileGenerator(outDir: File) {
    private fun generateGravities() {
       gravitiesFile.writeText("""
          ${Ko5hianGenerator.FILE_HEADER}
+         @file:Suppress("UNUSED")
          package ko5hian
 
          import android.view.Gravity
@@ -182,9 +183,12 @@ class RuntimeFileGenerator(outDir: File) {
          ${Ko5hianGenerator.FILE_HEADER}
          // This is a sample. You can add extensions like the follow.
 
+         @file:Suppress("UNUSED")
          package ko5hian
 
+         import android.view.Gravity
          import android.widget.ImageView
+         import android.graphics.drawable.Drawable
 
          val Ko5hianViewHolder<ImageView, *>.CENTER        get() = ImageView.ScaleType.CENTER
          val Ko5hianViewHolder<ImageView, *>.CENTER_CROP   get() = ImageView.ScaleType.CENTER_CROP
@@ -194,6 +198,12 @@ class RuntimeFileGenerator(outDir: File) {
          val Ko5hianViewHolder<ImageView, *>.FIT_START     get() = ImageView.ScaleType.FIT_START
          val Ko5hianViewHolder<ImageView, *>.FIT_XY        get() = ImageView.ScaleType.FIT_XY
          val Ko5hianViewHolder<ImageView, *>.MATRIX        get() = ImageView.ScaleType.MATRIX
+
+         val Ko5hianViewHolder<ImageView, *>.GRAVITY_CENTER get() = Gravity.CENTER
+
+         var ImageView.image: Drawable
+            get() = drawable
+            set(value) = setImageDrawable(value)
       """.trimIndent())
    }
 }
