@@ -180,7 +180,7 @@ buildscript {
    }
 
    dependencies {
-      classpath 'com.wcaokaze:ko5hian:1.2.0'
+      classpath 'com.wcaokaze:ko5hian:1.2.1'
    }
 }
 
