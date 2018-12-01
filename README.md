@@ -103,13 +103,13 @@ ko5hian(context) {
    linearLayout {
       layout.width  = MATCH_PARENT
       layout.height = MATCH_PARENT
-      orientation = VERTICAL
+      view.orientation = VERTICAL
 
       imageView {
          layout.width  = 24.dip
          layout.height = 24.dip
-         scaleType = FIT_CENTER
-         image = drawable(R.drawable.ic_back)
+         view.scaleType = FIT_CENTER
+         view.image = drawable(R.drawable.ic_back)
       }
    }
 }
@@ -123,7 +123,7 @@ So in `imageView`, `VERTICAL` is not available.
 ko5hian(context) {
    linearLayout {
       imageView {
-         orientation = VERTICAL // compile error!
+         view.orientation = VERTICAL // compile error!
       }
    }
 }
