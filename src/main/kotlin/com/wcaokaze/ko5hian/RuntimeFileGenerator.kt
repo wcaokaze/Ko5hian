@@ -190,16 +190,14 @@ class RuntimeFileGenerator(outDir: File) {
          import android.widget.ImageView
          import android.graphics.drawable.Drawable
 
-         val Ko5hianViewHolder<ImageView, *>.CENTER        get() = ImageView.ScaleType.CENTER
-         val Ko5hianViewHolder<ImageView, *>.CENTER_CROP   get() = ImageView.ScaleType.CENTER_CROP
-         val Ko5hianViewHolder<ImageView, *>.CENTER_INSIDE get() = ImageView.ScaleType.CENTER_INSIDE
-         val Ko5hianViewHolder<ImageView, *>.FIT_CENTER    get() = ImageView.ScaleType.FIT_CENTER
-         val Ko5hianViewHolder<ImageView, *>.FIT_END       get() = ImageView.ScaleType.FIT_END
-         val Ko5hianViewHolder<ImageView, *>.FIT_START     get() = ImageView.ScaleType.FIT_START
-         val Ko5hianViewHolder<ImageView, *>.FIT_XY        get() = ImageView.ScaleType.FIT_XY
-         val Ko5hianViewHolder<ImageView, *>.MATRIX        get() = ImageView.ScaleType.MATRIX
-
-         val Ko5hianViewHolder<ImageView, *>.GRAVITY_CENTER get() = Gravity.CENTER
+         val Ko5hianViewHolder<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
+         val Ko5hianViewHolder<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
+         val Ko5hianViewHolder<ImageView, *>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
+         val Ko5hianViewHolder<ImageView, *>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
+         val Ko5hianViewHolder<ImageView, *>.FIT_END           get() = ImageView.ScaleType.FIT_END
+         val Ko5hianViewHolder<ImageView, *>.FIT_START         get() = ImageView.ScaleType.FIT_START
+         val Ko5hianViewHolder<ImageView, *>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
+         val Ko5hianViewHolder<ImageView, *>.MATRIX            get() = ImageView.ScaleType.MATRIX
 
          var ImageView.image: Drawable
             get() = drawable
