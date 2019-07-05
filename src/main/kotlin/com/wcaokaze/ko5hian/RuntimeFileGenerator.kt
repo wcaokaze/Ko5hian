@@ -11,20 +11,18 @@ class RuntimeFileGenerator(outDir: File) {
       }
    }
 
-   private val ko5hianRootFile       = File(packageDir, "Ko5hianRoot.kt")
-   private val ko5hianMarkerFile     = File(packageDir, "Ko5hianMarker.kt")
-   private val ko5hianViewHolderFile = File(packageDir, "Ko5hianViewHolder.kt")
-   private val ko5hianFile           = File(packageDir, "ko5hian.kt")
-   private val layoutParamsFile      = File(packageDir, "layoutParams.kt")
-   private val gravitiesFile         = File(packageDir, "gravities.kt")
-   private val imageViewsFile        = File(packageDir, "imageViews.kt")
+   private val ko5hianRootFile   = File(packageDir, "Ko5hianRoot.kt")
+   private val ko5hianMarkerFile = File(packageDir, "Ko5hianMarker.kt")
+   private val ko5hianFile       = File(packageDir, "Ko5hian.kt")
+   private val layoutParamsFile  = File(packageDir, "layoutParams.kt")
+   private val gravitiesFile     = File(packageDir, "gravities.kt")
+   private val imageViewsFile    = File(packageDir, "imageViews.kt")
 
    fun generate() {
       if (!shouldGenerate()) return
 
       generateKo5hianRoot()
       generateKo5hianMarker()
-      generateKo5hianViewHolder()
       generateKo5hian()
       generateLayoutParams()
       generateGravities()
@@ -56,8 +54,8 @@ class RuntimeFileGenerator(outDir: File) {
       """.trimIndent())
    }
 
-   private fun generateKo5hianViewHolder() {
-      ko5hianViewHolderFile.writeText("""
+   private fun generateKo5hian() {
+      ko5hianFile.writeText("""
          ${Ko5hianGenerator.FILE_HEADER}
          package ko5hian
 
@@ -65,8 +63,10 @@ class RuntimeFileGenerator(outDir: File) {
          import android.view.View
          import android.view.ViewGroup
 
+         import kotlin.contracts.*
+
          @Ko5hianMarker
-         class Ko5hianViewHolder<V : View, L : ViewGroup.LayoutParams?>(
+         class Ko5hian<V : View, L : ViewGroup.LayoutParams?>(
             val context: Context,
             val view: V,
             val layout: L,
@@ -78,9 +78,9 @@ class RuntimeFileGenerator(outDir: File) {
             )
 
             fun <CV : View, CL : ViewGroup.LayoutParams>
-                  createChild(view: CV, layout: CL): Ko5hianViewHolder<CV, CL>
+                  createChild(view: CV, layout: CL): Ko5hian<CV, CL>
             {
-               return Ko5hianViewHolder(
+               return Ko5hian(
                      context, view, layout,
                      displayDensity
                )
@@ -96,19 +96,6 @@ class RuntimeFileGenerator(outDir: File) {
                }
             }
          }
-      """.trimIndent())
-   }
-
-   private fun generateKo5hian() {
-      ko5hianFile.writeText("""
-         ${Ko5hianGenerator.FILE_HEADER}
-         package ko5hian
-
-         import android.content.Context
-         import android.view.View
-         import android.view.ViewGroup
-
-         import kotlin.contracts.*
 
          @ExperimentalContracts
          inline fun <V> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
@@ -119,31 +106,31 @@ class RuntimeFileGenerator(outDir: File) {
 
          @ExperimentalContracts
          inline fun <V : ViewGroup, C : View>
-               V.addView(builder: Ko5hianViewHolder<V, *>.() -> C): C
+               V.addView(builder: Ko5hian<V, *>.() -> C): C
          {
             contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
-            val vh = Ko5hianViewHolder(context, this, layoutParams)
+            val vh = Ko5hian(context, this, layoutParams)
 
             return vh.builder()
          }
 
          @ExperimentalContracts @JvmName("ko5hianWithoutLParamsType")
-         inline fun <V : View> ko5hian(view: V, builder: Ko5hianViewHolder<V, *>.() -> Unit) {
+         inline fun <V : View> ko5hian(view: V, builder: Ko5hian<V, *>.() -> Unit) {
             contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
-            val vh = Ko5hianViewHolder(view.context, view, view.layoutParams)
+            val vh = Ko5hian(view.context, view, view.layoutParams)
 
             vh.builder()
          }
 
          @ExperimentalContracts
          inline fun <reified V : View, reified L : ViewGroup.LayoutParams>
-               ko5hian(view: View, builder: Ko5hianViewHolder<V, L>.() -> Unit)
+               ko5hian(view: View, builder: Ko5hian<V, L>.() -> Unit)
          {
             contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
-            val vh = Ko5hianViewHolder(view.context, view as V, view.layoutParams as L)
+            val vh = Ko5hian(view.context, view as V, view.layoutParams as L)
 
             vh.builder()
          }
@@ -170,13 +157,13 @@ class RuntimeFileGenerator(outDir: File) {
 
          import android.view.Gravity
 
-         val Ko5hianViewHolder<*, *>.START  get() = Gravity.START
-         val Ko5hianViewHolder<*, *>.TOP    get() = Gravity.TOP
-         val Ko5hianViewHolder<*, *>.END    get() = Gravity.END
-         val Ko5hianViewHolder<*, *>.BOTTOM get() = Gravity.BOTTOM
-         val Ko5hianViewHolder<*, *>.CENTER            get() = Gravity.CENTER
-         val Ko5hianViewHolder<*, *>.CENTER_HORIZONTAL get() = Gravity.CENTER_HORIZONTAL
-         val Ko5hianViewHolder<*, *>.CENTER_VERTICAL   get() = Gravity.CENTER_VERTICAL
+         val Ko5hian<*, *>.START  get() = Gravity.START
+         val Ko5hian<*, *>.TOP    get() = Gravity.TOP
+         val Ko5hian<*, *>.END    get() = Gravity.END
+         val Ko5hian<*, *>.BOTTOM get() = Gravity.BOTTOM
+         val Ko5hian<*, *>.CENTER            get() = Gravity.CENTER
+         val Ko5hian<*, *>.CENTER_HORIZONTAL get() = Gravity.CENTER_HORIZONTAL
+         val Ko5hian<*, *>.CENTER_VERTICAL   get() = Gravity.CENTER_VERTICAL
       """.trimIndent())
    }
 
@@ -192,14 +179,14 @@ class RuntimeFileGenerator(outDir: File) {
          import android.widget.ImageView
          import android.graphics.drawable.Drawable
 
-         val Ko5hianViewHolder<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
-         val Ko5hianViewHolder<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
-         val Ko5hianViewHolder<ImageView, *>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
-         val Ko5hianViewHolder<ImageView, *>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
-         val Ko5hianViewHolder<ImageView, *>.FIT_END           get() = ImageView.ScaleType.FIT_END
-         val Ko5hianViewHolder<ImageView, *>.FIT_START         get() = ImageView.ScaleType.FIT_START
-         val Ko5hianViewHolder<ImageView, *>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
-         val Ko5hianViewHolder<ImageView, *>.MATRIX            get() = ImageView.ScaleType.MATRIX
+         val Ko5hian<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
+         val Ko5hian<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
+         val Ko5hian<ImageView, *>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
+         val Ko5hian<ImageView, *>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
+         val Ko5hian<ImageView, *>.FIT_END           get() = ImageView.ScaleType.FIT_END
+         val Ko5hian<ImageView, *>.FIT_START         get() = ImageView.ScaleType.FIT_START
+         val Ko5hian<ImageView, *>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
+         val Ko5hian<ImageView, *>.MATRIX            get() = ImageView.ScaleType.MATRIX
 
          var ImageView.image: Drawable
             get() = drawable

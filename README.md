@@ -94,8 +94,8 @@ linearLayout {
 
 We can add extensions like the follow.
 ```kotlin
-val Ko5hianViewHolder<LinearLayout, *>.VERTICAL get() = LinearLayout.VERTICAL
-val Ko5hianViewHolder<ImageView, *>.FIT_CENTER get() = ImageView.ScaleType.FIT_CENTER
+val Ko5hian<LinearLayout, *>.VERTICAL get() = LinearLayout.VERTICAL
+val Ko5hian<ImageView, *>.FIT_CENTER get() = ImageView.ScaleType.FIT_CENTER
 ```
 
 ```kotlin
@@ -115,7 +115,7 @@ ko5hian(context) {
 }
 ```
 
-`Ko5hianViewHolder` is annotated with a
+`Ko5hian` is annotated with a
 [DslMarker](http://kotlinlang.org/docs/reference/type-safe-builders.html#scope-control-dslmarker-since-11).
 So in `imageView`, `VERTICAL` is not available.
 
@@ -161,7 +161,7 @@ package ko5hian
 
 import android.widget.*
 
-val Ko5hianViewHolder<LinearLayout, *>.VERTICAL get() = LinearLayout.VERTICAL
+val Ko5hian<LinearLayout, *>.VERTICAL get() = LinearLayout.VERTICAL
 // and so on
 ```
 

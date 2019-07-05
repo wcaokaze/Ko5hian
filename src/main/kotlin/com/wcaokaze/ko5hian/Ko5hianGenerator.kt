@@ -29,8 +29,8 @@ class Ko5hianGenerator(private val outDir: File,
             if (conf.outPackage != "ko5hian") {
                it.write("""
 
+                  import ko5hian.Ko5hian
                   import ko5hian.Ko5hianRoot
-                  import ko5hian.Ko5hianViewHolder
                   import ko5hian.MATCH_PARENT
                   import ko5hian.WRAP_CONTENT
 
@@ -43,7 +43,7 @@ class Ko5hianGenerator(private val outDir: File,
 
                @ExperimentalContracts
                inline fun Ko5hianRoot.`$functionName`(
-                     builder: Ko5hianViewHolder<${view.fullyClassName},
+                     builder: Ko5hian<${view.fullyClassName},
                            android.view.ViewGroup.LayoutParams>.() -> Unit
                ): ${view.fullyClassName} {
                   contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
@@ -53,7 +53,7 @@ class Ko5hianGenerator(private val outDir: File,
 
                   v.layoutParams = l
 
-                  val vh = Ko5hianViewHolder(context, v, l)
+                  val vh = Ko5hian(context, v, l)
 
                   vh.builder()
                   return v
@@ -66,8 +66,8 @@ class Ko5hianGenerator(private val outDir: File,
 
                   @ExperimentalContracts
                   @JvmName("${functionName}For${viewGroup.className}")
-                  inline fun Ko5hianViewHolder<${viewGroup.fullyClassName}, *>.`$functionName`(
-                        builder: Ko5hianViewHolder<${view.fullyClassName},
+                  inline fun Ko5hian<${viewGroup.fullyClassName}, *>.`$functionName`(
+                        builder: Ko5hian<${view.fullyClassName},
                               ${viewGroup.lParamsClassName}>.() -> Unit
                   ): ${view.fullyClassName} {
                      contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
