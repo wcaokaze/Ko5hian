@@ -77,6 +77,61 @@ class RuntimeFileGenerator(outDir: File) {
                   context.resources.displayMetrics.density
             )
 
+            /**
+             * Sometime we have so many boring view parameters.
+             * ```kotlin
+             * linearLayout {
+             *    textView {
+             *       layout.width  = MATCH_PARENT
+             *       layout.height = WRAP_CONTENT
+             *       layout.marginStart = 16.dip
+             *       view.textColor = 0x313131.opaque
+             *       view.textSizeSp = 16
+             *       view.maxLines = 1
+             *       view.ellipsize = TruncateAt.END
+             *       view.text = user.name // This is the main subject but covered with too many noises
+             *    }
+             * }
+             * ```
+             *
+             * Extract function:
+             * ```kotlin
+             * fun Ko5hian<TextView, LinearLayout>.username() {
+             *    layout.width  = MATCH_PARENT
+             *    layout.height = WRAP_CONTENT
+             *    layout.marginStart = 16.dip
+             *    view.textColor = 0x313131.opaque
+             *    view.textSizeSp = 16
+             *    view.maxLines = 1
+             *    view.ellipsize = TruncateAt.END
+             * }
+             * ```
+             *
+             * Then we can apply it like the follow:
+             * ```kotlin
+             * linearLayout {
+             *    textView {
+             *       style = ::username
+             *       view.text = user.name
+             *    }
+             * }
+             * ```
+             *
+             * It's very equivalent to the follow, but a little cooler notation.
+             * ```kotlin
+             * linearLayout {
+             *    textView {
+             *       username()
+             *       view.text = user.name
+             *    }
+             * }
+             * ```
+             */
+            var style: () -> Unit
+               @Deprecated("This getter always throws an Exception")
+               get() = throw UnsupportedOperationException()
+               inline set(value) { value() }
+
             fun <CV : View, CL : ViewGroup.LayoutParams>
                   createChild(view: CV, layout: CL): Ko5hian<CV, CL>
             {
