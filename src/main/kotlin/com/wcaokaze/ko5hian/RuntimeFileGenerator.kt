@@ -129,27 +129,23 @@ class RuntimeFileGenerator(outDir: File) {
          }
 
          @ExperimentalContracts @JvmName("ko5hianWithoutLParamsType")
-         inline fun <V : View> ko5hian(view: V, builder: Ko5hianViewHolder<V, *>.() -> Unit): V {
+         inline fun <V : View> ko5hian(view: V, builder: Ko5hianViewHolder<V, *>.() -> Unit) {
             contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
             val vh = Ko5hianViewHolder(view.context, view, view.layoutParams)
 
             vh.builder()
-
-            return view
          }
 
          @ExperimentalContracts
          inline fun <reified V : View, reified L : ViewGroup.LayoutParams>
-               ko5hian(view: View, builder: Ko5hianViewHolder<V, L>.() -> Unit): V
+               ko5hian(view: View, builder: Ko5hianViewHolder<V, L>.() -> Unit)
          {
             contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
             val vh = Ko5hianViewHolder(view.context, view as V, view.layoutParams as L)
 
             vh.builder()
-
-            return view
          }
       """.trimIndent())
    }
