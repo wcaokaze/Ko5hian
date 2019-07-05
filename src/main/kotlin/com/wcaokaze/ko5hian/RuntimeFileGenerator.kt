@@ -66,7 +66,7 @@ class RuntimeFileGenerator(outDir: File) {
          import android.view.ViewGroup
 
          @Ko5hianMarker
-         class Ko5hianViewHolder<V : View, L : ViewGroup.LayoutParams>(
+         class Ko5hianViewHolder<V : View, L : ViewGroup.LayoutParams?>(
             val context: Context,
             val view: V,
             val layout: L,
@@ -111,10 +111,21 @@ class RuntimeFileGenerator(outDir: File) {
          import kotlin.contracts.*
 
          @ExperimentalContracts
-         inline fun <V : View> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
+         inline fun <V> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
             contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
             return Ko5hianRoot(context).builder()
+         }
+
+         @ExperimentalContracts
+         inline fun <V : ViewGroup, C : View>
+               V.addView(builder: Ko5hianViewHolder<V, *>.() -> C): C
+         {
+            contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
+
+            val vh = Ko5hianViewHolder(context, this, layoutParams)
+
+            return vh.builder()
          }
 
          @ExperimentalContracts @JvmName("ko5hianWithoutLParamsType")
@@ -125,23 +136,18 @@ class RuntimeFileGenerator(outDir: File) {
 
             vh.builder()
 
-            view.layoutParams = vh.layout
-
             return view
          }
 
          @ExperimentalContracts
-         inline fun <V : View, L : ViewGroup.LayoutParams>
+         inline fun <reified V : View, reified L : ViewGroup.LayoutParams>
                ko5hian(view: View, builder: Ko5hianViewHolder<V, L>.() -> Unit): V
          {
             contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
 
-            @Suppress("UNCHECKED_CAST")
             val vh = Ko5hianViewHolder(view.context, view as V, view.layoutParams as L)
 
             vh.builder()
-
-            view.layoutParams = vh.layout
 
             return view
          }
