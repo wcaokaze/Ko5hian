@@ -33,7 +33,7 @@ class RuntimeFileGenerator(outDir: File) {
 
    private fun generateKo5hianRoot() {
       ko5hianRootFile.writeText("""
-         ${Ko5hianGenerator.FILE_HEADER}
+         ${Ko5hianDslGenerator.FILE_HEADER}
          package ko5hian
 
          import android.content.Context
@@ -44,7 +44,7 @@ class RuntimeFileGenerator(outDir: File) {
 
    private fun generateKo5hianMarker() {
       ko5hianMarkerFile.writeText("""
-         ${Ko5hianGenerator.FILE_HEADER}
+         ${Ko5hianDslGenerator.FILE_HEADER}
          package ko5hian
 
          @DslMarker
@@ -56,7 +56,7 @@ class RuntimeFileGenerator(outDir: File) {
 
    private fun generateKo5hian() {
       ko5hianFile.writeText("""
-         ${Ko5hianGenerator.FILE_HEADER}
+         ${Ko5hianDslGenerator.FILE_HEADER}
          package ko5hian
 
          import android.content.Context
@@ -194,7 +194,7 @@ class RuntimeFileGenerator(outDir: File) {
 
    private fun generateLayoutParams() {
       layoutParamsFile.writeText("""
-         ${Ko5hianGenerator.FILE_HEADER}
+         ${Ko5hianDslGenerator.FILE_HEADER}
          package ko5hian
 
          import android.view.ViewGroup
@@ -206,7 +206,7 @@ class RuntimeFileGenerator(outDir: File) {
 
    private fun generateGravities() {
       gravitiesFile.writeText("""
-         ${Ko5hianGenerator.FILE_HEADER}
+         ${Ko5hianDslGenerator.FILE_HEADER}
          @file:Suppress("UNUSED")
          package ko5hian
 
@@ -224,7 +224,7 @@ class RuntimeFileGenerator(outDir: File) {
 
    private fun generateImageViews() {
       imageViewsFile.writeText("""
-         ${Ko5hianGenerator.FILE_HEADER}
+         ${Ko5hianDslGenerator.FILE_HEADER}
          // This is a sample. You can add extensions like the follow.
 
          @file:Suppress("UNUSED")

@@ -3,27 +3,13 @@ package com.wcaokaze.ko5hian
 import org.gradle.api.*
 
 class Ko5hian implements Plugin<Project> {
-    private File ko5hianRootDir
-    private File ko5hianSrcDir
-    private File projectSrcDir
-
     void apply(Project project) {
-        ko5hianRootDir = project.file("$project.buildDir/generated/source/ko5hian/")
-        ko5hianSrcDir = new File(ko5hianRootDir, 'src/')
-
-        def projectSrcDirs = project.android.sourceSets.main.java.srcDirs
-
-        if (projectSrcDirs.isEmpty()) {
-            projectSrcDir = ko5hianSrcDir
-        } else {
-            projectSrcDir = projectSrcDirs[0]
-        }
-
         project.metaClass.getKo5hian = {
             new Ko5hianConfigurator() {
                 def outputConfig(Closure configAction) {
                     super.outputConfig(configAction)
-                    generateInto(configurations)
+
+                    new Ko5hianGenerator(project).generate(configurations)
                 }
             }
         }
@@ -34,38 +20,10 @@ class Ko5hian implements Plugin<Project> {
             configAction.delegate = configurator
             configAction()
 
-            generateInto(configurator.configurations)
+            new Ko5hianGenerator(project).generate(configurator.configurations)
         }
 
         project.android.sourceSets.main.java  .srcDirs += ko5hianSrcDir
         project.android.sourceSets.main.kotlin.srcDirs += ko5hianSrcDir
-    }
-
-    private def generateInto(List<Ko5hianConfiguration> configurations) {
-        def parsedConfigs = configurations
-                .collect { ParsedConfigurationKt.parseConfiguration(it) }
-
-        def hash = parsedConfigs.collect { it.ingredientsHash } .join()
-        def hashFile = new File(ko5hianRootDir, 'hash')
-
-        try {
-            if (hashFile.text == hash) return
-        } catch (IOException ignored) {
-        }
-
-        ko5hianSrcDir.deleteDir()
-        ko5hianSrcDir.mkdirs()
-
-        hashFile.text = hash
-
-        def runtimeFileGenerator = new RuntimeFileGenerator(projectSrcDir)
-        runtimeFileGenerator.generate()
-
-        for (def config : configurations) {
-            def parsedConfig = ParsedConfigurationKt.parseConfiguration(config)
-
-            def generator = new Ko5hianGenerator(ko5hianSrcDir, parsedConfig)
-            generator.writeKo5hian()
-        }
     }
 }
