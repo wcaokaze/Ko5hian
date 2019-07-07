@@ -3,9 +3,9 @@ package com.wcaokaze.ko5hian.runtimefile
 import com.wcaokaze.ko5hian.*
 import java.io.*
 
-internal class EditTextExensionGenerator : RuntimeFileGenerator {
+internal class TextViewExtensionGenerator : RuntimeFileGenerator {
    override fun generate(packageDir: File) {
-      File(packageDir, "editTexts.kt").writeText("""
+      File(packageDir, "textViews.kt").writeText("""
          ${Ko5hianDslGenerator.FILE_HEADER}
          // This file is safe to modify.
 

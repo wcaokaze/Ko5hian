@@ -12,7 +12,6 @@ internal class ImageViewExtensionGenerator : RuntimeFileGenerator {
          @file:Suppress("UNUSED")
          package ko5hian
 
-         import android.view.Gravity
          import android.widget.ImageView
          import android.graphics.*
          import android.graphics.drawable.Drawable
@@ -32,6 +31,7 @@ internal class ImageViewExtensionGenerator : RuntimeFileGenerator {
 
          var ImageView.bitmap: Bitmap?
             get() = throw UnsupportedOperationException()
+            set(value) = setImageBitmap(value)
       """.trimIndent())
    }
 }

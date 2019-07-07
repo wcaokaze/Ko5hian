@@ -22,10 +22,11 @@ class RuntimeFileGenerator(outDir: File) {
                  ::Ko5hianRuntimeGenerator,
                  ::LayoutParamsExtensionGenerator,
                  ::ViewExtensionGenerator,
-                 ::EditTextExensionGenerator,
+                 ::TextViewExtensionGenerator,
                  ::ImageViewExtensionGenerator,
                  ::LinearLayoutExtensionGenerator,
-                 ::RelativeLayoutExtensionGenerator)
+                 ::RelativeLayoutExtensionGenerator,
+                 ::ResourcesExtensionGenerator)
             .map { it() }
             .forEach { it.generate(packageDir) }
    }

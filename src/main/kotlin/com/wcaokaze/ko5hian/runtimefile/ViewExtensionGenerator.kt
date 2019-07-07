@@ -19,9 +19,9 @@ internal class ViewExtensionGenerator : RuntimeFileGenerator {
             get() = throw UnsupportedOperationException()
             set(value) = setBackgroundColor(value)
 
-         val Ko5hianViewHolder<*, *>.VISIBLE   get() = View.VISIBLE
-         val Ko5hianViewHolder<*, *>.INVISIBLE get() = View.INVISIBLE
-         val Ko5hianViewHolder<*, *>.GONE      get() = View.GONE
+         val Ko5hian<*, *>.VISIBLE   get() = View.VISIBLE
+         val Ko5hian<*, *>.INVISIBLE get() = View.INVISIBLE
+         val Ko5hian<*, *>.GONE      get() = View.GONE
 
          val Ko5hian<*, *>.LAYOUT_DIRECTION_LTR get() = View.LAYOUT_DIRECTION_LTR
          val Ko5hian<*, *>.LAYOUT_DIRECTION_RTL get() = View.LAYOUT_DIRECTION_RTL
