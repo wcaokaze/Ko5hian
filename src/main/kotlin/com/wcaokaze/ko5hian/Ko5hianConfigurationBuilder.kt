@@ -1,7 +1,5 @@
 package com.wcaokaze.ko5hian
 
-import com.wcaokaze.ko5hian.Ko5hianConfiguration.*
-
 class Ko5hianConfigurationBuilder {
    var outPackage: Any? = null
    var viewGroups: Any? = null

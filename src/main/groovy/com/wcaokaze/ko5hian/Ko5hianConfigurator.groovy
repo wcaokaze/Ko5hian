@@ -11,4 +11,12 @@ class Ko5hianConfigurator {
 
         configurations << configuration.build()
     }
+
+    def getAndroidViews() {
+        return AndroidViewsKt.androidViews
+    }
+
+    def getAndroidViewGroups() {
+        return AndroidViewsKt.androidViewGroups
+    }
 }

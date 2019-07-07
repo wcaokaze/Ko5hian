@@ -1,5 +1,6 @@
 package com.wcaokaze.ko5hian
 
+import com.wcaokaze.ko5hian.runtimefile.*
 import java.io.*
 
 class RuntimeFileGenerator(outDir: File) {
@@ -11,241 +12,24 @@ class RuntimeFileGenerator(outDir: File) {
       }
    }
 
-   private val ko5hianRootFile   = File(packageDir, "Ko5hianRoot.kt")
-   private val ko5hianMarkerFile = File(packageDir, "Ko5hianMarker.kt")
-   private val ko5hianFile       = File(packageDir, "Ko5hian.kt")
-   private val layoutParamsFile  = File(packageDir, "layoutParams.kt")
-   private val gravitiesFile     = File(packageDir, "gravities.kt")
-   private val imageViewsFile    = File(packageDir, "imageViews.kt")
+   private val ko5hianRootFile = File(packageDir, "Ko5hianRoot.kt")
 
    fun generate() {
-      if (!shouldGenerate()) return
+      if (!shouldGenerate()) { return }
 
-      generateKo5hianRoot()
-      generateKo5hianMarker()
-      generateKo5hian()
-      generateLayoutParams()
-      generateGravities()
-      generateImageViews()
+      sequenceOf(::Ko5hianRootGenerator,
+                 ::Ko5hianMarkerGenerator,
+                 ::Ko5hianRuntimeGenerator,
+                 ::LayoutParamsExtensionGenerator,
+                 ::ViewExtensionGenerator,
+                 ::TextViewExtensionGenerator,
+                 ::ImageViewExtensionGenerator,
+                 ::LinearLayoutExtensionGenerator,
+                 ::RelativeLayoutExtensionGenerator,
+                 ::ResourcesExtensionGenerator)
+            .map { it() }
+            .forEach { it.generate(packageDir) }
    }
 
    private fun shouldGenerate() = !ko5hianRootFile.exists()
-
-   private fun generateKo5hianRoot() {
-      ko5hianRootFile.writeText("""
-         ${Ko5hianDslGenerator.FILE_HEADER}
-         package ko5hian
-
-         import android.content.Context
-
-         inline class Ko5hianRoot(val context: Context)
-      """.trimIndent())
-   }
-
-   private fun generateKo5hianMarker() {
-      ko5hianMarkerFile.writeText("""
-         ${Ko5hianDslGenerator.FILE_HEADER}
-         package ko5hian
-
-         @DslMarker
-         @Retention(AnnotationRetention.SOURCE)
-         @Target(AnnotationTarget.CLASS)
-         annotation class Ko5hianMarker
-      """.trimIndent())
-   }
-
-   private fun generateKo5hian() {
-      ko5hianFile.writeText("""
-         ${Ko5hianDslGenerator.FILE_HEADER}
-         package ko5hian
-
-         import android.content.Context
-         import android.view.View
-         import android.view.ViewGroup
-
-         import kotlin.contracts.*
-
-         @Ko5hianMarker
-         class Ko5hian<V : View, L : ViewGroup.LayoutParams?>(
-            val context: Context,
-            val view: V,
-            val layout: L,
-            private val displayDensity: Float
-         ) {
-            constructor(context: Context, view: V, layout: L) : this(
-                  context, view, layout,
-                  context.resources.displayMetrics.density
-            )
-
-            /**
-             * Sometime we have so many boring view parameters.
-             * ```kotlin
-             * linearLayout {
-             *    textView {
-             *       layout.width  = MATCH_PARENT
-             *       layout.height = WRAP_CONTENT
-             *       layout.marginStart = 16.dip
-             *       view.textColor = 0x313131.opaque
-             *       view.textSizeSp = 16
-             *       view.maxLines = 1
-             *       view.ellipsize = TruncateAt.END
-             *       view.text = user.name // This is the main subject but covered with too many noises
-             *    }
-             * }
-             * ```
-             *
-             * Extract function:
-             * ```kotlin
-             * fun Ko5hian<TextView, LinearLayout>.username() {
-             *    layout.width  = MATCH_PARENT
-             *    layout.height = WRAP_CONTENT
-             *    layout.marginStart = 16.dip
-             *    view.textColor = 0x313131.opaque
-             *    view.textSizeSp = 16
-             *    view.maxLines = 1
-             *    view.ellipsize = TruncateAt.END
-             * }
-             * ```
-             *
-             * Then we can apply it like the follow:
-             * ```kotlin
-             * linearLayout {
-             *    textView {
-             *       style = ::username
-             *       view.text = user.name
-             *    }
-             * }
-             * ```
-             *
-             * It's very equivalent to the follow, but a little cooler notation.
-             * ```kotlin
-             * linearLayout {
-             *    textView {
-             *       username()
-             *       view.text = user.name
-             *    }
-             * }
-             * ```
-             */
-            var style: () -> Unit
-               @Deprecated("This getter always throws an Exception")
-               get() = throw UnsupportedOperationException()
-               inline set(value) { value() }
-
-            fun <CV : View, CL : ViewGroup.LayoutParams>
-                  createChild(view: CV, layout: CL): Ko5hian<CV, CL>
-            {
-               return Ko5hian(
-                     context, view, layout,
-                     displayDensity
-               )
-            }
-
-            val Int.dip: Int get() {
-               val px = (this * displayDensity).toInt()
-
-               return when {
-                  px  != 0 -> px
-                  this < 0 -> -1
-                  else     ->  1
-               }
-            }
-         }
-
-         @ExperimentalContracts
-         inline fun <V> ko5hian(context: Context, builder: Ko5hianRoot.() -> V): V {
-            contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
-
-            return Ko5hianRoot(context).builder()
-         }
-
-         @ExperimentalContracts
-         inline fun <V : ViewGroup, C : View>
-               V.addView(builder: Ko5hian<V, *>.() -> C): C
-         {
-            contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
-
-            val vh = Ko5hian(context, this, layoutParams)
-
-            return vh.builder()
-         }
-
-         @ExperimentalContracts @JvmName("ko5hianWithoutLParamsType")
-         inline fun <V : View> ko5hian(view: V, builder: Ko5hian<V, *>.() -> Unit) {
-            contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
-
-            val vh = Ko5hian(view.context, view, view.layoutParams)
-
-            vh.builder()
-         }
-
-         @ExperimentalContracts
-         inline fun <reified V : View, reified L : ViewGroup.LayoutParams>
-               ko5hian(view: View, builder: Ko5hian<V, L>.() -> Unit)
-         {
-            contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
-
-            val vh = Ko5hian(view.context, view as V, view.layoutParams as L)
-
-            vh.builder()
-         }
-      """.trimIndent())
-   }
-
-   private fun generateLayoutParams() {
-      layoutParamsFile.writeText("""
-         ${Ko5hianDslGenerator.FILE_HEADER}
-         package ko5hian
-
-         import android.view.ViewGroup
-
-         val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
-         val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
-      """.trimIndent())
-   }
-
-   private fun generateGravities() {
-      gravitiesFile.writeText("""
-         ${Ko5hianDslGenerator.FILE_HEADER}
-         @file:Suppress("UNUSED")
-         package ko5hian
-
-         import android.view.Gravity
-
-         val Ko5hian<*, *>.START  get() = Gravity.START
-         val Ko5hian<*, *>.TOP    get() = Gravity.TOP
-         val Ko5hian<*, *>.END    get() = Gravity.END
-         val Ko5hian<*, *>.BOTTOM get() = Gravity.BOTTOM
-         val Ko5hian<*, *>.CENTER            get() = Gravity.CENTER
-         val Ko5hian<*, *>.CENTER_HORIZONTAL get() = Gravity.CENTER_HORIZONTAL
-         val Ko5hian<*, *>.CENTER_VERTICAL   get() = Gravity.CENTER_VERTICAL
-      """.trimIndent())
-   }
-
-   private fun generateImageViews() {
-      imageViewsFile.writeText("""
-         ${Ko5hianDslGenerator.FILE_HEADER}
-         // This is a sample. You can add extensions like the follow.
-
-         @file:Suppress("UNUSED")
-         package ko5hian
-
-         import android.view.Gravity
-         import android.widget.ImageView
-         import android.graphics.drawable.Drawable
-
-         val Ko5hian<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
-         val Ko5hian<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
-         val Ko5hian<ImageView, *>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
-         val Ko5hian<ImageView, *>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
-         val Ko5hian<ImageView, *>.FIT_END           get() = ImageView.ScaleType.FIT_END
-         val Ko5hian<ImageView, *>.FIT_START         get() = ImageView.ScaleType.FIT_START
-         val Ko5hian<ImageView, *>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
-         val Ko5hian<ImageView, *>.MATRIX            get() = ImageView.ScaleType.MATRIX
-
-         var ImageView.image: Drawable
-            get() = drawable
-            set(value) = setImageDrawable(value)
-      """.trimIndent())
-   }
 }
