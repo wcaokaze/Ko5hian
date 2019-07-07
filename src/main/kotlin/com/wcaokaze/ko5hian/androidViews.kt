@@ -25,6 +25,7 @@ val androidViews = listOf(
       ViewConfiguration("android.widget.RadioButton"),
       ViewConfiguration("android.widget.RadioGroup"),
       ViewConfiguration("android.widget.RatingBar"),
+      ViewConfiguration("android.widget.RelativeLayout"),
       ViewConfiguration("android.webkit.WebView")
 )
 
@@ -35,5 +36,6 @@ val androidViewGroups = listOf(
       ViewGroupConfiguration("android.widget.ImageSwitcher",
             lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
       ViewGroupConfiguration("android.widget.LinearLayout"),
-      ViewGroupConfiguration("android.widget.RadioGroup")
+      ViewGroupConfiguration("android.widget.RadioGroup"),
+      ViewGroupConfiguration("android.widget.RelativeLayout")
 )
