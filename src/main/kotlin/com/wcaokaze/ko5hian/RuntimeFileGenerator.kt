@@ -12,7 +12,7 @@ class RuntimeFileGenerator(outDir: File) {
       }
    }
 
-   private val ko5hianRootFile   = File(packageDir, "Ko5hianRoot.kt")
+   private val ko5hianRootFile = File(packageDir, "Ko5hianRoot.kt")
 
    fun generate() {
       if (!shouldGenerate()) { return }
@@ -24,7 +24,8 @@ class RuntimeFileGenerator(outDir: File) {
                  ::ViewExtensionGenerator,
                  ::EditTextExensionGenerator,
                  ::ImageViewExtensionGenerator,
-                 ::LinearLayoutExtensionGenerator)
+                 ::LinearLayoutExtensionGenerator,
+                 ::RelativeLayoutExtensionGenerator)
             .map { it() }
             .forEach { it.generate(packageDir) }
    }
