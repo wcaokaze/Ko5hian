@@ -22,8 +22,5 @@ class Ko5hian implements Plugin<Project> {
 
             new Ko5hianGenerator(project).generate(configurator.configurations)
         }
-
-        project.android.sourceSets.main.java  .srcDirs += ko5hianSrcDir
-        project.android.sourceSets.main.kotlin.srcDirs += ko5hianSrcDir
     }
 }

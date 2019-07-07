@@ -9,6 +9,6 @@ class Ko5hianConfigurator {
         configAction.delegate = configuration
         configAction()
 
-        configurations << configuration.build$Ko5hian_main()
+        configurations << configuration.build()
     }
 }

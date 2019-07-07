@@ -25,66 +25,66 @@ class Ko5hianConfiguration {
             append(vConf.getIngredientsHash())
         }
     }
+}
 
-    class ViewGroupConfiguration
-            internal constructor(
-                val fullyClassName: String,
-                val className: String,
-                val lParamsFullyClassName: String,
-                val lParamsInstantiatorExpression: String
-            )
-    {
-        constructor(className: String) : this(
-              className,
-              getClassName(className),
-              getDefaultLParamsClassName(className),
-              getDefaultLParamsInstantiatorExpression(
-                    getDefaultLParamsClassName(className))
-        )
+class ViewGroupConfiguration
+      internal constructor(
+            val fullyClassName: String,
+            val className: String,
+            val lParamsFullyClassName: String,
+            val lParamsInstantiatorExpression: String
+      )
+{
+    constructor(className: String) : this(
+          className,
+          getClassName(className),
+          getDefaultLParamsClassName(className),
+          getDefaultLParamsInstantiatorExpression(
+                getDefaultLParamsClassName(className))
+    )
 
-        constructor(className: String, lParamsClassName: String) : this(
-              className,
-              getClassName(className),
-              lParamsClassName,
-              getDefaultLParamsInstantiatorExpression(
-                    lParamsClassName)
-        )
+    constructor(className: String, lParamsClassName: String) : this(
+          className,
+          getClassName(className),
+          lParamsClassName,
+          getDefaultLParamsInstantiatorExpression(
+                lParamsClassName)
+    )
 
-        constructor(className: String,
-                    lParamsClassName: String,
-                    lParamsInstantiation: String) : this(
-              className,
-              getClassName(className),
-              lParamsClassName,
-              lParamsInstantiation
-        )
+    constructor(className: String,
+                lParamsClassName: String,
+                lParamsInstantiation: String) : this(
+          className,
+          getClassName(className),
+          lParamsClassName,
+          lParamsInstantiation
+    )
 
-        internal fun getIngredientsHash() = fullyClassName + className +
-                lParamsFullyClassName + lParamsInstantiatorExpression
-    }
+    internal fun getIngredientsHash() = fullyClassName + className +
+          lParamsFullyClassName + lParamsInstantiatorExpression
+}
 
-    class ViewConfiguration
-          internal constructor(
-                val fullyClassName: String,
-                val className: String,
-                val instantiatorExpression: String
-          )
-    {
-        constructor(className: String) : this(
-              className,
-              getClassName(className),
-              getDefaultViewInstantiatorExpression(className)
-        )
+class ViewConfiguration
+      internal constructor(
+            val fullyClassName: String,
+            val className: String,
+            val instantiatorExpression: String
+      )
+{
+    constructor(className: String) : this(
+          className,
+          getClassName(className),
+          getDefaultViewInstantiatorExpression(className)
+    )
 
-        constructor(className: String, instantiation: String) : this(
-              className,
-              getClassName(className),
-              instantiation
-        )
+    constructor(className: String, instantiation: String) : this(
+          className,
+          getClassName(className),
+          instantiation
+    )
 
-        internal fun getIngredientsHash()
-                = fullyClassName + className + instantiatorExpression
-    }
+    internal fun getIngredientsHash()
+          = fullyClassName + className + instantiatorExpression
 }
 
 private fun getClassName(fullyClassName: String)

@@ -7,7 +7,7 @@ class Ko5hianConfigurationBuilder {
    var viewGroups: Any? = null
    var views:      Any? = null
 
-   internal fun build(): Ko5hianConfiguration {
+   fun build(): Ko5hianConfiguration {
       val configuration = Ko5hianConfiguration()
 
       configuration.outPackage = parseOutPackage()
@@ -19,9 +19,7 @@ class Ko5hianConfigurationBuilder {
 
    private fun parseOutPackage() = outPackage as? String ?: "ko5hian"
 
-   private fun parseViewGroupConf()
-         : List<Ko5hianConfiguration.ViewGroupConfiguration>
-   {
+   private fun parseViewGroupConf(): List<ViewGroupConfiguration> {
       val viewGroupConfigurations = viewGroups as? List<*> ?: return emptyList()
 
       return viewGroupConfigurations.mapNotNull {
@@ -46,9 +44,7 @@ class Ko5hianConfigurationBuilder {
       }
    }
 
-   private fun parseViewConf()
-         : List<Ko5hianConfiguration.ViewConfiguration>
-   {
+   private fun parseViewConf(): List<ViewConfiguration> {
       val viewConfigurations = views as? List<*> ?: return emptyList()
 
       return viewConfigurations.mapNotNull {
@@ -63,7 +59,7 @@ class Ko5hianConfigurationBuilder {
          val instantiatorExpression = confMap[it] as? String
                ?: return@mapNotNull ViewConfiguration(fullyClassName)
 
-         Ko5hianConfiguration.ViewConfiguration(fullyClassName, instantiatorExpression)
+         ViewConfiguration(fullyClassName, instantiatorExpression)
       }
    }
 }

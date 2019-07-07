@@ -10,10 +10,17 @@ internal class Ko5hianGenerator(project: Project) {
 
    private val ko5hianSrcDir = File(ko5hianRootDir, "src/")
 
-   private val projectSrcDir =
-         (project.extensions.getByName("android") as BaseAppModuleExtension)
-               .sourceSets.getByName("main").java.srcDirs.firstOrNull()
-               ?: ko5hianSrcDir
+   private val projectSrcDir: File
+
+   init {
+      val android = project.extensions.getByName("android") as BaseAppModuleExtension
+
+      val mainSrcSets = android.sourceSets.getByName("main")
+
+      projectSrcDir = mainSrcSets.java.srcDirs.firstOrNull() ?: ko5hianSrcDir
+
+      mainSrcSets.java.setSrcDirs(mainSrcSets.java.srcDirs + ko5hianSrcDir)
+   }
 
    fun generate(configurations: List<Ko5hianConfiguration>) {
       val hash = configurations.joinToString(separator = "") { it.getIngredientsHash() }
