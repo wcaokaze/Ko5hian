@@ -23,7 +23,8 @@ class RuntimeFileGenerator(outDir: File) {
                  ::LayoutParamsExtensionGenerator,
                  ::ViewExtensionGenerator,
                  ::EditTextExensionGenerator,
-                 ::ImageViewExtensionGenerator)
+                 ::ImageViewExtensionGenerator,
+                 ::LinearLayoutExtensionGenerator)
             .map { it() }
             .forEach { it.generate(packageDir) }
    }

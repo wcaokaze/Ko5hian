@@ -15,6 +15,7 @@ val androidViews = listOf(
       ViewConfiguration("android.widget.ImageButton"),
       ViewConfiguration("android.widget.ImageSwitcher"),
       ViewConfiguration("android.widget.ImageView"),
+      ViewConfiguration("android.widget.LinearLayout"),
       ViewConfiguration("android.webkit.WebView")
 )
 
@@ -23,5 +24,6 @@ val androidViewGroups = listOf(
       ViewGroupConfiguration("android.widget.HorizontalScrollView",
             lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
       ViewGroupConfiguration("android.widget.ImageSwitcher",
-            lParamsClassName = "android.widget.FrameLayout.LayoutParams")
+            lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
+      ViewGroupConfiguration("android.widget.LinearLayout")
 )
