@@ -4,11 +4,19 @@ class Ko5hianConfigurator {
     def configurations = []
 
     def outputConfig(Closure configAction) {
-        def configuration = new Ko5hianConfiguration()
+        def configuration = new Ko5hianConfigurationBuilder()
 
         configAction.delegate = configuration
         configAction()
 
-        configurations << configuration
+        configurations << configuration.build()
+    }
+
+    def getAndroidViews() {
+        return AndroidViewsKt.androidViews
+    }
+
+    def getAndroidViewGroups() {
+        return AndroidViewsKt.androidViewGroups
     }
 }

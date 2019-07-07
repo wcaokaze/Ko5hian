@@ -1,102 +1,48 @@
 package com.wcaokaze.ko5hian
 
 import java.io.*
+import org.gradle.api.*
+import com.android.build.gradle.internal.dsl.*
 
-class Ko5hianGenerator(private val outDir: File,
-                       private val conf: ParsedConfiguration)
-{
-   companion object {
-      val KO5HIAN_VERSION = "1.2.1"
-      val FILE_HEADER = "// Ko5hian Version: $KO5HIAN_VERSION"
+internal class Ko5hianGenerator(project: Project) {
+   private val ko5hianRootDir =
+         project.file("${project.buildDir}/generated/source/ko5hian/")
+
+   private val ko5hianSrcDir = File(ko5hianRootDir, "src/")
+
+   private val projectSrcDir: File
+
+   init {
+      val android = project.extensions.getByName("android") as BaseAppModuleExtension
+
+      val mainSrcSets = android.sourceSets.getByName("main")
+
+      projectSrcDir = mainSrcSets.java.srcDirs.firstOrNull() ?: ko5hianSrcDir
+
+      mainSrcSets.java.setSrcDirs(mainSrcSets.java.srcDirs + ko5hianSrcDir)
    }
 
-   fun writeKo5hian() {
-      val packageDir = File(outDir, conf.outPackage.replace(".", File.separator))
+   fun generate(configurations: List<Ko5hianConfiguration>) {
+      val hash = configurations.joinToString(separator = "") { it.getIngredientsHash() }
+      val hashFile = File(ko5hianRootDir, "hash")
 
-      packageDir.mkdirs()
+      try {
+         if (hashFile.readText() == hash) { return }
+      } catch (e: IOException) {
+         // ignore
+      }
 
-      for (view in conf.views) {
-         val functionName = getFunctionNameFor(view.className)
-         val file = File(packageDir, "$functionName.kt")
+      ko5hianSrcDir.deleteRecursively()
+      ko5hianSrcDir.mkdirs()
 
-         file.writer().use {
-            it.write("""
-               $FILE_HEADER
-               package ${conf.outPackage}
+      hashFile.writeText(hash)
 
-            """.trimIndent())
+      val runtimeFileGenerator = RuntimeFileGenerator(projectSrcDir)
+      runtimeFileGenerator.generate()
 
-            if (conf.outPackage != "ko5hian") {
-               it.write("""
-
-                  import ko5hian.Ko5hianRoot
-                  import ko5hian.Ko5hianViewHolder
-                  import ko5hian.MATCH_PARENT
-                  import ko5hian.WRAP_CONTENT
-
-               """.trimIndent())
-            }
-
-            it.write("""
-
-               import kotlin.contracts.*
-
-               @ExperimentalContracts
-               inline fun Ko5hianRoot.`$functionName`(
-                     builder: Ko5hianViewHolder<${view.fullyClassName},
-                           android.view.ViewGroup.LayoutParams>.() -> Unit
-               ): ${view.fullyClassName} {
-                  contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
-
-                  val v = ${view.instantiatorExpression}
-                  val l = android.view.ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-
-                  v.layoutParams = l
-
-                  val vh = Ko5hianViewHolder(context, v, l)
-
-                  vh.builder()
-                  return v
-               }
-
-            """.trimIndent())
-
-            for (viewGroup in conf.viewGroups) {
-               it.write("""
-
-                  @ExperimentalContracts
-                  @JvmName("${functionName}For${viewGroup.className}")
-                  inline fun Ko5hianViewHolder<${viewGroup.fullyClassName}, *>.`$functionName`(
-                        builder: Ko5hianViewHolder<${view.fullyClassName},
-                              ${viewGroup.lParamsClassName}>.() -> Unit
-                  ): ${view.fullyClassName} {
-                     contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
-
-                     val v = ${view.instantiatorExpression}
-                     val l = ${viewGroup.lParamsInstantiatorExpression}
-                     v.layoutParams = l
-                     view.addView(v)
-                     val vh = createChild(v, l)
-                     vh.builder()
-                     return v
-                  }
-
-               """.trimIndent())
-            }
-         }
+      for (config in configurations) {
+         val generator = Ko5hianDslGenerator(ko5hianSrcDir, config)
+         generator.writeKo5hian()
       }
    }
-
-    /**
-     * HOGEView -> hogeView
-     */
-    private fun getFunctionNameFor(className: String): String {
-        val i = className.indexOfFirst { !it.isUpperCase() }
-
-        return when {
-            i  < 1 -> className
-            i == 1 -> className.first()            .toLowerCase() + className.drop(1)
-            else   -> className.substring(0, i - 1).toLowerCase() + className.substring(i - 1)
-        }
-    }
 }
