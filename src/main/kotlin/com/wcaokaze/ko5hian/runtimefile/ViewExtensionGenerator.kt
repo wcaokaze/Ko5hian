@@ -18,6 +18,10 @@ internal class ViewExtensionGenerator : RuntimeFileGenerator {
             @Deprecated(message = "The getter always throws an Exception", level = DeprecationLevel.ERROR)
             get() = throw UnsupportedOperationException()
             set(value) = setBackgroundColor(value)
+
+         val Ko5hianViewHolder<*, *>.VISIBLE   get() = View.VISIBLE
+         val Ko5hianViewHolder<*, *>.INVISIBLE get() = View.INVISIBLE
+         val Ko5hianViewHolder<*, *>.GONE      get() = View.GONE
       """.trimIndent())
    }
 }
