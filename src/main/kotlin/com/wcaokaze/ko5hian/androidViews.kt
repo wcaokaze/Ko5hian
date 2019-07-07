@@ -11,9 +11,17 @@ val androidViews = listOf(
       ViewConfiguration("android.widget.DatePicker"),
       ViewConfiguration("android.widget.EditText"),
       ViewConfiguration("android.widget.FrameLayout"),
+      ViewConfiguration("android.widget.HorizontalScrollView"),
+      ViewConfiguration("android.widget.ImageButton"),
+      ViewConfiguration("android.widget.ImageSwitcher"),
+      ViewConfiguration("android.widget.ImageView"),
       ViewConfiguration("android.webkit.WebView")
 )
 
 val androidViewGroups = listOf(
-      ViewGroupConfiguration("android.widget.FrameLayout")
+      ViewGroupConfiguration("android.widget.FrameLayout"),
+      ViewGroupConfiguration("android.widget.HorizontalScrollView",
+            lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
+      ViewGroupConfiguration("android.widget.ImageSwitcher",
+            lParamsClassName = "android.widget.FrameLayout.LayoutParams")
 )
