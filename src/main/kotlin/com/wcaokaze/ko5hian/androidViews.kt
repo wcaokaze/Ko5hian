@@ -9,5 +9,6 @@ val androidViews = listOf(
       ViewConfiguration("android.widget.Chronometer"),
       ViewConfiguration("android.widget.CompoundButton"),
       ViewConfiguration("android.widget.DatePicker"),
+      ViewConfiguration("android.widget.EditText"),
       ViewConfiguration("android.webkit.WebView")
 )
