@@ -10,5 +10,10 @@ val androidViews = listOf(
       ViewConfiguration("android.widget.CompoundButton"),
       ViewConfiguration("android.widget.DatePicker"),
       ViewConfiguration("android.widget.EditText"),
+      ViewConfiguration("android.widget.FrameLayout"),
       ViewConfiguration("android.webkit.WebView")
+)
+
+val androidViewGroups = listOf(
+      ViewGroupConfiguration("android.widget.FrameLayout")
 )
