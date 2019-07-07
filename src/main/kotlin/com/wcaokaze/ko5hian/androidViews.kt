@@ -26,6 +26,21 @@ val androidViews = listOf(
       ViewConfiguration("android.widget.RadioGroup"),
       ViewConfiguration("android.widget.RatingBar"),
       ViewConfiguration("android.widget.RelativeLayout"),
+      ViewConfiguration("android.widget.SeekBar"),
+      ViewConfiguration("android.widget.Space"),
+      ViewConfiguration("android.widget.Switch"),
+      ViewConfiguration("android.widget.TabHost"),
+      ViewConfiguration("android.widget.TableLayout"),
+      ViewConfiguration("android.widget.TableRow"),
+      ViewConfiguration("android.widget.TabWidget"),
+      ViewConfiguration("android.widget.TextSwitcher"),
+      ViewConfiguration("android.widget.TextView"),
+      ViewConfiguration("android.widget.TimePicker"),
+      ViewConfiguration("android.widget.ToggleButton"),
+      ViewConfiguration("android.widget.Toolbar"),
+      ViewConfiguration("android.widget.VideoView"),
+      ViewConfiguration("android.widget.ViewFlipper"),
+      ViewConfiguration("android.widget.ViewSwitcher"),
       ViewConfiguration("android.webkit.WebView")
 )
 
@@ -37,5 +52,18 @@ val androidViewGroups = listOf(
             lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
       ViewGroupConfiguration("android.widget.LinearLayout"),
       ViewGroupConfiguration("android.widget.RadioGroup"),
-      ViewGroupConfiguration("android.widget.RelativeLayout")
+      ViewGroupConfiguration("android.widget.RelativeLayout"),
+      ViewGroupConfiguration("android.widget.TabHost",
+            lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
+      ViewGroupConfiguration("android.widget.TableLayout"),
+      ViewGroupConfiguration("android.widget.TableRow"),
+      ViewGroupConfiguration("android.widget.TabWidget",
+            lParamsClassName = "android.widget.LinearLayout.LayoutParams"),
+      ViewGroupConfiguration("android.widget.TextSwitcher",
+            lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
+      ViewGroupConfiguration("android.widget.Toolbar"),
+      ViewGroupConfiguration("android.widget.ViewFlipper",
+            lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
+      ViewGroupConfiguration("android.widget.ViewSwitcher",
+            lParamsClassName = "android.widget.FrameLayout.LayoutParams")
 )
