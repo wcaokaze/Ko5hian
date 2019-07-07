@@ -21,6 +21,7 @@ class RuntimeFileGenerator(outDir: File) {
                  ::Ko5hianMarkerGenerator,
                  ::Ko5hianRuntimeGenerator,
                  ::LayoutParamsExtensionGenerator,
+                 ::ViewExtensionGenerator,
                  ::ImageViewExtensionGenerator)
             .map { it() }
             .forEach { it.generate(packageDir) }
