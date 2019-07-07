@@ -16,6 +16,15 @@ val androidViews = listOf(
       ViewConfiguration("android.widget.ImageSwitcher"),
       ViewConfiguration("android.widget.ImageView"),
       ViewConfiguration("android.widget.LinearLayout"),
+      ViewConfiguration("android.widget.MediaController"),
+      ViewConfiguration("android.widget.MultiAutoCompleteTextView"),
+      ViewConfiguration("android.widget.NumberPicker"),
+      ViewConfiguration("android.widget.OverScroller"),
+      ViewConfiguration("android.widget.ProgressBar"),
+      ViewConfiguration("android.widget.QuickContactBadge"),
+      ViewConfiguration("android.widget.RadioButton"),
+      ViewConfiguration("android.widget.RadioGroup"),
+      ViewConfiguration("android.widget.RatingBar"),
       ViewConfiguration("android.webkit.WebView")
 )
 
@@ -25,5 +34,6 @@ val androidViewGroups = listOf(
             lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
       ViewGroupConfiguration("android.widget.ImageSwitcher",
             lParamsClassName = "android.widget.FrameLayout.LayoutParams"),
-      ViewGroupConfiguration("android.widget.LinearLayout")
+      ViewGroupConfiguration("android.widget.LinearLayout"),
+      ViewGroupConfiguration("android.widget.RadioGroup")
 )
