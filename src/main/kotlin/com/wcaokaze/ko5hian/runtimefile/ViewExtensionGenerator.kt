@@ -22,6 +22,9 @@ internal class ViewExtensionGenerator : RuntimeFileGenerator {
          val Ko5hianViewHolder<*, *>.VISIBLE   get() = View.VISIBLE
          val Ko5hianViewHolder<*, *>.INVISIBLE get() = View.INVISIBLE
          val Ko5hianViewHolder<*, *>.GONE      get() = View.GONE
+
+         val Ko5hian<*, *>.LAYOUT_DIRECTION_LTR get() = View.LAYOUT_DIRECTION_LTR
+         val Ko5hian<*, *>.LAYOUT_DIRECTION_RTL get() = View.LAYOUT_DIRECTION_RTL
       """.trimIndent())
    }
 }
