@@ -139,6 +139,22 @@ internal class Ko5hianRuntimeGenerator : RuntimeFileGenerator {
 
             vh.builder()
          }
+
+         @ExperimentalContracts
+         inline fun <reified V : View> RecyclerView.ViewHolder
+               .ko5hian(builder: Ko5hian<V, RecyclerView.LayoutParams>.() -> Unit): V
+         {
+            contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
+
+            val view = itemView as V
+            val layout = RecyclerView.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+
+            val vh = Ko5hian(view.context, view, layout)
+
+            vh.builder()
+
+            return view
+         }
       """.trimIndent())
    }
 }
