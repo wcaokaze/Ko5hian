@@ -13,7 +13,7 @@ class Ko5hianConfiguration {
         views = viewConfiguration.toList()
     }
 
-    internal fun getIngredientsHash() = buildString {
+    fun getIngredientsHash() = buildString {
         append(Ko5hianDslGenerator.KO5HIAN_VERSION)
         append(outPackage)
 
@@ -60,7 +60,7 @@ class ViewGroupConfiguration
           lParamsInstantiation
     )
 
-    internal fun getIngredientsHash() = fullyClassName + className +
+    fun getIngredientsHash() = fullyClassName + className +
           lParamsFullyClassName + lParamsInstantiatorExpression
 }
 
@@ -83,7 +83,7 @@ class ViewConfiguration
           instantiation
     )
 
-    internal fun getIngredientsHash()
+    fun getIngredientsHash()
           = fullyClassName + className + instantiatorExpression
 }
 
