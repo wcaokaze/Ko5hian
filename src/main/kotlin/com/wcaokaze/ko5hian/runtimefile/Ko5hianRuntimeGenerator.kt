@@ -12,6 +12,7 @@ internal class Ko5hianRuntimeGenerator : RuntimeFileGenerator {
          import android.content.Context
          import android.view.View
          import android.view.ViewGroup
+         import androidx.recyclerview.widget.RecyclerView
 
          import kotlin.contracts.*
 
@@ -138,6 +139,22 @@ internal class Ko5hianRuntimeGenerator : RuntimeFileGenerator {
             val vh = Ko5hian(view.context, view as V, view.layoutParams as L)
 
             vh.builder()
+         }
+
+         @ExperimentalContracts
+         inline fun <reified V : View> RecyclerView.ViewHolder
+               .ko5hian(builder: Ko5hian<V, RecyclerView.LayoutParams>.() -> Unit): V
+         {
+            contract { callsInPlace(builder, InvocationKind.EXACTLY_ONCE) }
+
+            val view = itemView as V
+            val layout = RecyclerView.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+
+            val vh = Ko5hian(view.context, view, layout)
+
+            vh.builder()
+
+            return view
          }
       """.trimIndent())
    }
