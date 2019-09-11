@@ -135,3 +135,120 @@ ko5hian(context) {
 }
 ```
 
+
+KSS
+--------------------------------------------------------------------------------
+
+Sometime we have so many boring view parameters.
+```kotlin
+val view = ko5hian(context) {
+   linearLayout {
+      layout.width  = MATCH_PARENT
+      layout.height = WRAP_CONTENT
+      view.orientation = HORIZONTAL
+
+      textView {
+         layout.width  = MATCH_PARENT
+         layout.height = WRAP_CONTENT
+         layout.marginStart = 16.dip
+         view.textColor = 0x313131.opaque
+         view.textSizeSp = 16
+         view.maxLines = 1
+         view.ellipsize = TruncateAt.END
+         view.text = user.name // This is the main subject but covered with too many noises
+      }
+
+      imageView {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+         view.image = drawable(R.drawable.ic_locked)
+         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
+      }
+   }
+}
+```
+
+Use KSS (Ko5hian Style Sheet).
+
+```kotlin
+// concentrate construction views
+val kss = kss {
+   linearLayout("username-container") {
+      layout.width  = MATCH_PARENT
+      layout.height = WRAP_CONTENT
+      view.orientation = HORIZONTAL
+
+      textView("username") {
+         layout.width  = MATCH_PARENT
+         layout.height = WRAP_CONTENT
+         layout.marginStart = 16.dip
+         view.textColor = 0x313131.opaque
+         view.textSizeSp = 16
+         view.maxLines = 1
+         view.ellipsize = TruncateAt.END
+      }
+
+      imageView("protected-icon") {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+         view.image = drawable(R.drawable.ic_protected)
+      }
+   }
+}
+
+// concentrate injection main subject
+val view = ko5hian(context) {
+   linearLayout("username-container") {
+      style = kss
+
+      textView("username") {
+         view.text = user.name
+      }
+
+      imageView("lock-icon") {
+         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
+      }
+   }
+}
+```
+
+We can omit style names.
+```kotlin
+val kss = kss {
+   linearLayout {
+      layout.width  = MATCH_PARENT
+      layout.height = WRAP_CONTENT
+      view.orientation = HORIZONTAL
+
+      textView {
+         layout.width  = MATCH_PARENT
+         layout.height = WRAP_CONTENT
+         layout.marginStart = 16.dip
+         view.textColor = 0x313131.opaque
+         view.textSizeSp = 16
+         view.maxLines = 1
+         view.ellipsize = TruncateAt.END
+      }
+
+      imageView {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+         view.image = drawable(R.drawable.ic_protected)
+      }
+   }
+}
+
+val view = ko5hian(context) {
+   linearLayout {
+      style = kss
+
+      textView {
+         view.text = user.name
+      }
+
+      imageView {
+         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
+      }
+   }
+}
+```
