@@ -1,5 +1,6 @@
 package ko5hian
 
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 
@@ -7,6 +8,7 @@ interface Ko5hianBuilder<out V : View, out L : ViewGroup.LayoutParams> {
    val view: V
    val layout: L
 
+   val context: Context
    val displayDensity: Float
 
    val Int.dip: Int get() {

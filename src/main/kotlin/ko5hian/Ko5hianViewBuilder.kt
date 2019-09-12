@@ -6,7 +6,7 @@ import android.view.ViewGroup
 
 @Ko5hianMarker
 class Ko5hianViewBuilder<out V, out L>(
-      val context: Context,
+      override val context: Context,
       override val view: V,
       override val layout: L,
       override val displayDensity: Float
