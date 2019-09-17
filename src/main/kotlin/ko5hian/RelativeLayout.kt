@@ -1,7 +1,18 @@
 @file:Suppress("UNUSED")
 package ko5hian
 
+import android.view.ViewGroup
 import android.widget.RelativeLayout
+
+inline fun <L : ViewGroup.LayoutParams>
+      Ko5hianViewParent<L>.relativeLayout(
+            builderAction: Ko5hianViewGroupBuilder<RelativeLayout, RelativeLayout.LayoutParams, L>.() -> Unit
+      )
+      = addView(
+            ::RelativeLayout,
+            { RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+            builderAction
+      )
 
 val Ko5hianBuilder<RelativeLayout, *>.TRUE                get() = RelativeLayout.TRUE
 val Ko5hianBuilder<RelativeLayout, *>.ABOVE               get() = RelativeLayout.ABOVE

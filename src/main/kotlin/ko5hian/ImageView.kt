@@ -1,9 +1,16 @@
 @file:Suppress("UNUSED")
 package ko5hian
 
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+
+inline fun <L : ViewGroup.LayoutParams>
+      Ko5hianViewParent<L>.imageView(
+            builderAction: Ko5hianViewBuilder<ImageView, L>.() -> Unit
+      )
+      = addView(::ImageView, builderAction)
 
 val Ko5hianBuilder<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
 val Ko5hianBuilder<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
