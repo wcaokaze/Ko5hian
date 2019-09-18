@@ -15,25 +15,19 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'groovy'
 apply plugin: 'kotlin'
 apply plugin: 'maven'
 
 repositories {
     mavenCentral()
     google()
-    jcenter()
 }
 
 dependencies {
-    implementation gradleApi()
-    implementation localGroovy()
-
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
     compileOnly 'com.google.android:android:4.1.1.4'
 
     compileClasspath 'com.android.tools.build:gradle:3.4.2'
-    compileClasspath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41'
 }
 
 def localRepo = new File(rootDir, 'repository')
@@ -50,8 +44,3 @@ uploadArchives {
 }
 
 jar.baseName = 'ko5hian'
-
-compileKotlin.dependsOn -= 'compileJava'
-compileGroovy.dependsOn compileKotlin
-compileGroovy.classpath += files(compileKotlin.destinationDir)
-classes.dependsOn compileGroovy
