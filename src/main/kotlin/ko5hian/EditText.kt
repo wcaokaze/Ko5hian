@@ -5,6 +5,7 @@ import android.widget.EditText
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.editText(
+            target: EditText? = null,
             builderAction: Ko5hianViewBuilder<EditText, L>.() -> Unit
       )
-      = addView(::EditText, builderAction)
+      = addView(target, ::EditText, builderAction)

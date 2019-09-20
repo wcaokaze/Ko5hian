@@ -5,6 +5,7 @@ import android.widget.CheckBox
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.checkBox(
+            target: CheckBox? = null,
             builderAction: Ko5hianViewBuilder<CheckBox, L>.() -> Unit
       )
-      = addView(::CheckBox, builderAction)
+      = addView(target, ::CheckBox, builderAction)

@@ -6,9 +6,10 @@ import android.view.ViewGroup
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.view(
+            target: View? = null,
             builderAction: Ko5hianViewBuilder<View, L>.() -> Unit
       )
-      = addView(::View, builderAction)
+      = addView(target, ::View, builderAction)
 
 var View.backgroundColor: Int
    @Deprecated(message = "The getter always throws an Exception", level = DeprecationLevel.ERROR)

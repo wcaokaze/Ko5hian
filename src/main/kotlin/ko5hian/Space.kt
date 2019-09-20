@@ -5,6 +5,7 @@ import android.widget.Space
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.space(
+            target: Space? = null,
             builderAction: Ko5hianViewBuilder<Space, L>.() -> Unit
       )
-      = addView(::Space, builderAction)
+      = addView(target, ::Space, builderAction)

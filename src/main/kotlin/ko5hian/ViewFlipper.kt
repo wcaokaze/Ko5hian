@@ -6,9 +6,11 @@ import android.widget.ViewFlipper
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.viewFlipper(
+            target: ViewFlipper? = null,
             builderAction: Ko5hianViewGroupBuilder<ViewFlipper, FrameLayout.LayoutParams, L>.() -> Unit
       )
       = addView(
+            target,
             ::ViewFlipper,
             { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
             builderAction

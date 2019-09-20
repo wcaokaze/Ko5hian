@@ -5,6 +5,7 @@ import android.widget.RatingBar
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.ratingBar(
+            target: RatingBar? = null,
             builderAction: Ko5hianViewBuilder<RatingBar, L>.() -> Unit
       )
-      = addView(::RatingBar, builderAction)
+      = addView(target, ::RatingBar, builderAction)

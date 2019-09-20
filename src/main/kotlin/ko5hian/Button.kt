@@ -5,6 +5,7 @@ import android.widget.Button
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.button(
+            target: Button? = null,
             builderAction: Ko5hianViewBuilder<Button, L>.() -> Unit
       )
-      = addView(::Button, builderAction)
+      = addView(target, ::Button, builderAction)

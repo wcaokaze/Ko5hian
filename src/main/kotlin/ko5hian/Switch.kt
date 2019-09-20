@@ -5,6 +5,7 @@ import android.widget.Switch
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.switch(
+            target: Switch? = null,
             builderAction: Ko5hianViewBuilder<Switch, L>.() -> Unit
       )
-      = addView(::Switch, builderAction)
+      = addView(target, ::Switch, builderAction)

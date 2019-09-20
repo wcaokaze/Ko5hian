@@ -5,6 +5,7 @@ import android.widget.QuickContactBadge
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.quickContactBadge(
+            target: QuickContactBadge? = null,
             builderAction: Ko5hianViewBuilder<QuickContactBadge, L>.() -> Unit
       )
-      = addView(::QuickContactBadge, builderAction)
+      = addView(target, ::QuickContactBadge, builderAction)

@@ -5,6 +5,7 @@ import android.widget.DatePicker
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.datePicker(
+            target: DatePicker? = null,
             builderAction: Ko5hianViewBuilder<DatePicker, L>.() -> Unit
       )
-      = addView(::DatePicker, builderAction)
+      = addView(target, ::DatePicker, builderAction)

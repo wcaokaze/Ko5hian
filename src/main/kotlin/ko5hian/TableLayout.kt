@@ -5,9 +5,11 @@ import android.widget.TableLayout
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.tableLayout(
+            target: TableLayout? = null,
             builderAction: Ko5hianViewGroupBuilder<TableLayout, TableLayout.LayoutParams, L>.() -> Unit
       )
       = addView(
+            target,
             ::TableLayout,
             { TableLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
             builderAction

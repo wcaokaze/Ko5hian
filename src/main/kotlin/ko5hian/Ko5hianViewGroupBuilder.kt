@@ -23,6 +23,7 @@ class Ko5hianViewGroupBuilder<out V, out CL, out L>(
 }
 
 inline fun <V, CL, L> Ko5hianViewParent<L>.addView(
+      target: V?,
       viewConstructor: (Context) -> V,
       noinline childLayoutParamsCreator: () -> CL,
       builderAction: Ko5hianViewGroupBuilder<V, CL, L>.() -> Unit
@@ -31,7 +32,7 @@ inline fun <V, CL, L> Ko5hianViewParent<L>.addView(
             CL : ViewGroup.LayoutParams,
             L : ViewGroup.LayoutParams
 {
-   val view = viewConstructor(context)
+   val view = target ?: viewConstructor(context)
    val layout = createChildLayoutParams()
 
    val builder = Ko5hianViewGroupBuilder(

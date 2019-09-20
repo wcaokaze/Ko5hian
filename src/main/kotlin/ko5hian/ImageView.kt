@@ -8,9 +8,10 @@ import android.graphics.drawable.Drawable
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.imageView(
+            target: ImageView? = null,
             builderAction: Ko5hianViewBuilder<ImageView, L>.() -> Unit
       )
-      = addView(::ImageView, builderAction)
+      = addView(target, ::ImageView, builderAction)
 
 val Ko5hianBuilder<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
 val Ko5hianBuilder<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP

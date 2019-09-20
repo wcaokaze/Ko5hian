@@ -5,6 +5,7 @@ import android.widget.SeekBar
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.seekBar(
+            target: SeekBar? = null,
             builderAction: Ko5hianViewBuilder<SeekBar, L>.() -> Unit
       )
-      = addView(::SeekBar, builderAction)
+      = addView(target, ::SeekBar, builderAction)

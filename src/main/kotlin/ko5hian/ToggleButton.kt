@@ -5,6 +5,7 @@ import android.widget.ToggleButton
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.toggleButton(
+            target: ToggleButton? = null,
             builderAction: Ko5hianViewBuilder<ToggleButton, L>.() -> Unit
       )
-      = addView(::ToggleButton, builderAction)
+      = addView(target, ::ToggleButton, builderAction)

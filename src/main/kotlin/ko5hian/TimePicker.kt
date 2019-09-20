@@ -5,6 +5,7 @@ import android.widget.TimePicker
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.timePicker(
+            target: TimePicker? = null,
             builderAction: Ko5hianViewBuilder<TimePicker, L>.() -> Unit
       )
-      = addView(::TimePicker, builderAction)
+      = addView(target, ::TimePicker, builderAction)

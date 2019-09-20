@@ -10,9 +10,10 @@ import android.util.TypedValue
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.textView(
+            target: TextView? = null,
             builderAction: Ko5hianViewBuilder<TextView, L>.() -> Unit
       )
-      = addView(::TextView, builderAction)
+      = addView(target, ::TextView, builderAction)
 
 var TextView.textColor: Int
    @Deprecated(message = "The getter always throws an Exception", level = DeprecationLevel.ERROR)

@@ -5,6 +5,7 @@ import android.widget.Chronometer
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.chronometer(
+            target: Chronometer? = null,
             builderAction: Ko5hianViewBuilder<Chronometer, L>.() -> Unit
       )
-      = addView(::Chronometer, builderAction)
+      = addView(target, ::Chronometer, builderAction)

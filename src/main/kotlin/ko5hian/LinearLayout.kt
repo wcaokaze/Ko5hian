@@ -6,9 +6,11 @@ import android.widget.LinearLayout
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.linearLayout(
+            target: LinearLayout? = null,
             builderAction: Ko5hianViewGroupBuilder<LinearLayout, LinearLayout.LayoutParams, L>.() -> Unit
       )
       = addView(
+            target,
             ::LinearLayout,
             { LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
             builderAction

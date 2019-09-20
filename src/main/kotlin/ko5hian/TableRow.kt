@@ -5,6 +5,7 @@ import android.widget.TableRow
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.tableRow(
+            target: TableRow? = null,
             builderAction: Ko5hianViewBuilder<TableRow, L>.() -> Unit
       )
-      = addView(::TableRow, builderAction)
+      = addView(target, ::TableRow, builderAction)

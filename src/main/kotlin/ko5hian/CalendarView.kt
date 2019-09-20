@@ -5,6 +5,7 @@ import android.widget.CalendarView
 
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.calendarView(
+            target: CalendarView? = null,
             builderAction: Ko5hianViewBuilder<CalendarView, L>.() -> Unit
       )
-      = addView(::CalendarView, builderAction)
+      = addView(target, ::CalendarView, builderAction)
