@@ -3,6 +3,8 @@ package ko5hian
 import android.content.*
 import android.view.*
 
+import kotlin.contracts.*
+
 class Ko5hianRootViewSupplier(
       override val context: Context
 ) : Ko5hianViewParent<ViewGroup.LayoutParams> {
@@ -16,10 +18,13 @@ class Ko5hianRootViewSupplier(
    }
 }
 
+@ExperimentalContracts
 inline fun <R> ko5hian(
       context: Context,
       builderAction: Ko5hianRootViewSupplier.() -> R
 ): R {
+   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+
    val viewSupplier = Ko5hianRootViewSupplier(context)
    return builderAction(viewSupplier)
 }

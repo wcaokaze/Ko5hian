@@ -8,12 +8,19 @@ import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.TypedValue
 
+import kotlin.contracts.*
+
+@ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.textView(
             target: TextView? = null,
             builderAction: Ko5hianViewBuilder<TextView, L>.() -> Unit
-      )
-      = addView(target, ::TextView, builderAction)
+      ): TextView
+{
+   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+
+   return addView(target, ::TextView, builderAction)
+}
 
 var TextView.textColor: Int
    @Deprecated(message = "The getter always throws an Exception", level = DeprecationLevel.ERROR)

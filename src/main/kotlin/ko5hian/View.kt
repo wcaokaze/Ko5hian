@@ -4,12 +4,19 @@ package ko5hian
 import android.view.View
 import android.view.ViewGroup
 
+import kotlin.contracts.*
+
+@ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.view(
             target: View? = null,
             builderAction: Ko5hianViewBuilder<View, L>.() -> Unit
-      )
-      = addView(target, ::View, builderAction)
+      ): View
+{
+   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+
+   return addView(target, ::View, builderAction)
+}
 
 var View.backgroundColor: Int
    @Deprecated(message = "The getter always throws an Exception", level = DeprecationLevel.ERROR)

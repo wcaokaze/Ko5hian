@@ -4,17 +4,24 @@ package ko5hian
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 
+import kotlin.contracts.*
+
+@ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.relativeLayout(
             target: RelativeLayout? = null,
             builderAction: Ko5hianViewGroupBuilder<RelativeLayout, RelativeLayout.LayoutParams, L>.() -> Unit
-      )
-      = addView(
-            target,
-            ::RelativeLayout,
-            { RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
-            builderAction
-      )
+      ): RelativeLayout
+{
+   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+
+   return addView(
+         target,
+         ::RelativeLayout,
+         { RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         builderAction
+   )
+}
 
 val Ko5hianBuilder<RelativeLayout, *>.TRUE                get() = RelativeLayout.TRUE
 val Ko5hianBuilder<RelativeLayout, *>.ABOVE               get() = RelativeLayout.ABOVE
