@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.radioButton(
-            target: RadioButton? = null,
+            reuse: RadioButton = RadioButton(context),
             builderAction: Ko5hianViewBuilder<RadioButton, L>.() -> Unit
       ): RadioButton
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::RadioButton, builderAction)
+   return addView(reuse, builderAction)
 }

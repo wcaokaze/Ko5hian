@@ -9,15 +9,14 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.viewFlipper(
-            target: ViewFlipper? = null,
+            reuse: ViewFlipper = ViewFlipper(context),
             builderAction: Ko5hianViewGroupBuilder<ViewFlipper, FrameLayout.LayoutParams, L>.() -> Unit
       ): ViewFlipper
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         target,
-         ::ViewFlipper,
+         reuse,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
          builderAction
    )

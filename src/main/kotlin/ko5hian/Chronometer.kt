@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.chronometer(
-            target: Chronometer? = null,
+            reuse: Chronometer = Chronometer(context),
             builderAction: Ko5hianViewBuilder<Chronometer, L>.() -> Unit
       ): Chronometer
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::Chronometer, builderAction)
+   return addView(reuse, builderAction)
 }

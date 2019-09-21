@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.mediaController(
-            target: MediaController? = null,
+            reuse: MediaController = MediaController(context),
             builderAction: Ko5hianViewBuilder<MediaController, L>.() -> Unit
       ): MediaController
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::MediaController, builderAction)
+   return addView(reuse, builderAction)
 }

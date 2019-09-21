@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.multiAutoCompleteTextView(
-            target: MultiAutoCompleteTextView? = null,
+            reuse: MultiAutoCompleteTextView = MultiAutoCompleteTextView(context),
             builderAction: Ko5hianViewBuilder<MultiAutoCompleteTextView, L>.() -> Unit
       ): MultiAutoCompleteTextView
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::MultiAutoCompleteTextView, builderAction)
+   return addView(reuse, builderAction)
 }

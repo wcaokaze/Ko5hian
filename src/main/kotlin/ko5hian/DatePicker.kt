@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.datePicker(
-            target: DatePicker? = null,
+            reuse: DatePicker = DatePicker(context),
             builderAction: Ko5hianViewBuilder<DatePicker, L>.() -> Unit
       ): DatePicker
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::DatePicker, builderAction)
+   return addView(reuse, builderAction)
 }

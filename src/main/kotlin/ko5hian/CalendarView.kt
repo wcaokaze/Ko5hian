@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.calendarView(
-            target: CalendarView? = null,
+            reuse: CalendarView = CalendarView(context),
             builderAction: Ko5hianViewBuilder<CalendarView, L>.() -> Unit
       ): CalendarView
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::CalendarView, builderAction)
+   return addView(reuse, builderAction)
 }

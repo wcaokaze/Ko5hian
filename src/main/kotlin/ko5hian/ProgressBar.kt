@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.progressBar(
-            target: ProgressBar? = null,
+            reuse: ProgressBar = ProgressBar(context),
             builderAction: Ko5hianViewBuilder<ProgressBar, L>.() -> Unit
       ): ProgressBar
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::ProgressBar, builderAction)
+   return addView(reuse, builderAction)
 }

@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.checkBox(
-            target: CheckBox? = null,
+            reuse: CheckBox = CheckBox(context),
             builderAction: Ko5hianViewBuilder<CheckBox, L>.() -> Unit
       ): CheckBox
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::CheckBox, builderAction)
+   return addView(reuse, builderAction)
 }

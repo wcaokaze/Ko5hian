@@ -9,15 +9,14 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.viewSwitcher(
-            target: ViewSwitcher? = null,
+            reuse: ViewSwitcher = ViewSwitcher(context),
             builderAction: Ko5hianViewGroupBuilder<ViewSwitcher, FrameLayout.LayoutParams, L>.() -> Unit
       ): ViewSwitcher
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         target,
-         ::ViewSwitcher,
+         reuse,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
          builderAction
    )

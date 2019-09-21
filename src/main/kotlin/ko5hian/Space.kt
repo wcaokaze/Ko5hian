@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.space(
-            target: Space? = null,
+            reuse: Space = Space(context),
             builderAction: Ko5hianViewBuilder<Space, L>.() -> Unit
       ): Space
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::Space, builderAction)
+   return addView(reuse, builderAction)
 }

@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.webView(
-            target: WebView? = null,
+            reuse: WebView = WebView(context),
             builderAction: Ko5hianViewBuilder<WebView, L>.() -> Unit
       ): WebView
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::WebView, builderAction)
+   return addView(reuse, builderAction)
 }

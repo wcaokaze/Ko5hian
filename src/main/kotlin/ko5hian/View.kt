@@ -9,13 +9,13 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.view(
-            target: View? = null,
+            reuse: View = View(context),
             builderAction: Ko5hianViewBuilder<View, L>.() -> Unit
       ): View
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::View, builderAction)
+   return addView(reuse, builderAction)
 }
 
 var View.backgroundColor: Int

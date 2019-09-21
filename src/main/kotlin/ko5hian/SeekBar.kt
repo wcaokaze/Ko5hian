@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.seekBar(
-            target: SeekBar? = null,
+            reuse: SeekBar = SeekBar(context),
             builderAction: Ko5hianViewBuilder<SeekBar, L>.() -> Unit
       ): SeekBar
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::SeekBar, builderAction)
+   return addView(reuse, builderAction)
 }

@@ -9,15 +9,14 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.tabWidget(
-            target: TabWidget? = null,
+            reuse: TabWidget = TabWidget(context),
             builderAction: Ko5hianViewGroupBuilder<TabWidget, LinearLayout.LayoutParams, L>.() -> Unit
       ): TabWidget
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         target,
-         ::TabWidget,
+         reuse,
          { LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
          builderAction
    )

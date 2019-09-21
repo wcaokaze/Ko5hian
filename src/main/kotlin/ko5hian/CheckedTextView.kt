@@ -8,11 +8,11 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.checkedTextView(
-            target: CheckedTextView? = null,
+            reuse: CheckedTextView = CheckedTextView(context),
             builderAction: Ko5hianViewBuilder<CheckedTextView, L>.() -> Unit
       ): CheckedTextView
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::CheckedTextView, builderAction)
+   return addView(reuse, builderAction)
 }

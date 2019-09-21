@@ -11,13 +11,13 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.imageView(
-            target: ImageView? = null,
+            reuse: ImageView = ImageView(context),
             builderAction: Ko5hianViewBuilder<ImageView, L>.() -> Unit
       ): ImageView
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(target, ::ImageView, builderAction)
+   return addView(reuse, builderAction)
 }
 
 val Ko5hianBuilder<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER

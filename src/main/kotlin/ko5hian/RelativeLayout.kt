@@ -9,15 +9,14 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.relativeLayout(
-            target: RelativeLayout? = null,
+            reuse: RelativeLayout = RelativeLayout(context),
             builderAction: Ko5hianViewGroupBuilder<RelativeLayout, RelativeLayout.LayoutParams, L>.() -> Unit
       ): RelativeLayout
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         target,
-         ::RelativeLayout,
+         reuse,
          { RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
          builderAction
    )
