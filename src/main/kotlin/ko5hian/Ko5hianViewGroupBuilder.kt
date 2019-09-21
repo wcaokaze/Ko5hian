@@ -15,7 +15,11 @@ class Ko5hianViewGroupBuilder<out V, out CL, out L>(
             L : ViewGroup.LayoutParams,
             CL : ViewGroup.LayoutParams
 {
-   override fun createChildLayoutParams() = childLayoutParamsCreator()
+   override fun setLayoutParams(child: View): CL {
+      val l = childLayoutParamsCreator()
+      child.layoutParams = l
+      return l
+   }
 
    override fun addView(child: View) {
       view.addView(child)
@@ -31,7 +35,7 @@ inline fun <V, CL, L> Ko5hianViewParent<L>.addView(
             CL : ViewGroup.LayoutParams,
             L : ViewGroup.LayoutParams
 {
-   val layout = createChildLayoutParams()
+   val layout = setLayoutParams(reuse)
 
    val builder = Ko5hianViewGroupBuilder(
          context,

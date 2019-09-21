@@ -8,6 +8,6 @@ interface Ko5hianViewParent<out L : ViewGroup.LayoutParams> {
    val context: Context
    val displayDensity: Float
 
-   fun createChildLayoutParams(): L
+   fun setLayoutParams(child: View): L
    fun addView(child: View)
 }

@@ -10,8 +10,15 @@ class Ko5hianRootViewSupplier(
 ) : Ko5hianViewParent<ViewGroup.LayoutParams> {
    override val displayDensity = context.resources.displayMetrics.density
 
-   override fun createChildLayoutParams()
-         = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+   override fun setLayoutParams(child: View): ViewGroup.LayoutParams {
+      val l = child.layoutParams
+
+      if (l != null) { return l }
+
+      val newL = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+      child.layoutParams = newL
+      return newL
+   }
 
    override fun addView(child: View) {
       // nop

@@ -18,7 +18,7 @@ inline fun <V : View, L : ViewGroup.LayoutParams> Ko5hianViewParent<L>.addView(
       reuse: V,
       builderAction: Ko5hianViewBuilder<V, L>.() -> Unit
 ): V {
-   val layout = createChildLayoutParams()
+   val layout = setLayoutParams(reuse)
 
    val builder = Ko5hianViewBuilder(context, reuse, layout, displayDensity)
    reuse.layoutParams = layout
