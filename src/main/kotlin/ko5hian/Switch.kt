@@ -8,11 +8,12 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.switch(
+            style: String? = null,
             reuse: Switch = Switch(context),
             builderAction: Ko5hianViewBuilder<Switch, L>.() -> Unit
       ): Switch
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(reuse, builderAction)
+   return addView(style, "switch", reuse, builderAction)
 }

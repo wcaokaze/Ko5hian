@@ -13,13 +13,14 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.textView(
+            style: String? = null,
             reuse: TextView = TextView(context),
             builderAction: Ko5hianViewBuilder<TextView, L>.() -> Unit
       ): TextView
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(reuse, builderAction)
+   return addView(style, "textView", reuse, builderAction)
 }
 
 var TextView.textColor: Int

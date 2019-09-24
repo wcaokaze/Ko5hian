@@ -8,11 +8,12 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.quickContactBadge(
+            style: String? = null,
             reuse: QuickContactBadge = QuickContactBadge(context),
             builderAction: Ko5hianViewBuilder<QuickContactBadge, L>.() -> Unit
       ): QuickContactBadge
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(reuse, builderAction)
+   return addView(style, "quickContactBadge", reuse, builderAction)
 }

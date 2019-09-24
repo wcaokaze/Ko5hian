@@ -9,6 +9,7 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.frameLayout(
+            style: String? = null,
             reuse: FrameLayout = FrameLayout(context),
             builderAction: Ko5hianViewGroupBuilder<FrameLayout, FrameLayout.LayoutParams, L>.() -> Unit
       ): FrameLayout
@@ -16,6 +17,8 @@ inline fun <L : ViewGroup.LayoutParams>
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
+         style,
+         "frameLayout",
          reuse,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
          builderAction

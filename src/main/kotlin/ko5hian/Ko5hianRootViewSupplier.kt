@@ -6,9 +6,12 @@ import android.view.*
 import kotlin.contracts.*
 
 class Ko5hianRootViewSupplier(
-      override val context: Context
+      override val context: Context,
+      override var style: Kss<*, *>?
 ) : Ko5hianViewParent<ViewGroup.LayoutParams> {
    override val displayDensity = context.resources.displayMetrics.density
+
+   override var consumedAnonymousStyleCount = 0
 
    override fun setLayoutParams(child: View): ViewGroup.LayoutParams {
       val l = child.layoutParams
@@ -28,10 +31,11 @@ class Ko5hianRootViewSupplier(
 @ExperimentalContracts
 inline fun <R> ko5hian(
       context: Context,
+      kss: Kss<*, *>? = null,
       builderAction: Ko5hianRootViewSupplier.() -> R
 ): R {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   val viewSupplier = Ko5hianRootViewSupplier(context)
+   val viewSupplier = Ko5hianRootViewSupplier(context, kss)
    return builderAction(viewSupplier)
 }

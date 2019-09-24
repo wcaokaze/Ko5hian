@@ -9,6 +9,7 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.textSwitcher(
+            style: String? = null,
             reuse: TextSwitcher = TextSwitcher(context),
             builderAction: Ko5hianViewGroupBuilder<TextSwitcher, FrameLayout.LayoutParams, L>.() -> Unit
       ): TextSwitcher
@@ -16,6 +17,8 @@ inline fun <L : ViewGroup.LayoutParams>
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
+         style,
+         "textSwitcher",
          reuse,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
          builderAction

@@ -8,6 +8,7 @@ class Ko5hianViewGroupBuilder<out V, out CL, out L>(
       override val context: Context,
       override val view: V,
       override val layout: L,
+      override var style: Kss<*, *>?,
       override val displayDensity: Float,
       private val childLayoutParamsCreator: () -> CL
 ) : Ko5hianBuilder<V, L>, Ko5hianViewParent<CL>
@@ -15,6 +16,8 @@ class Ko5hianViewGroupBuilder<out V, out CL, out L>(
             L : ViewGroup.LayoutParams,
             CL : ViewGroup.LayoutParams
 {
+   override var consumedAnonymousStyleCount: Int = 0
+
    override fun setLayoutParams(child: View): CL {
       val l = childLayoutParamsCreator()
       child.layoutParams = l
@@ -27,6 +30,8 @@ class Ko5hianViewGroupBuilder<out V, out CL, out L>(
 }
 
 inline fun <V, CL, L> Ko5hianViewParent<L>.addView(
+      style: String?,
+      anonymousStyleName: String,
       reuse: V,
       noinline childLayoutParamsCreator: () -> CL,
       builderAction: Ko5hianViewGroupBuilder<V, CL, L>.() -> Unit
@@ -37,12 +42,48 @@ inline fun <V, CL, L> Ko5hianViewParent<L>.addView(
 {
    val layout = setLayoutParams(reuse)
 
+   val kss = this.style
+
+   // this is an inline fun and `style != null` can be evaluated on compile time.
+   // So the optimizer can select any of this if-branch
+   val childKss = if (style != null) {
+      if (kss == null) {
+         null
+      } else {
+         @Suppress("UNCHECKED_CAST")
+         kss.childStyles[style] as Kss<V, L>
+      }
+   } else {
+      run {
+         if (kss == null) { return@run null }
+
+         val index = consumedAnonymousStyleCount
+         val anonymousChildStyles = kss.anonymousChildStyles
+
+         if (index >= anonymousChildStyles.size) { return@run null }
+
+         val child = anonymousChildStyles[consumedAnonymousStyleCount]
+
+         if (child.name != anonymousStyleName) { return@run null }
+
+         consumedAnonymousStyleCount++
+
+         @Suppress("UNCHECKED_CAST")
+         return@run child as Kss<V, L>
+      }
+   }
+
    val builder = Ko5hianViewGroupBuilder(
          context,
          reuse,
          layout,
+         childKss,
          displayDensity,
          childLayoutParamsCreator)
+
+   if (childKss != null) {
+      childKss.styleApplier(builder)
+   }
 
    reuse.layoutParams = layout
    builder.builderAction()

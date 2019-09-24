@@ -9,6 +9,7 @@ import kotlin.contracts.*
 @ExperimentalContracts
 inline fun <L : ViewGroup.LayoutParams>
       Ko5hianViewParent<L>.horizontalScrollView(
+            style: String? = null,
             reuse: HorizontalScrollView = HorizontalScrollView(context),
             builderAction: Ko5hianViewGroupBuilder<HorizontalScrollView, FrameLayout.LayoutParams, L>.() -> Unit
       ): HorizontalScrollView
@@ -16,6 +17,8 @@ inline fun <L : ViewGroup.LayoutParams>
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
+         style,
+         "horizontalScrollView",
          reuse,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
          builderAction

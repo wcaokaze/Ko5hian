@@ -8,6 +8,9 @@ interface Ko5hianViewParent<out L : ViewGroup.LayoutParams> {
    val context: Context
    val displayDensity: Float
 
+   var style: Kss<*, *>?
+   var consumedAnonymousStyleCount: Int
+
    fun setLayoutParams(child: View): L
    fun addView(child: View)
 }
