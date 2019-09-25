@@ -5,13 +5,14 @@ import android.view.*
 
 @Ko5hianMarker
 class Ko5hianViewGroupBuilder<out V, out CL, out L>(
-      override val context: Context,
-      override val view: V,
-      override val layout: L,
-      override var style: Kss<*, *>?,
-      override val displayDensity: Float,
+      context: Context,
+      view: V,
+      layout: L,
+      style: Kss<*, *>?,
+      displayDensity: Float,
       private val childLayoutParamsCreator: () -> CL
-) : Ko5hianBuilder<V, L>, Ko5hianViewParent<CL>
+) : Ko5hianViewBuilder<V, L>(context, view, layout, style, displayDensity),
+    Ko5hianViewParent<CL>
       where V : ViewGroup,
             L : ViewGroup.LayoutParams,
             CL : ViewGroup.LayoutParams

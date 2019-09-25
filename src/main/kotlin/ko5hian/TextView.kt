@@ -43,11 +43,11 @@ var TextView.textSizeSp: Int
    get() = throw UnsupportedOperationException()
    set(value) = setTextSize(TypedValue.COMPLEX_UNIT_SP, value.toFloat())
 
-val Ko5hianBuilder<TextView, *>.DEFAULT_TYPEFACE: Typeface get() = Typeface.DEFAULT
-val Ko5hianBuilder<TextView, *>.BOLD:             Typeface get() = Typeface.DEFAULT_BOLD
-val Ko5hianBuilder<TextView, *>.MONOSPACE:        Typeface get() = Typeface.MONOSPACE
+val Ko5hianViewBuilder<TextView, *>.DEFAULT_TYPEFACE: Typeface get() = Typeface.DEFAULT
+val Ko5hianViewBuilder<TextView, *>.BOLD:             Typeface get() = Typeface.DEFAULT_BOLD
+val Ko5hianViewBuilder<TextView, *>.MONOSPACE:        Typeface get() = Typeface.MONOSPACE
 
-val Ko5hianBuilder<TextView, *>.TRUNCATE_AT_START:   TextUtils.TruncateAt get() = TextUtils.TruncateAt.START
-val Ko5hianBuilder<TextView, *>.TRUNCATE_AT_MARQUEE: TextUtils.TruncateAt get() = TextUtils.TruncateAt.MARQUEE
-val Ko5hianBuilder<TextView, *>.TRUNCATE_AT_MIDDLE:  TextUtils.TruncateAt get() = TextUtils.TruncateAt.MIDDLE
-val Ko5hianBuilder<TextView, *>.TRUNCATE_AT_END:     TextUtils.TruncateAt get() = TextUtils.TruncateAt.END
+val Ko5hianViewBuilder<TextView, *>.TRUNCATE_AT_START:   TextUtils.TruncateAt get() = TextUtils.TruncateAt.START
+val Ko5hianViewBuilder<TextView, *>.TRUNCATE_AT_MARQUEE: TextUtils.TruncateAt get() = TextUtils.TruncateAt.MARQUEE
+val Ko5hianViewBuilder<TextView, *>.TRUNCATE_AT_MIDDLE:  TextUtils.TruncateAt get() = TextUtils.TruncateAt.MIDDLE
+val Ko5hianViewBuilder<TextView, *>.TRUNCATE_AT_END:     TextUtils.TruncateAt get() = TextUtils.TruncateAt.END

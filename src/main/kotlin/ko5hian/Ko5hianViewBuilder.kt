@@ -5,14 +5,23 @@ import android.view.View
 import android.view.ViewGroup
 
 @Ko5hianMarker
-class Ko5hianViewBuilder<out V, out L>(
-      override val context: Context,
-      override val view: V,
-      override val layout: L,
-      override val displayDensity: Float
-) : Ko5hianBuilder<V, L>
-      where V : View,
-            L : ViewGroup.LayoutParams
+open class Ko5hianViewBuilder<out V : View, out L : ViewGroup.LayoutParams>(
+      val context: Context,
+      val view: V,
+      val layout: L,
+      var style: Kss<*, *>?,
+      val displayDensity: Float
+) {
+   val Int.dip: Int get() {
+      val px = (this * displayDensity).toInt()
+
+      return when {
+         px  != 0 -> px
+         this < 0 -> -1
+         else     ->  1
+      }
+   }
+}
 
 inline fun <V : View, L : ViewGroup.LayoutParams> Ko5hianViewParent<L>.addView(
       style: String?,
@@ -22,36 +31,41 @@ inline fun <V : View, L : ViewGroup.LayoutParams> Ko5hianViewParent<L>.addView(
 ): V {
    val layout = setLayoutParams(reuse)
 
-   val builder = Ko5hianViewBuilder(context, reuse, layout, displayDensity)
-
    val kss = this.style
 
    // this is an inline fun and `style != null` can be evaluated on compile time.
    // So the optimizer can select any of this if-branch
-   if (style != null) {
-      if (kss != null) {
+   val childKss = if (style != null) {
+      if (kss == null) {
+         null
+      } else {
          @Suppress("UNCHECKED_CAST")
-         val child = kss.childStyles[style] as Kss<V, L>
-         child.styleApplier(builder)
+         kss.childStyles[style] as Kss<V, L>
       }
    } else {
       run {
-         if (kss == null) { return@run }
+         if (kss == null) { return@run null }
 
          val index = consumedAnonymousStyleCount
          val anonymousChildStyles = kss.anonymousChildStyles
 
-         if (index >= anonymousChildStyles.size) { return@run }
+         if (index >= anonymousChildStyles.size) { return@run null }
 
          val child = anonymousChildStyles[consumedAnonymousStyleCount]
 
-         if (child.name != anonymousStyleName) { return@run }
+         if (child.name != anonymousStyleName) { return@run null }
 
          consumedAnonymousStyleCount++
 
          @Suppress("UNCHECKED_CAST")
-         (child as Kss<V, L>).styleApplier(builder)
+         return@run child as Kss<V, L>
       }
+   }
+
+   val builder = Ko5hianViewBuilder(context, reuse, layout, childKss, displayDensity)
+
+   if (childKss != null) {
+      childKss.styleApplier(builder)
    }
 
    reuse.layoutParams = layout

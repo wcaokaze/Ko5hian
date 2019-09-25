@@ -21,14 +21,14 @@ inline fun <L : ViewGroup.LayoutParams>
    return addView(style, "imageView", reuse, builderAction)
 }
 
-val Ko5hianBuilder<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
-val Ko5hianBuilder<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
-val Ko5hianBuilder<ImageView, *>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
-val Ko5hianBuilder<ImageView, *>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
-val Ko5hianBuilder<ImageView, *>.FIT_END           get() = ImageView.ScaleType.FIT_END
-val Ko5hianBuilder<ImageView, *>.FIT_START         get() = ImageView.ScaleType.FIT_START
-val Ko5hianBuilder<ImageView, *>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
-val Ko5hianBuilder<ImageView, *>.MATRIX            get() = ImageView.ScaleType.MATRIX
+val Ko5hianViewBuilder<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
+val Ko5hianViewBuilder<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
+val Ko5hianViewBuilder<ImageView, *>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
+val Ko5hianViewBuilder<ImageView, *>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
+val Ko5hianViewBuilder<ImageView, *>.FIT_END           get() = ImageView.ScaleType.FIT_END
+val Ko5hianViewBuilder<ImageView, *>.FIT_START         get() = ImageView.ScaleType.FIT_START
+val Ko5hianViewBuilder<ImageView, *>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
+val Ko5hianViewBuilder<ImageView, *>.MATRIX            get() = ImageView.ScaleType.MATRIX
 
 var ImageView.image: Drawable?
    get() = drawable

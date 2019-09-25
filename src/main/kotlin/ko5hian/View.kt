@@ -24,6 +24,6 @@ var View.backgroundColor: Int
    get() = throw UnsupportedOperationException()
    set(value) = setBackgroundColor(value)
 
-val Ko5hianBuilder<*, *>.VISIBLE:   Int get() = View.VISIBLE
-val Ko5hianBuilder<*, *>.INVISIBLE: Int get() = View.INVISIBLE
-val Ko5hianBuilder<*, *>.GONE:      Int get() = View.GONE
+val Ko5hianViewBuilder<*, *>.VISIBLE:   Int get() = View.VISIBLE
+val Ko5hianViewBuilder<*, *>.INVISIBLE: Int get() = View.INVISIBLE
+val Ko5hianViewBuilder<*, *>.GONE:      Int get() = View.GONE

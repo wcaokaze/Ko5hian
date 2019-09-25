@@ -25,5 +25,5 @@ inline fun <L : ViewGroup.LayoutParams>
    )
 }
 
-val Ko5hianBuilder<LinearLayout, *>.VERTICAL   get() = LinearLayout.VERTICAL
-val Ko5hianBuilder<LinearLayout, *>.HORIZONTAL get() = LinearLayout.HORIZONTAL
+val Ko5hianViewBuilder<LinearLayout, *>.VERTICAL   get() = LinearLayout.VERTICAL
+val Ko5hianViewBuilder<LinearLayout, *>.HORIZONTAL get() = LinearLayout.HORIZONTAL
