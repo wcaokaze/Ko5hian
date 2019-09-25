@@ -10,7 +10,7 @@ class Ko5hianViewGroupBuilder<out V, out CL, out L>(
       layout: L,
       style: Kss<*, *>?,
       displayDensity: Float,
-      private val childLayoutParamsCreator: () -> CL
+      @JvmField private val childLayoutParamsCreator: () -> CL
 ) : Ko5hianViewBuilder<V, L>(context, view, layout, style, displayDensity),
     Ko5hianViewParent<CL>
       where V : ViewGroup,

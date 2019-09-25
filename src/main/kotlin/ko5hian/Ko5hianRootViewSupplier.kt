@@ -6,8 +6,8 @@ import android.view.*
 import kotlin.contracts.*
 
 class Ko5hianRootViewSupplier(
-      override val context: Context,
-      override var style: Kss<*, *>?
+      @JvmField override val context: Context,
+      @JvmField override var style: Kss<*, *>?
 ) : Ko5hianViewParent<ViewGroup.LayoutParams> {
    override val displayDensity = context.resources.displayMetrics.density
 

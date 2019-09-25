@@ -6,11 +6,11 @@ import android.view.ViewGroup
 
 @Ko5hianMarker
 open class Ko5hianViewBuilder<out V : View, out L : ViewGroup.LayoutParams>(
-      val context: Context,
-      val view: V,
-      val layout: L,
+      @JvmField val context: Context,
+      @JvmField val view: V,
+      @JvmField val layout: L,
       var style: Kss<*, *>?,
-      val displayDensity: Float
+      @JvmField val displayDensity: Float
 ) {
    val Int.dip: Int get() {
       val px = (this * displayDensity).toInt()
