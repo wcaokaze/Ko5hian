@@ -17,7 +17,7 @@ class Ko5hianViewGroupBuilder<out V, out CL, out L>(
             L : ViewGroup.LayoutParams,
             CL : ViewGroup.LayoutParams
 {
-   override var consumedAnonymousStyleCount: Int = 0
+   private var consumedAnonymousStyleCount = 0
 
    override fun setLayoutParams(child: View): CL {
       val l = childLayoutParamsCreator()
@@ -27,6 +27,23 @@ class Ko5hianViewGroupBuilder<out V, out CL, out L>(
 
    override fun addView(child: View) {
       view.addView(child)
+   }
+
+   override fun getAnonymousChildStyle(anonymousChildName: String): Kss<*, *>? {
+      val kss = style ?: return null
+
+      val index = consumedAnonymousStyleCount
+      val anonymousChildStyles = kss.anonymousChildStyles
+
+      if (index >= anonymousChildStyles.size) { return null }
+
+      val child = anonymousChildStyles[consumedAnonymousStyleCount]
+
+      if (child.name != anonymousChildName) { return null }
+
+      consumedAnonymousStyleCount++
+
+      return child
    }
 }
 
@@ -55,23 +72,8 @@ inline fun <V, CL, L> Ko5hianViewParent<L>.addView(
          kss.childStyles[style] as Kss<V, L>
       }
    } else {
-      run {
-         if (kss == null) { return@run null }
-
-         val index = consumedAnonymousStyleCount
-         val anonymousChildStyles = kss.anonymousChildStyles
-
-         if (index >= anonymousChildStyles.size) { return@run null }
-
-         val child = anonymousChildStyles[consumedAnonymousStyleCount]
-
-         if (child.name != anonymousStyleName) { return@run null }
-
-         consumedAnonymousStyleCount++
-
-         @Suppress("UNCHECKED_CAST")
-         return@run child as Kss<V, L>
-      }
+      @Suppress("UNCHECKED_CAST")
+      getAnonymousChildStyle(anonymousStyleName) as Kss<V, L>?
    }
 
    val builder = Ko5hianViewGroupBuilder(

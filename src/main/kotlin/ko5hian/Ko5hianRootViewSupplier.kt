@@ -6,12 +6,10 @@ import android.view.*
 import kotlin.contracts.*
 
 class Ko5hianRootViewSupplier(
-      @JvmField override val context: Context,
-      @JvmField override var style: Kss<*, *>?
+      override val context: Context,
+      override var style: Kss<*, *>?
 ) : Ko5hianViewParent<ViewGroup.LayoutParams> {
    override val displayDensity = context.resources.displayMetrics.density
-
-   override var consumedAnonymousStyleCount = 0
 
    override fun setLayoutParams(child: View): ViewGroup.LayoutParams {
       val l = child.layoutParams
@@ -25,6 +23,16 @@ class Ko5hianRootViewSupplier(
 
    override fun addView(child: View) {
       // nop
+   }
+
+   override fun getAnonymousChildStyle(anonymousChildName: String): Kss<*, *>? {
+      val kss = style ?: return null
+
+      return if (kss.name == anonymousChildName) {
+         kss
+      } else {
+         null
+      }
    }
 }
 

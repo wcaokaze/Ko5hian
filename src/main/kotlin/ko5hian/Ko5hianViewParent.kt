@@ -9,8 +9,9 @@ interface Ko5hianViewParent<out L : ViewGroup.LayoutParams> {
    val displayDensity: Float
 
    var style: Kss<*, *>?
-   var consumedAnonymousStyleCount: Int
 
    fun setLayoutParams(child: View): L
    fun addView(child: View)
+
+   fun getAnonymousChildStyle(anonymousChildName: String): Kss<*, *>?
 }
