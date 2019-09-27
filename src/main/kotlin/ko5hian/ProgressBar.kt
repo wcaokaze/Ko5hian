@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.ProgressBar
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.progressBar(
-            style: String? = null,
-            reuse: ProgressBar = ProgressBar(context),
-            builderAction: Ko5hianViewBuilder<ProgressBar, L>.() -> Unit
-      ): ProgressBar
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.progressBar(
+      ko5hianAction: Ko5hianAction<ProgressBar, L>
+): ProgressBar {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "progressBar", reuse, builderAction)
+   return addView(
+         ::ProgressBar,
+         ko5hianAction
+   )
 }

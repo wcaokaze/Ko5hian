@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.TimePicker
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.timePicker(
-            style: String? = null,
-            reuse: TimePicker = TimePicker(context),
-            builderAction: Ko5hianViewBuilder<TimePicker, L>.() -> Unit
-      ): TimePicker
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.timePicker(
+      ko5hianAction: Ko5hianAction<TimePicker, L>
+): TimePicker {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "timePicker", reuse, builderAction)
+   return addView(
+         ::TimePicker,
+         ko5hianAction
+   )
 }

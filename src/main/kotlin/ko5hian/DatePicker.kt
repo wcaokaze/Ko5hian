@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.DatePicker
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.datePicker(
-            style: String? = null,
-            reuse: DatePicker = DatePicker(context),
-            builderAction: Ko5hianViewBuilder<DatePicker, L>.() -> Unit
-      ): DatePicker
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.datePicker(
+      ko5hianAction: Ko5hianAction<DatePicker, L>
+): DatePicker {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "datePicker", reuse, builderAction)
+   return addView(
+         ::DatePicker,
+         ko5hianAction
+   )
 }

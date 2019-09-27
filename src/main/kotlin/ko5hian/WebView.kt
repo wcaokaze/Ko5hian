@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.webkit.WebView
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.webView(
-            style: String? = null,
-            reuse: WebView = WebView(context),
-            builderAction: Ko5hianViewBuilder<WebView, L>.() -> Unit
-      ): WebView
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.webView(
+      ko5hianAction: Ko5hianAction<WebView, L>
+): WebView {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "webView", reuse, builderAction)
+   return addView(
+         ::WebView,
+         ko5hianAction
+   )
 }

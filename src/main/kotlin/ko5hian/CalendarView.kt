@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.CalendarView
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.calendarView(
-            style: String? = null,
-            reuse: CalendarView = CalendarView(context),
-            builderAction: Ko5hianViewBuilder<CalendarView, L>.() -> Unit
-      ): CalendarView
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.calendarView(
+      ko5hianAction: Ko5hianAction<CalendarView, L>
+): CalendarView {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "calendarView", reuse, builderAction)
+   return addView(
+         ::CalendarView,
+         ko5hianAction
+   )
 }

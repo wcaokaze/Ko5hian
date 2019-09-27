@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.Chronometer
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.chronometer(
-            style: String? = null,
-            reuse: Chronometer = Chronometer(context),
-            builderAction: Ko5hianViewBuilder<Chronometer, L>.() -> Unit
-      ): Chronometer
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.chronometer(
+      ko5hianAction: Ko5hianAction<Chronometer, L>
+): Chronometer {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "chronometer", reuse, builderAction)
+   return addView(
+         ::Chronometer,
+         ko5hianAction
+   )
 }

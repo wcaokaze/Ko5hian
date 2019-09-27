@@ -1,7 +1,7 @@
 @file:Suppress("UNUSED")
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.ImageView
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -9,26 +9,25 @@ import android.graphics.drawable.Drawable
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.imageView(
-            style: String? = null,
-            reuse: ImageView = ImageView(context),
-            builderAction: Ko5hianViewBuilder<ImageView, L>.() -> Unit
-      ): ImageView
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.imageView(
+      ko5hianAction: Ko5hianAction<ImageView, L>
+): ImageView {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "imageView", reuse, builderAction)
+   return addView(
+         ::ImageView,
+         ko5hianAction
+   )
 }
 
-val Ko5hianViewBuilder<ImageView, *>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
-val Ko5hianViewBuilder<ImageView, *>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
-val Ko5hianViewBuilder<ImageView, *>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
-val Ko5hianViewBuilder<ImageView, *>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
-val Ko5hianViewBuilder<ImageView, *>.FIT_END           get() = ImageView.ScaleType.FIT_END
-val Ko5hianViewBuilder<ImageView, *>.FIT_START         get() = ImageView.ScaleType.FIT_START
-val Ko5hianViewBuilder<ImageView, *>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
-val Ko5hianViewBuilder<ImageView, *>.MATRIX            get() = ImageView.ScaleType.MATRIX
+val Ko5hianView<ImageView>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
+val Ko5hianView<ImageView>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
+val Ko5hianView<ImageView>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
+val Ko5hianView<ImageView>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
+val Ko5hianView<ImageView>.FIT_END           get() = ImageView.ScaleType.FIT_END
+val Ko5hianView<ImageView>.FIT_START         get() = ImageView.ScaleType.FIT_START
+val Ko5hianView<ImageView>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
+val Ko5hianView<ImageView>.MATRIX            get() = ImageView.ScaleType.MATRIX
 
 var ImageView.image: Drawable?
    get() = drawable

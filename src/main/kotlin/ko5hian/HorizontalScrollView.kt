@@ -1,27 +1,20 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.horizontalScrollView(
-            style: String? = null,
-            reuse: HorizontalScrollView = HorizontalScrollView(context),
-            builderAction: Ko5hianViewGroupBuilder<HorizontalScrollView, FrameLayout.LayoutParams, L>.() -> Unit
-      ): HorizontalScrollView
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.horizontalScrollView(
+      ko5hianAction: Ko5hianParentAction<FrameLayout, L, FrameLayout.LayoutParams>
+): HorizontalScrollView {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         style,
-         "horizontalScrollView",
-         reuse,
+         ::HorizontalScrollView,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
-         builderAction
+         ko5hianAction
    )
 }
-

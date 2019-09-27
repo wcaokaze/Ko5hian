@@ -3,22 +3,23 @@ package ko5hian
 
 import android.graphics.*
 import android.graphics.drawable.*
+import android.view.View
 
-fun Ko5hianViewBuilder<*, *>.drawable(resId: Int): Drawable
-      = context.resources.getDrawable(resId)!!
+fun Ko5hianView<View>.drawable(resId: Int): Drawable
+      = (raw as View).context.resources.getDrawable(resId)!!
 
-fun Ko5hianViewBuilder<*, *>.drawable(resId: Int, color: Int): Drawable {
-   val drawable = context.resources.getDrawable(resId)!!.mutate()
+fun Ko5hianView<View>.drawable(resId: Int, color: Int): Drawable {
+   val drawable = (raw as View).context.resources.getDrawable(resId)!!.mutate()
    drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
 
    return drawable
 }
 
-fun Ko5hianViewBuilder<*, *>.string(resId: Int): String
-      = context.getString(resId)
+fun Ko5hianView<View>.string(resId: Int): String
+      = (raw as View).context.getString(resId)
 
-fun Ko5hianViewBuilder<*, *>.string(resId: Int, vararg formatArgs: Any?): String
-      = context.getString(resId, *formatArgs)
+fun Ko5hianView<View>.string(resId: Int, vararg formatArgs: Any?): String
+      = (raw as View).context.getString(resId, *formatArgs)
 
 val Int.opaque: Int get() = opacity(100)
 

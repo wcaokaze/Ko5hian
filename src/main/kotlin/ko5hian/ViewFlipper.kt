@@ -1,26 +1,20 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.FrameLayout
 import android.widget.ViewFlipper
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.viewFlipper(
-            style: String? = null,
-            reuse: ViewFlipper = ViewFlipper(context),
-            builderAction: Ko5hianViewGroupBuilder<ViewFlipper, FrameLayout.LayoutParams, L>.() -> Unit
-      ): ViewFlipper
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.viewFlipper(
+      ko5hianAction: Ko5hianParentAction<ViewFlipper, L, FrameLayout.LayoutParams>
+): ViewFlipper {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         style,
-         "viewFlipper",
-         reuse,
+         ::ViewFlipper,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
-         builderAction
+         ko5hianAction
    )
 }

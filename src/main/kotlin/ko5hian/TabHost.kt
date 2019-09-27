@@ -1,26 +1,20 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.FrameLayout
 import android.widget.TabHost
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.tabHost(
-            style: String? = null,
-            reuse: TabHost = TabHost(context),
-            builderAction: Ko5hianViewGroupBuilder<TabHost, FrameLayout.LayoutParams, L>.() -> Unit
-      ): TabHost
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.tabHost(
+      ko5hianAction: Ko5hianParentAction<TabHost, L, FrameLayout.LayoutParams>
+): TabHost {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         style,
-         "tabHost",
-         reuse,
+         ::TabHost,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
-         builderAction
+         ko5hianAction
    )
 }

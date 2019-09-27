@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.SeekBar
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.seekBar(
-            style: String? = null,
-            reuse: SeekBar = SeekBar(context),
-            builderAction: Ko5hianViewBuilder<SeekBar, L>.() -> Unit
-      ): SeekBar
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.seekBar(
+      ko5hianAction: Ko5hianAction<SeekBar, L>
+): SeekBar {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "seekBar", reuse, builderAction)
+   return addView(
+         ::SeekBar,
+         ko5hianAction
+   )
 }

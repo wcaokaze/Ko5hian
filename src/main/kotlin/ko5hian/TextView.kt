@@ -1,7 +1,7 @@
 @file:Suppress("UNUSED")
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.TextView
 
 import android.graphics.Typeface
@@ -11,16 +11,15 @@ import android.util.TypedValue
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.textView(
-            style: String? = null,
-            reuse: TextView = TextView(context),
-            builderAction: Ko5hianViewBuilder<TextView, L>.() -> Unit
-      ): TextView
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.textView(
+      ko5hianAction: Ko5hianAction<TextView, L>
+): TextView {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "textView", reuse, builderAction)
+   return addView(
+         ::TextView,
+         ko5hianAction
+   )
 }
 
 var TextView.textColor: Int
@@ -43,11 +42,11 @@ var TextView.textSizeSp: Int
    get() = throw UnsupportedOperationException()
    set(value) = setTextSize(TypedValue.COMPLEX_UNIT_SP, value.toFloat())
 
-val Ko5hianViewBuilder<TextView, *>.DEFAULT_TYPEFACE: Typeface get() = Typeface.DEFAULT
-val Ko5hianViewBuilder<TextView, *>.BOLD:             Typeface get() = Typeface.DEFAULT_BOLD
-val Ko5hianViewBuilder<TextView, *>.MONOSPACE:        Typeface get() = Typeface.MONOSPACE
+val Ko5hianView<TextView>.DEFAULT_TYPEFACE: Typeface get() = Typeface.DEFAULT
+val Ko5hianView<TextView>.BOLD:             Typeface get() = Typeface.DEFAULT_BOLD
+val Ko5hianView<TextView>.MONOSPACE:        Typeface get() = Typeface.MONOSPACE
 
-val Ko5hianViewBuilder<TextView, *>.TRUNCATE_AT_START:   TextUtils.TruncateAt get() = TextUtils.TruncateAt.START
-val Ko5hianViewBuilder<TextView, *>.TRUNCATE_AT_MARQUEE: TextUtils.TruncateAt get() = TextUtils.TruncateAt.MARQUEE
-val Ko5hianViewBuilder<TextView, *>.TRUNCATE_AT_MIDDLE:  TextUtils.TruncateAt get() = TextUtils.TruncateAt.MIDDLE
-val Ko5hianViewBuilder<TextView, *>.TRUNCATE_AT_END:     TextUtils.TruncateAt get() = TextUtils.TruncateAt.END
+val Ko5hianView<TextView>.TRUNCATE_AT_START:   TextUtils.TruncateAt get() = TextUtils.TruncateAt.START
+val Ko5hianView<TextView>.TRUNCATE_AT_MARQUEE: TextUtils.TruncateAt get() = TextUtils.TruncateAt.MARQUEE
+val Ko5hianView<TextView>.TRUNCATE_AT_MIDDLE:  TextUtils.TruncateAt get() = TextUtils.TruncateAt.MIDDLE
+val Ko5hianView<TextView>.TRUNCATE_AT_END:     TextUtils.TruncateAt get() = TextUtils.TruncateAt.END

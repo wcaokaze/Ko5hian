@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.Switch
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.switch(
-            style: String? = null,
-            reuse: Switch = Switch(context),
-            builderAction: Ko5hianViewBuilder<Switch, L>.() -> Unit
-      ): Switch
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.switch(
+      ko5hianAction: Ko5hianAction<Switch, L>
+): Switch {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "switch", reuse, builderAction)
+   return addView(
+         ::Switch,
+         ko5hianAction
+   )
 }

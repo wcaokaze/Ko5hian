@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.RadioButton
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.radioButton(
-            style: String? = null,
-            reuse: RadioButton = RadioButton(context),
-            builderAction: Ko5hianViewBuilder<RadioButton, L>.() -> Unit
-      ): RadioButton
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.radioButton(
+      ko5hianAction: Ko5hianAction<RadioButton, L>
+): RadioButton {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "radioButton", reuse, builderAction)
+   return addView(
+         ::RadioButton,
+         ko5hianAction
+   )
 }

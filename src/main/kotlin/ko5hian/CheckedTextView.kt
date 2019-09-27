@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.CheckedTextView
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.checkedTextView(
-            style: String? = null,
-            reuse: CheckedTextView = CheckedTextView(context),
-            builderAction: Ko5hianViewBuilder<CheckedTextView, L>.() -> Unit
-      ): CheckedTextView
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.checkedTextView(
+      ko5hianAction: Ko5hianAction<CheckedTextView, L>
+): CheckedTextView {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "checkedTextView", reuse, builderAction)
+   return addView(
+         ::CheckedTextView,
+         ko5hianAction
+   )
 }

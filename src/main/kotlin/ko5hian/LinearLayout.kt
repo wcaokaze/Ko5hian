@@ -1,29 +1,23 @@
 @file:Suppress("UNUSED")
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.LinearLayout
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.linearLayout(
-            style: String? = null,
-            reuse: LinearLayout = LinearLayout(context),
-            builderAction: Ko5hianViewGroupBuilder<LinearLayout, LinearLayout.LayoutParams, L>.() -> Unit
-      ): LinearLayout
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.linearLayout(
+      ko5hianAction: Ko5hianParentAction<LinearLayout, L, LinearLayout.LayoutParams>
+): LinearLayout {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         style,
-         "linearLayout",
-         reuse,
+         ::LinearLayout,
          { LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
-         builderAction
+         ko5hianAction
    )
 }
 
-val Ko5hianViewBuilder<LinearLayout, *>.VERTICAL   get() = LinearLayout.VERTICAL
-val Ko5hianViewBuilder<LinearLayout, *>.HORIZONTAL get() = LinearLayout.HORIZONTAL
+val Ko5hianView<LinearLayout>.VERTICAL   get() = LinearLayout.VERTICAL
+val Ko5hianView<LinearLayout>.HORIZONTAL get() = LinearLayout.HORIZONTAL

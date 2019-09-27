@@ -1,26 +1,20 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.FrameLayout
 import android.widget.ImageSwitcher
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.imageSwitcher(
-            style: String? = null,
-            reuse: ImageSwitcher = ImageSwitcher(context),
-            builderAction: Ko5hianViewGroupBuilder<ImageSwitcher, FrameLayout.LayoutParams, L>.() -> Unit
-      ): ImageSwitcher
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.imageSwitcher(
+      ko5hianAction: Ko5hianParentAction<ImageSwitcher, L, FrameLayout.LayoutParams>
+): ImageSwitcher {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         style,
-         "imageSwitcher",
-         reuse,
+         ::ImageSwitcher,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
-         builderAction
+         ko5hianAction
    )
 }

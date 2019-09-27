@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.EditText
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.editText(
-            style: String? = null,
-            reuse: EditText = EditText(context),
-            builderAction: Ko5hianViewBuilder<EditText, L>.() -> Unit
-      ): EditText
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.editText(
+      ko5hianAction: Ko5hianAction<EditText, L>
+): EditText {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "editText", reuse, builderAction)
+   return addView(
+         ::EditText,
+         ko5hianAction
+   )
 }

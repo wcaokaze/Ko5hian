@@ -1,25 +1,19 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.TableLayout
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.tableLayout(
-            style: String? = null,
-            reuse: TableLayout = TableLayout(context),
-            builderAction: Ko5hianViewGroupBuilder<TableLayout, TableLayout.LayoutParams, L>.() -> Unit
-      ): TableLayout
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.tableLayout(
+      ko5hianAction: Ko5hianParentAction<TableLayout, L, TableLayout.LayoutParams>
+): TableLayout {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         style,
-         "tableLayout",
-         reuse,
+         ::TableLayout,
          { TableLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
-         builderAction
+         ko5hianAction
    )
 }

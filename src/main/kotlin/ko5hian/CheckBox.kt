@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.CheckBox
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.checkBox(
-            style: String? = null,
-            reuse: CheckBox = CheckBox(context),
-            builderAction: Ko5hianViewBuilder<CheckBox, L>.() -> Unit
-      ): CheckBox
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.checkBox(
+      ko5hianAction: Ko5hianAction<CheckBox, L>
+): CheckBox {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "checkBox", reuse, builderAction)
+   return addView(
+         ::CheckBox,
+         ko5hianAction
+   )
 }

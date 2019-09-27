@@ -1,26 +1,20 @@
 @file:Suppress("UNUSED")
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.FrameLayout
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.frameLayout(
-            style: String? = null,
-            reuse: FrameLayout = FrameLayout(context),
-            builderAction: Ko5hianViewGroupBuilder<FrameLayout, FrameLayout.LayoutParams, L>.() -> Unit
-      ): FrameLayout
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.frameLayout(
+      ko5hianAction: Ko5hianParentAction<FrameLayout, L, FrameLayout.LayoutParams>
+): FrameLayout {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
    return addView(
-         style,
-         "frameLayout",
-         reuse,
+         ::FrameLayout,
          { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
-         builderAction
+         ko5hianAction
    )
 }

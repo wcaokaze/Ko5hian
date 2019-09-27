@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.QuickContactBadge
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.quickContactBadge(
-            style: String? = null,
-            reuse: QuickContactBadge = QuickContactBadge(context),
-            builderAction: Ko5hianViewBuilder<QuickContactBadge, L>.() -> Unit
-      ): QuickContactBadge
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.quickContactBadge(
+      ko5hianAction: Ko5hianAction<QuickContactBadge, L>
+): QuickContactBadge {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "quickContactBadge", reuse, builderAction)
+   return addView(
+         ::QuickContactBadge,
+         ko5hianAction
+   )
 }

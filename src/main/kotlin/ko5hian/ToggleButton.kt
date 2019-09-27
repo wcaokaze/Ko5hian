@@ -1,19 +1,18 @@
 package ko5hian
 
-import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.ToggleButton
 
 import kotlin.contracts.*
 
 @ExperimentalContracts
-inline fun <L : ViewGroup.LayoutParams>
-      Ko5hianViewParent<L>.toggleButton(
-            style: String? = null,
-            reuse: ToggleButton = ToggleButton(context),
-            builderAction: Ko5hianViewBuilder<ToggleButton, L>.() -> Unit
-      ): ToggleButton
-{
-   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+fun <P : ViewManager, L> Ko5hian<P, *, L>.toggleButton(
+      ko5hianAction: Ko5hianAction<ToggleButton, L>
+): ToggleButton {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   return addView(style, "toggleButton", reuse, builderAction)
+   return addView(
+         ::ToggleButton,
+         ko5hianAction
+   )
 }

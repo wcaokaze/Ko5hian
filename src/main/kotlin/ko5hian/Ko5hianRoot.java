@@ -5,11 +5,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 
-public final class Ko5hianRoot implements ViewManager {
-   public final Context context;
+public class Ko5hianRoot implements ViewManager {
+   private final Context mContext;
 
    public Ko5hianRoot(final Context context) {
-      this.context = context;
+      mContext = context;
+
+      Ko5hianInternal.setDisplayDensity(
+            context.getResources().getDisplayMetrics().density);
+   }
+
+   public Context getContext() {
+      return mContext;
+   }
+
+   public ViewGroup.LayoutParams createLayoutParams() {
+      return new ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT);
    }
 
    @Override
