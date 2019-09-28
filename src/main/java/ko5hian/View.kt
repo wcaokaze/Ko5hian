@@ -8,7 +8,7 @@ import android.view.ViewManager
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.view(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.view(
       ko5hianAction: Ko5hianAction<View, L>
 ): View {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -20,7 +20,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.view(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.view(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.view(
       withName: String,
       ko5hianAction: Ko5hianAction<View, L>
 ) {

@@ -7,7 +7,7 @@ import android.widget.TimePicker
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.timePicker(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.timePicker(
       ko5hianAction: Ko5hianAction<TimePicker, L>
 ): TimePicker {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.timePicker(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.timePicker(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.timePicker(
       withName: String,
       ko5hianAction: Ko5hianAction<TimePicker, L>
 ) {

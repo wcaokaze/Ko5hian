@@ -7,7 +7,7 @@ import android.widget.ToggleButton
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.toggleButton(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.toggleButton(
       ko5hianAction: Ko5hianAction<ToggleButton, L>
 ): ToggleButton {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.toggleButton(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.toggleButton(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.toggleButton(
       withName: String,
       ko5hianAction: Ko5hianAction<ToggleButton, L>
 ) {

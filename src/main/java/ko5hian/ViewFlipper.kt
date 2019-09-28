@@ -8,7 +8,7 @@ import android.widget.ViewFlipper
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.viewFlipper(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.viewFlipper(
       ko5hianAction: Ko5hianParentAction<ViewFlipper, L, FrameLayout.LayoutParams>
 ): ViewFlipper {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -21,7 +21,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.viewFlipper(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.viewFlipper(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.viewFlipper(
       withName: String,
       ko5hianAction: Ko5hianParentAction<ViewFlipper, L, FrameLayout.LayoutParams>
 ) {

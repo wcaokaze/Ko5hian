@@ -10,7 +10,7 @@ import android.graphics.drawable.Drawable
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.imageView(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.imageView(
       ko5hianAction: Ko5hianAction<ImageView, L>
 ): ImageView {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -22,7 +22,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.imageView(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.imageView(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.imageView(
       withName: String,
       ko5hianAction: Ko5hianAction<ImageView, L>
 ) {

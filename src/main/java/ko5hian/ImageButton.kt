@@ -7,7 +7,7 @@ import android.widget.ImageButton
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.imageButton(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.imageButton(
       ko5hianAction: Ko5hianAction<ImageButton, L>
 ): ImageButton {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.imageButton(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.imageButton(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.imageButton(
       withName: String,
       ko5hianAction: Ko5hianAction<ImageButton, L>
 ) {

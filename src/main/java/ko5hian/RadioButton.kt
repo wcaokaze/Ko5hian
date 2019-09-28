@@ -7,7 +7,7 @@ import android.widget.RadioButton
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.radioButton(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.radioButton(
       ko5hianAction: Ko5hianAction<RadioButton, L>
 ): RadioButton {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.radioButton(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.radioButton(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.radioButton(
       withName: String,
       ko5hianAction: Ko5hianAction<RadioButton, L>
 ) {

@@ -7,7 +7,7 @@ import android.widget.VideoView
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.videoView(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.videoView(
       ko5hianAction: Ko5hianAction<VideoView, L>
 ): VideoView {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.videoView(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.videoView(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.videoView(
       withName: String,
       ko5hianAction: Ko5hianAction<VideoView, L>
 ) {

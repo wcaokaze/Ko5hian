@@ -12,7 +12,7 @@ import android.util.TypedValue
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.textView(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.textView(
       ko5hianAction: Ko5hianAction<TextView, L>
 ): TextView {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -24,7 +24,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.textView(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.textView(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.textView(
       withName: String,
       ko5hianAction: Ko5hianAction<TextView, L>
 ) {

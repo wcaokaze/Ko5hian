@@ -7,7 +7,7 @@ import android.widget.NumberPicker
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.numberPicker(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.numberPicker(
       ko5hianAction: Ko5hianAction<NumberPicker, L>
 ): NumberPicker {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.numberPicker(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.numberPicker(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.numberPicker(
       withName: String,
       ko5hianAction: Ko5hianAction<NumberPicker, L>
 ) {

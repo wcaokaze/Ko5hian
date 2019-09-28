@@ -7,7 +7,7 @@ import android.widget.Switch
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.switch(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.switch(
       ko5hianAction: Ko5hianAction<Switch, L>
 ): Switch {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.switch(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.switch(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.switch(
       withName: String,
       ko5hianAction: Ko5hianAction<Switch, L>
 ) {

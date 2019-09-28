@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.linearLayout(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.linearLayout(
       ko5hianAction: Ko5hianParentAction<LinearLayout, L, LinearLayout.LayoutParams>
 ): LinearLayout {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -21,7 +21,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.linearLayout(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.linearLayout(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.linearLayout(
       withName: String,
       ko5hianAction: Ko5hianParentAction<LinearLayout, L, LinearLayout.LayoutParams>
 ) {

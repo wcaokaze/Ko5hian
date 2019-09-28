@@ -7,7 +7,7 @@ import android.widget.EditText
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.editText(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.editText(
       ko5hianAction: Ko5hianAction<EditText, L>
 ): EditText {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.editText(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.editText(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.editText(
       withName: String,
       ko5hianAction: Ko5hianAction<EditText, L>
 ) {

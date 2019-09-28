@@ -7,7 +7,7 @@ import android.widget.MultiAutoCompleteTextView
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.multiAutoCompleteTextView(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.multiAutoCompleteTextView(
       ko5hianAction: Ko5hianAction<MultiAutoCompleteTextView, L>
 ): MultiAutoCompleteTextView {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.multiAutoCompleteTextView(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.multiAutoCompleteTextView(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.multiAutoCompleteTextView(
       withName: String,
       ko5hianAction: Ko5hianAction<MultiAutoCompleteTextView, L>
 ) {

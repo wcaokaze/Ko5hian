@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.frameLayout(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.frameLayout(
       ko5hianAction: Ko5hianParentAction<FrameLayout, L, FrameLayout.LayoutParams>
 ): FrameLayout {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -21,7 +21,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.frameLayout(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.textView(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.frameLayout(
       withName: String,
       ko5hianAction: Ko5hianParentAction<FrameLayout, L, FrameLayout.LayoutParams>
 ) {

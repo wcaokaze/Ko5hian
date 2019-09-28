@@ -7,7 +7,7 @@ import android.widget.DatePicker
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.datePicker(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.datePicker(
       ko5hianAction: Ko5hianAction<DatePicker, L>
 ): DatePicker {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.datePicker(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.datePicker(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.datePicker(
       withName: String,
       ko5hianAction: Ko5hianAction<DatePicker, L>
 ) {

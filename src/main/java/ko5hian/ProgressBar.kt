@@ -7,7 +7,7 @@ import android.widget.ProgressBar
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.progressBar(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.progressBar(
       ko5hianAction: Ko5hianAction<ProgressBar, L>
 ): ProgressBar {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.progressBar(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.progressBar(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.progressBar(
       withName: String,
       ko5hianAction: Ko5hianAction<ProgressBar, L>
 ) {

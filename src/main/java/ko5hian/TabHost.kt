@@ -8,7 +8,7 @@ import android.widget.TabHost
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.tabHost(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.tabHost(
       ko5hianAction: Ko5hianParentAction<TabHost, L, FrameLayout.LayoutParams>
 ): TabHost {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -21,7 +21,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.tabHost(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.tabHost(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.tabHost(
       withName: String,
       ko5hianAction: Ko5hianParentAction<TabHost, L, FrameLayout.LayoutParams>
 ) {

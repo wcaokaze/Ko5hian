@@ -7,7 +7,7 @@ import android.widget.SeekBar
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.seekBar(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.seekBar(
       ko5hianAction: Ko5hianAction<SeekBar, L>
 ): SeekBar {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.seekBar(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.seekBar(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.seekBar(
       withName: String,
       ko5hianAction: Ko5hianAction<SeekBar, L>
 ) {

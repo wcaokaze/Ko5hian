@@ -7,7 +7,7 @@ import android.widget.QuickContactBadge
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.quickContactBadge(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.quickContactBadge(
       ko5hianAction: Ko5hianAction<QuickContactBadge, L>
 ): QuickContactBadge {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.quickContactBadge(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.quickContactBadge(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.quickContactBadge(
       withName: String,
       ko5hianAction: Ko5hianAction<QuickContactBadge, L>
 ) {

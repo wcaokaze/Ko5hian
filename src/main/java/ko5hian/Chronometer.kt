@@ -7,7 +7,7 @@ import android.widget.Chronometer
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.chronometer(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.chronometer(
       ko5hianAction: Ko5hianAction<Chronometer, L>
 ): Chronometer {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.chronometer(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.chronometer(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.chronometer(
       withName: String,
       ko5hianAction: Ko5hianAction<Chronometer, L>
 ) {

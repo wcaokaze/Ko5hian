@@ -7,7 +7,7 @@ import android.widget.CheckBox
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.checkBox(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.checkBox(
       ko5hianAction: Ko5hianAction<CheckBox, L>
 ): CheckBox {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.checkBox(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.checkBox(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.checkBox(
       withName: String,
       ko5hianAction: Ko5hianAction<CheckBox, L>
 ) {

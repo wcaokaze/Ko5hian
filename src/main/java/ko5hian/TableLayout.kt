@@ -7,7 +7,7 @@ import android.widget.TableLayout
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.tableLayout(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.tableLayout(
       ko5hianAction: Ko5hianParentAction<TableLayout, L, TableLayout.LayoutParams>
 ): TableLayout {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -20,7 +20,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.tableLayout(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.tableLayout(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.tableLayout(
       withName: String,
       ko5hianAction: Ko5hianParentAction<TableLayout, L, TableLayout.LayoutParams>
 ) {

@@ -7,7 +7,7 @@ import android.widget.RadioGroup
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.radioGroup(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.radioGroup(
       ko5hianAction: Ko5hianParentAction<RadioGroup, L, RadioGroup.LayoutParams>
 ): RadioGroup {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -20,7 +20,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.radioGroup(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.radioGroup(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.radioGroup(
       withName: String,
       ko5hianAction: Ko5hianParentAction<RadioGroup, L, RadioGroup.LayoutParams>
 ) {

@@ -8,7 +8,7 @@ import android.widget.TextSwitcher
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.textSwitcher(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.textSwitcher(
       ko5hianAction: Ko5hianParentAction<TextSwitcher, L, FrameLayout.LayoutParams>
 ): TextSwitcher {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -21,7 +21,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.textSwitcher(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.textSwitcher(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.textSwitcher(
       withName: String,
       ko5hianAction: Ko5hianParentAction<TextSwitcher, L, FrameLayout.LayoutParams>
 ) {

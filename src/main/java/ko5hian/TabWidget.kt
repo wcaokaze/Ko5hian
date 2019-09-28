@@ -8,7 +8,7 @@ import android.widget.TabWidget
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.tabWidget(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.tabWidget(
       ko5hianAction: Ko5hianParentAction<TabWidget, L, LinearLayout.LayoutParams>
 ): TabWidget {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -21,7 +21,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.tabWidget(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.tabWidget(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.tabWidget(
       withName: String,
       ko5hianAction: Ko5hianParentAction<TabWidget, L, LinearLayout.LayoutParams>
 ) {

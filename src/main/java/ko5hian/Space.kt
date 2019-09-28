@@ -7,7 +7,7 @@ import android.widget.Space
 import kotlin.contracts.*
 
 @ExperimentalContracts
-fun <P : ViewManager, L> Ko5hian<P, *, L>.space(
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.space(
       ko5hianAction: Ko5hianAction<Space, L>
 ): Space {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
@@ -19,7 +19,7 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.space(
 }
 
 @ExperimentalContracts
-fun <P : ViewGroup, L> Ko5hian<P, *, L>.space(
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.space(
       withName: String,
       ko5hianAction: Ko5hianAction<Space, L>
 ) {
