@@ -31,7 +31,7 @@ public class Ko5hianRoot implements ViewManager {
 
    @Override
    public void addView(View view, ViewGroup.LayoutParams params) {
-      // nop
+      view.setLayoutParams(params);
    }
 
    @Override
