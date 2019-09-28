@@ -1,5 +1,6 @@
 package ko5hian
 
+import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.SeekBar
 
@@ -13,6 +14,19 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.seekBar(
 
    return addView(
          ::SeekBar,
+         ko5hianAction
+   )
+}
+
+@ExperimentalContracts
+fun <P : ViewGroup, L> Ko5hian<P, *, L>.seekBar(
+      withName: String,
+      ko5hianAction: Ko5hianAction<SeekBar, L>
+) {
+   contract { callsInPlace(ko5hianAction, InvocationKind.AT_LEAST_ONCE) }
+
+   mutateView(
+         withName,
          ko5hianAction
    )
 }

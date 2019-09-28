@@ -1,5 +1,6 @@
 package ko5hian
 
+import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.TableLayout
 
@@ -13,6 +14,20 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.tableLayout(
 
    return addView(
          ::TableLayout,
+         { TableLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         ko5hianAction
+   )
+}
+
+@ExperimentalContracts
+fun <P : ViewGroup, L> Ko5hian<P, *, L>.tableLayout(
+      withName: String,
+      ko5hianAction: Ko5hianParentAction<TableLayout, L, TableLayout.LayoutParams>
+) {
+   contract { callsInPlace(ko5hianAction, InvocationKind.AT_LEAST_ONCE) }
+
+   mutateView(
+         withName,
          { TableLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
          ko5hianAction
    )

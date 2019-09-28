@@ -1,5 +1,6 @@
 package ko5hian
 
+import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.TimePicker
 
@@ -13,6 +14,19 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.timePicker(
 
    return addView(
          ::TimePicker,
+         ko5hianAction
+   )
+}
+
+@ExperimentalContracts
+fun <P : ViewGroup, L> Ko5hian<P, *, L>.timePicker(
+      withName: String,
+      ko5hianAction: Ko5hianAction<TimePicker, L>
+) {
+   contract { callsInPlace(ko5hianAction, InvocationKind.AT_LEAST_ONCE) }
+
+   mutateView(
+         withName,
          ko5hianAction
    )
 }

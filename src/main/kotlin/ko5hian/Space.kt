@@ -1,5 +1,6 @@
 package ko5hian
 
+import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.Space
 
@@ -13,6 +14,19 @@ fun <P : ViewManager, L> Ko5hian<P, *, L>.space(
 
    return addView(
          ::Space,
+         ko5hianAction
+   )
+}
+
+@ExperimentalContracts
+fun <P : ViewGroup, L> Ko5hian<P, *, L>.space(
+      withName: String,
+      ko5hianAction: Ko5hianAction<Space, L>
+) {
+   contract { callsInPlace(ko5hianAction, InvocationKind.AT_LEAST_ONCE) }
+
+   mutateView(
+         withName,
          ko5hianAction
    )
 }

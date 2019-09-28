@@ -25,6 +25,10 @@ public class Ko5hianRoot implements ViewManager {
             ViewGroup.LayoutParams.WRAP_CONTENT);
    }
 
+   public <V extends View> V findView(final Class<V> viewClass) {
+      return null;
+   }
+
    @Override
    public void addView(View view, ViewGroup.LayoutParams params) {
       // nop
