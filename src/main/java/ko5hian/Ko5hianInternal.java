@@ -76,33 +76,38 @@ public final class Ko5hianInternal {
                                              final Class<V> viewClass)
    {
       if (viewManager instanceof ViewGroup) {
-         final ViewGroup parent = (ViewGroup) viewManager;
-
-         for (int scannedIndex = (int) parent.getTag(R.id.view_tag_scanned_index);
-              scannedIndex < parent.getChildCount();
-              scannedIndex++)
-         {
-            final View child = parent.getChildAt(scannedIndex);
-
-            if (child.getClass().equals(viewClass)) {
-               parent.setTag(R.id.view_tag_scanned_index, scannedIndex + 1);
-
-               @SuppressWarnings("unchecked")
-               final V casted = (V) child;
-
-               return casted;
-            }
-         }
-
-         parent.setTag(R.id.view_tag_scanned_index, parent.getChildCount());
-
-         return null;
+         return findView((ViewGroup) viewManager, viewClass);
       } else if (viewManager instanceof Ko5hianRoot) {
          final Ko5hianRoot parent = (Ko5hianRoot) viewManager;
          return parent.findView(viewClass);
       } else {
          throw new IllegalStateException();
       }
+   }
+
+   public static <V extends View> V findView(final ViewGroup parent,
+                                             final Class<V> viewClass)
+   {
+      int scannedIndex = (int) parent.getTag(R.id.view_tag_scanned_index);
+
+      if (scannedIndex == -1) { return null; }
+
+      for (; scannedIndex < parent.getChildCount(); scannedIndex++) {
+         final View child = parent.getChildAt(scannedIndex);
+
+         if (child.getClass().equals(viewClass)) {
+            parent.setTag(R.id.view_tag_scanned_index, scannedIndex + 1);
+
+            @SuppressWarnings("unchecked")
+            final V casted = (V) child;
+
+            return casted;
+         }
+      }
+
+      parent.setTag(R.id.view_tag_scanned_index, -1);
+
+      return null;
    }
 
    public static Iterator<View> findChildrenByName(final ViewGroup parent,
