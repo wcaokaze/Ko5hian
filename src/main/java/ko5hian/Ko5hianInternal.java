@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import com.wcaokaze.ko5hian.R;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -110,10 +109,22 @@ public final class Ko5hianInternal {
                                                    final String name)
    {
       if (parent.getChildCount() == 0) {
-         return Collections.emptyIterator();
+         return new EmptyIterator();
       }
 
       return new ViewNameFilterIterator(parent, name);
+   }
+
+   private static final class EmptyIterator implements Iterator<View> {
+      @Override
+      public boolean hasNext() {
+         return false;
+      }
+
+      @Override
+      public View next() {
+         throw new NoSuchElementException();
+      }
    }
 
    private static final class ViewNameFilterIterator implements Iterator<View> {
