@@ -34,7 +34,52 @@ public final class Ko5hianInternal {
       }
    }
 
+   public static void addView(final Object viewManager,
+                              final ViewGroup view,
+                              final Function0<?> childLayoutParamsInstantiator)
+   {
+      if (view.getChildCount() == 0) {
+         view.setTag(R.id.view_tag_scanned_index, -1);
+      } else {
+         view.setTag(R.id.view_tag_scanned_index, 0);
+      }
+
+      view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator);
+
+      if (viewManager instanceof ViewGroup) {
+         final ViewGroup parent = (ViewGroup) viewManager;
+         final ViewGroup.LayoutParams layoutParams = createLayoutParams(parent);
+
+         parent.addView(view, layoutParams);
+      } else if (viewManager instanceof Ko5hianRoot) {
+         final Ko5hianRoot parent = (Ko5hianRoot) viewManager;
+         final ViewGroup.LayoutParams layoutParams = parent.createLayoutParams();
+
+         parent.addView(view, layoutParams);
+      } else {
+         throw new IllegalStateException();
+      }
+   }
+
    public static void setLayoutParams(final Object parentViewManager, final View view) {
+      if (view.getLayoutParams() != null) { return; }
+
+      final ViewGroup.LayoutParams layoutParams = createLayoutParams(parentViewManager);
+      view.setLayoutParams(layoutParams);
+   }
+
+   public static void setLayoutParams(final Object parentViewManager,
+                                      final ViewGroup view,
+                                      final Function0<?> childLayoutParamsInstantiator)
+   {
+      if (view.getChildCount() == 0) {
+         view.setTag(R.id.view_tag_scanned_index, -1);
+      } else {
+         view.setTag(R.id.view_tag_scanned_index, 0);
+      }
+
+      view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator);
+
       if (view.getLayoutParams() != null) { return; }
 
       final ViewGroup.LayoutParams layoutParams = createLayoutParams(parentViewManager);
@@ -136,23 +181,7 @@ public final class Ko5hianInternal {
    public static Iterator<View> findChildrenByName(final ViewGroup parent,
                                                    final String name)
    {
-      if (parent.getChildCount() == 0) {
-         return new EmptyIterator();
-      }
-
       return new ViewNameFilterIterator(parent, name);
-   }
-
-   private static final class EmptyIterator implements Iterator<View> {
-      @Override
-      public boolean hasNext() {
-         return false;
-      }
-
-      @Override
-      public View next() {
-         throw new NoSuchElementException();
-      }
    }
 
    private static final class ViewNameFilterIterator implements Iterator<View> {

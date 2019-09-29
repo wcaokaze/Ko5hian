@@ -71,8 +71,7 @@ inline fun <P, L, reified V> Ko5hian<P, *, L>.addView(
    var view = Ko5hianInternal.findView(raw, V::class.java)
 
    if (view == null) {
-      val context = Ko5hianInternal.getContext(raw)
-      view = viewConstructor(context)
+      view = viewConstructor(Ko5hianInternal.getContext(raw)!!)
       Ko5hianInternal.addView(raw, view)
    } else {
       Ko5hianInternal.setLayoutParams(raw, view)
@@ -89,20 +88,16 @@ inline fun <P, L, reified V, CL> Ko5hian<P, *, L>.addView(
       noinline childLayoutParamsInstantiator: () -> CL,
       ko5hianAction: Ko5hianParentAction<V, L, CL>
 ): V
-      where P : ViewManager, V : View
+      where P : ViewManager, V : ViewGroup
 {
    var view = Ko5hianInternal.findView(raw, V::class.java)
 
    if (view == null) {
-      val context = Ko5hianInternal.getContext(raw)
-      view = viewConstructor(context)
-      Ko5hianInternal.addView(raw, view)
+      view = viewConstructor(Ko5hianInternal.getContext(raw)!!)
+      Ko5hianInternal.addView(raw, view, childLayoutParamsInstantiator)
    } else {
-      Ko5hianInternal.setLayoutParams(raw, view)
+      Ko5hianInternal.setLayoutParams(raw, view, childLayoutParamsInstantiator)
    }
-
-   view.setTag(R.id.view_tag_scanned_index, 0)
-   view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator)
 
    val ko5hian = Ko5hian<V, L, CL>(view)
    ko5hian.ko5hianAction()
