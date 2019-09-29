@@ -11,12 +11,7 @@ public class Ko5hianRoot implements ViewManager {
    public Ko5hianRoot(final Context context) {
       mContext = context;
 
-      Ko5hianInternal.setDisplayDensity(
-            context.getResources().getDisplayMetrics().density);
-   }
-
-   public Context getContext() {
-      return mContext;
+      Ko5hianInternal.displayDensity = context.getResources().getDisplayMetrics().density;
    }
 
    public ViewGroup.LayoutParams createLayoutParams() {

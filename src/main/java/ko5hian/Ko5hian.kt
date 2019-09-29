@@ -45,9 +45,20 @@ inline fun <R> ko5hian(
 ): R {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   val ko5hianRoot = Ko5hianRoot(context)
-   val ko5hian = Ko5hian<Ko5hianRoot, Nothing, ViewGroup.LayoutParams>(ko5hianRoot)
-   return ko5hian.ko5hianAction()
+   val oldContext = Ko5hianInternal.context
+   val oldLayoutParamsInstantiator = Ko5hianInternal.layoutParamsInstantiator
+
+   Ko5hianInternal.context = context
+   Ko5hianInternal.layoutParamsInstantiator = { ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) }
+
+   try {
+      val ko5hianRoot = Ko5hianRoot(context)
+      val ko5hian = Ko5hian<Ko5hianRoot, Nothing, ViewGroup.LayoutParams>(ko5hianRoot)
+      return ko5hian.ko5hianAction()
+   } finally {
+      Ko5hianInternal.context = oldContext
+      Ko5hianInternal.layoutParamsInstantiator = oldLayoutParamsInstantiator
+   }
 }
 
 @ExperimentalContracts
@@ -57,9 +68,20 @@ inline fun <R> ko5hian(
 ): R {
    contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
 
-   val ko5hianRoot = Ko5hianViewMutator(mutationTarget)
-   val ko5hian = Ko5hian<Ko5hianRoot, Nothing, ViewGroup.LayoutParams>(ko5hianRoot)
-   return ko5hian.ko5hianAction()
+   val oldContext = Ko5hianInternal.context
+   val oldLayoutParamsInstantiator = Ko5hianInternal.layoutParamsInstantiator
+
+   Ko5hianInternal.context = mutationTarget.context
+   Ko5hianInternal.layoutParamsInstantiator = { ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) }
+
+   try {
+      val ko5hianRoot = Ko5hianViewMutator(mutationTarget)
+      val ko5hian = Ko5hian<Ko5hianRoot, Nothing, ViewGroup.LayoutParams>(ko5hianRoot)
+      return ko5hian.ko5hianAction()
+   } finally {
+      Ko5hianInternal.context = oldContext
+      Ko5hianInternal.layoutParamsInstantiator = oldLayoutParamsInstantiator
+   }
 }
 
 inline fun <P, L, reified V> Ko5hian<P, *, L>.addView(
@@ -71,10 +93,10 @@ inline fun <P, L, reified V> Ko5hian<P, *, L>.addView(
    var view = Ko5hianInternal.findView(raw, V::class.java)
 
    if (view == null) {
-      view = viewConstructor(Ko5hianInternal.getContext(raw)!!)
+      view = viewConstructor(Ko5hianInternal.context!!)
       Ko5hianInternal.addView(raw, view)
    } else {
-      Ko5hianInternal.setLayoutParams(raw, view)
+      Ko5hianInternal.setLayoutParams(view)
    }
 
    val ko5hian = Ko5hian<V, L, Nothing>(view)
@@ -93,14 +115,23 @@ inline fun <P, L, reified V, CL> Ko5hian<P, *, L>.addView(
    var view = Ko5hianInternal.findView(raw, V::class.java)
 
    if (view == null) {
-      view = viewConstructor(Ko5hianInternal.getContext(raw)!!)
-      Ko5hianInternal.addView(raw, view, childLayoutParamsInstantiator)
+      view = viewConstructor(Ko5hianInternal.context!!)
+      Ko5hianInternal.addView(raw, view)
    } else {
-      Ko5hianInternal.setLayoutParams(raw, view, childLayoutParamsInstantiator)
+      Ko5hianInternal.setLayoutParams(view)
    }
+
+   val oldLayoutParamsInstantiator = Ko5hianInternal.layoutParamsInstantiator
+   val oldScannedIndex = Ko5hianInternal.scannedIndex
+
+   Ko5hianInternal.layoutParamsInstantiator = childLayoutParamsInstantiator
+   Ko5hianInternal.scannedIndex = if (view.childCount == 0) { -1 } else { 0 }
 
    val ko5hian = Ko5hian<V, L, CL>(view)
    ko5hian.ko5hianAction()
+
+   Ko5hianInternal.layoutParamsInstantiator = oldLayoutParamsInstantiator
+   Ko5hianInternal.scannedIndex = oldScannedIndex
 
    return view
 }
@@ -127,18 +158,26 @@ inline fun <P, L, V, CL> Ko5hian<P, *, L>.mutateView(
       noinline childLayoutParamsInstantiator: () -> CL,
       ko5hianAction: Ko5hianParentAction<V, L, CL>
 )
-      where P : ViewManager, V : View
+      where P : ViewManager, V : ViewGroup
 {
    val parent = raw as ViewGroup
+
+   val oldLayoutParamsInstantiator = Ko5hianInternal.layoutParamsInstantiator
+
+   Ko5hianInternal.layoutParamsInstantiator = childLayoutParamsInstantiator
 
    for (child in Ko5hianInternal.findChildrenByName(parent, name)) {
       @Suppress("UNCHECKED_CAST")
       val view = child as V
 
-      view.setTag(R.id.view_tag_scanned_index, 0)
-      view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator)
+      val oldScannedIndex = Ko5hianInternal.scannedIndex
+      Ko5hianInternal.scannedIndex = if (view.childCount == 0) { -1 } else { 0 }
 
       val ko5hian = Ko5hian<V, L, Nothing>(view)
       ko5hian.ko5hianAction()
+
+      Ko5hianInternal.scannedIndex = oldScannedIndex
    }
+
+   Ko5hianInternal.layoutParamsInstantiator = oldLayoutParamsInstantiator
 }

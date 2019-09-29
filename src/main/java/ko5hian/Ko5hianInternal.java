@@ -12,16 +12,18 @@ import java.util.NoSuchElementException;
 import kotlin.jvm.functions.Function0;
 
 public final class Ko5hianInternal {
-   private static float mDisplayDensity = 0.0f;
+   static float displayDensity = 0.0f;
 
-   static void setDisplayDensity(final float displayDensity) {
-      mDisplayDensity = displayDensity;
-   }
+   public static Context context = null;
+   public static Function0<?> layoutParamsInstantiator = null;
+   public static int scannedIndex = 0;
 
    public static void addView(final Object viewManager, final View view) {
       if (viewManager instanceof ViewGroup) {
          final ViewGroup parent = (ViewGroup) viewManager;
-         final ViewGroup.LayoutParams layoutParams = createLayoutParams(parent);
+
+         final ViewGroup.LayoutParams layoutParams =
+               (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
 
          parent.addView(view, layoutParams);
       } else if (viewManager instanceof Ko5hianRoot) {
@@ -34,90 +36,17 @@ public final class Ko5hianInternal {
       }
    }
 
-   public static void addView(final Object viewManager,
-                              final ViewGroup view,
-                              final Function0<?> childLayoutParamsInstantiator)
-   {
-      if (view.getChildCount() == 0) {
-         view.setTag(R.id.view_tag_scanned_index, -1);
-      } else {
-         view.setTag(R.id.view_tag_scanned_index, 0);
-      }
-
-      view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator);
-
-      if (viewManager instanceof ViewGroup) {
-         final ViewGroup parent = (ViewGroup) viewManager;
-         final ViewGroup.LayoutParams layoutParams = createLayoutParams(parent);
-
-         parent.addView(view, layoutParams);
-      } else if (viewManager instanceof Ko5hianRoot) {
-         final Ko5hianRoot parent = (Ko5hianRoot) viewManager;
-         final ViewGroup.LayoutParams layoutParams = parent.createLayoutParams();
-
-         parent.addView(view, layoutParams);
-      } else {
-         throw new IllegalStateException();
-      }
-   }
-
-   public static void setLayoutParams(final Object parentViewManager, final View view) {
+   public static void setLayoutParams(final View view) {
       if (view.getLayoutParams() != null) { return; }
 
-      final ViewGroup.LayoutParams layoutParams = createLayoutParams(parentViewManager);
+      final ViewGroup.LayoutParams layoutParams =
+            (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
+
       view.setLayoutParams(layoutParams);
-   }
-
-   public static void setLayoutParams(final Object parentViewManager,
-                                      final ViewGroup view,
-                                      final Function0<?> childLayoutParamsInstantiator)
-   {
-      if (view.getChildCount() == 0) {
-         view.setTag(R.id.view_tag_scanned_index, -1);
-      } else {
-         view.setTag(R.id.view_tag_scanned_index, 0);
-      }
-
-      view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator);
-
-      if (view.getLayoutParams() != null) { return; }
-
-      final ViewGroup.LayoutParams layoutParams = createLayoutParams(parentViewManager);
-      view.setLayoutParams(layoutParams);
-   }
-
-   public static Context getContext(final Object viewManager) {
-      if (viewManager instanceof ViewGroup) {
-         final ViewGroup parent = (ViewGroup) viewManager;
-         return parent.getContext();
-      } else if (viewManager instanceof Ko5hianRoot) {
-         final Ko5hianRoot parent = (Ko5hianRoot) viewManager;
-         return parent.getContext();
-      } else {
-         throw new IllegalStateException();
-      }
-   }
-
-   public static ViewGroup.LayoutParams createLayoutParams(final Object viewManager) {
-      if (viewManager instanceof ViewGroup) {
-         return createLayoutParams((ViewGroup) viewManager);
-      } else if (viewManager instanceof Ko5hianRoot) {
-         final Ko5hianRoot parent = (Ko5hianRoot) viewManager;
-         return parent.createLayoutParams();
-      } else {
-         throw new IllegalStateException();
-      }
-   }
-
-   public static ViewGroup.LayoutParams createLayoutParams(final ViewGroup parent) {
-      final Function0<?> layoutParamsInstantiator =
-            (Function0<?>) parent.getTag(R.id.view_tag_layout_params_instantiator);
-
-      return (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
    }
 
    public static int dipToPx(final int dip) {
-      final int px = (int) (dip * mDisplayDensity);
+      final int px = (int) (dip * displayDensity);
 
       if (px != 0) {
          return px;
@@ -129,7 +58,7 @@ public final class Ko5hianInternal {
    }
 
    public static int dipToPx(final double dip) {
-      final int px = (int) (dip * mDisplayDensity);
+      final int px = (int) (dip * displayDensity);
 
       if (px != 0) {
          return px;
@@ -156,7 +85,7 @@ public final class Ko5hianInternal {
    public static <V extends View> V findView(final ViewGroup parent,
                                              final Class<V> viewClass)
    {
-      int scannedIndex = (int) parent.getTag(R.id.view_tag_scanned_index);
+      int scannedIndex = Ko5hianInternal.scannedIndex;
 
       if (scannedIndex == -1) { return null; }
 
@@ -164,7 +93,7 @@ public final class Ko5hianInternal {
          final View child = parent.getChildAt(scannedIndex);
 
          if (child.getClass().equals(viewClass)) {
-            parent.setTag(R.id.view_tag_scanned_index, scannedIndex + 1);
+            Ko5hianInternal.scannedIndex = scannedIndex + 1;
 
             @SuppressWarnings("unchecked")
             final V casted = (V) child;
@@ -173,7 +102,7 @@ public final class Ko5hianInternal {
          }
       }
 
-      parent.setTag(R.id.view_tag_scanned_index, -1);
+      Ko5hianInternal.scannedIndex = -1;
 
       return null;
    }
