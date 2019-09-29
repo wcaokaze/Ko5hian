@@ -18,6 +18,29 @@ public final class Ko5hianInternal {
       mDisplayDensity = displayDensity;
    }
 
+   public static void addView(final Object viewManager, final View view) {
+      if (viewManager instanceof ViewGroup) {
+         final ViewGroup parent = (ViewGroup) viewManager;
+         final ViewGroup.LayoutParams layoutParams = createLayoutParams(parent);
+
+         parent.addView(view, layoutParams);
+      } else if (viewManager instanceof Ko5hianRoot) {
+         final Ko5hianRoot parent = (Ko5hianRoot) viewManager;
+         final ViewGroup.LayoutParams layoutParams = parent.createLayoutParams();
+
+         parent.addView(view, layoutParams);
+      } else {
+         throw new IllegalStateException();
+      }
+   }
+
+   public static void setLayoutParams(final Object parentViewManager, final View view) {
+      if (view.getLayoutParams() != null) { return; }
+
+      final ViewGroup.LayoutParams layoutParams = createLayoutParams(parentViewManager);
+      view.setLayoutParams(layoutParams);
+   }
+
    public static Context getContext(final Object viewManager) {
       if (viewManager instanceof ViewGroup) {
          final ViewGroup parent = (ViewGroup) viewManager;

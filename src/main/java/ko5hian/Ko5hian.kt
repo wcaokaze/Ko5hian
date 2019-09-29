@@ -68,15 +68,14 @@ inline fun <P, L, reified V> Ko5hian<P, *, L>.addView(
 ): V
       where P : ViewManager, V : View
 {
-   val context = Ko5hianInternal.getContext(raw)
-
    var view = Ko5hianInternal.findView(raw, V::class.java)
 
    if (view == null) {
+      val context = Ko5hianInternal.getContext(raw)
       view = viewConstructor(context)
-
-      val layout = Ko5hianInternal.createLayoutParams(raw)
-      (raw as ViewManager).addView(view, layout)
+      Ko5hianInternal.addView(raw, view)
+   } else {
+      Ko5hianInternal.setLayoutParams(raw, view)
    }
 
    val ko5hian = Ko5hian<V, L, Nothing>(view)
@@ -92,15 +91,14 @@ inline fun <P, L, reified V, CL> Ko5hian<P, *, L>.addView(
 ): V
       where P : ViewManager, V : View
 {
-   val context = Ko5hianInternal.getContext(raw)
-
    var view = Ko5hianInternal.findView(raw, V::class.java)
 
    if (view == null) {
+      val context = Ko5hianInternal.getContext(raw)
       view = viewConstructor(context)
-
-      val layout = Ko5hianInternal.createLayoutParams(raw)
-      (raw as ViewManager).addView(view, layout)
+      Ko5hianInternal.addView(raw, view)
+   } else {
+      Ko5hianInternal.setLayoutParams(raw, view)
    }
 
    view.setTag(R.id.view_tag_scanned_index, 0)
