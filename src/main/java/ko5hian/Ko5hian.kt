@@ -70,10 +70,14 @@ inline fun <P, L, reified V> Ko5hian<P, *, L>.addView(
 {
    val context = Ko5hianInternal.getContext(raw)
 
-   val view = Ko5hianInternal.findView(raw, V::class.java) ?: viewConstructor(context)
-   val layout = Ko5hianInternal.createLayoutParams(raw)
+   var view = Ko5hianInternal.findView(raw, V::class.java)
 
-   (raw as ViewManager).addView(view, layout)
+   if (view == null) {
+      view = viewConstructor(context)
+
+      val layout = Ko5hianInternal.createLayoutParams(raw)
+      (raw as ViewManager).addView(view, layout)
+   }
 
    val ko5hian = Ko5hian<V, L, Nothing>(view)
    ko5hian.ko5hianAction()
@@ -90,13 +94,17 @@ inline fun <P, L, reified V, CL> Ko5hian<P, *, L>.addView(
 {
    val context = Ko5hianInternal.getContext(raw)
 
-   val view = Ko5hianInternal.findView(raw, V::class.java) ?: viewConstructor(context)
-   val layout = Ko5hianInternal.createLayoutParams(raw)
+   var view = Ko5hianInternal.findView(raw, V::class.java)
+
+   if (view == null) {
+      view = viewConstructor(context)
+
+      val layout = Ko5hianInternal.createLayoutParams(raw)
+      (raw as ViewManager).addView(view, layout)
+   }
 
    view.setTag(R.id.view_tag_scanned_index, 0)
    view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator)
-
-   (raw as ViewManager).addView(view, layout)
 
    val ko5hian = Ko5hian<V, L, CL>(view)
    ko5hian.ko5hianAction()
