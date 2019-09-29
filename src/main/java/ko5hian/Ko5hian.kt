@@ -4,12 +4,9 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewManager
+import com.wcaokaze.ko5hian.*
 
 import kotlin.contracts.*
-
-const val VIEW_TAG_ID_LAYOUT_PARAMS_INSTANTIATOR: Int = 5056147
-const val VIEW_TAG_ID_SCANNED_INDEX:              Int = 5056148
-const val VIEW_TAG_ID_NAME:                       Int = 5056149
 
 @Ko5hianMarker
 inline class Ko5hian<out V, out L, out CL>(val raw: Any) {
@@ -28,11 +25,11 @@ val <L> Ko5hian<View, L, *>.layout: L
 var Ko5hian<View, *, *>.name: String
    inline get() {
       val view = raw as View
-      return view.getTag(VIEW_TAG_ID_NAME) as String
+      return view.getTag(R.id.view_tag_name) as String
    }
    inline set(value) {
       val view = raw as View
-      view.setTag(VIEW_TAG_ID_NAME, value)
+      view.setTag(R.id.view_tag_name, value)
    }
 
 typealias Ko5hianView<V>         = Ko5hian<V, *, *>
@@ -96,8 +93,8 @@ inline fun <P, L, reified V, CL> Ko5hian<P, *, L>.addView(
    val view = Ko5hianInternal.findView(raw, V::class.java) ?: viewConstructor(context)
    val layout = Ko5hianInternal.createLayoutParams(raw)
 
-   view.setTag(VIEW_TAG_ID_SCANNED_INDEX, 0)
-   view.setTag(VIEW_TAG_ID_LAYOUT_PARAMS_INSTANTIATOR, childLayoutParamsInstantiator)
+   view.setTag(R.id.view_tag_scanned_index, 0)
+   view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator)
 
    (raw as ViewManager).addView(view, layout)
 
@@ -137,8 +134,8 @@ inline fun <P, L, V, CL> Ko5hian<P, *, L>.mutateView(
       @Suppress("UNCHECKED_CAST")
       val view = child as V
 
-      view.setTag(VIEW_TAG_ID_SCANNED_INDEX, 0)
-      view.setTag(VIEW_TAG_ID_LAYOUT_PARAMS_INSTANTIATOR, childLayoutParamsInstantiator)
+      view.setTag(R.id.view_tag_scanned_index, 0)
+      view.setTag(R.id.view_tag_layout_params_instantiator, childLayoutParamsInstantiator)
 
       val ko5hian = Ko5hian<V, L, Nothing>(view)
       ko5hian.ko5hianAction()

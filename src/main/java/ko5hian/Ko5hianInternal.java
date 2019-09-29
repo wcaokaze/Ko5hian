@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.wcaokaze.ko5hian.R;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -42,7 +44,7 @@ public final class Ko5hianInternal {
 
    public static ViewGroup.LayoutParams createLayoutParams(final ViewGroup parent) {
       final Function0<?> layoutParamsInstantiator =
-            (Function0<?>) parent.getTag(Ko5hianKt.VIEW_TAG_ID_LAYOUT_PARAMS_INSTANTIATOR);
+            (Function0<?>) parent.getTag(R.id.view_tag_layout_params_instantiator);
 
       return (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
    }
@@ -77,14 +79,14 @@ public final class Ko5hianInternal {
       if (viewManager instanceof ViewGroup) {
          final ViewGroup parent = (ViewGroup) viewManager;
 
-         for (int scannedIndex = (int) parent.getTag(Ko5hianKt.VIEW_TAG_ID_SCANNED_INDEX);
+         for (int scannedIndex = (int) parent.getTag(R.id.view_tag_scanned_index);
               scannedIndex < parent.getChildCount();
               scannedIndex++)
          {
             final View child = parent.getChildAt(scannedIndex);
 
             if (child.getClass().equals(viewClass)) {
-               parent.setTag(Ko5hianKt.VIEW_TAG_ID_SCANNED_INDEX, scannedIndex + 1);
+               parent.setTag(R.id.view_tag_scanned_index, scannedIndex + 1);
 
                @SuppressWarnings("unchecked")
                final V casted = (V) child;
@@ -93,7 +95,7 @@ public final class Ko5hianInternal {
             }
          }
 
-         parent.setTag(Ko5hianKt.VIEW_TAG_ID_SCANNED_INDEX, parent.getChildCount());
+         parent.setTag(R.id.view_tag_scanned_index, parent.getChildCount());
 
          return null;
       } else if (viewManager instanceof Ko5hianRoot) {
@@ -127,7 +129,7 @@ public final class Ko5hianInternal {
 
          for (int i = 0; i < parent.getChildCount(); i++) {
             final View child = parent.getChildAt(i);
-            final String childName = (String) child.getTag(Ko5hianKt.VIEW_TAG_ID_NAME);
+            final String childName = (String) child.getTag(R.id.view_tag_name);
 
             if (childName == null) { continue; }
             if (childName.equals(name)) { continue; }
@@ -156,7 +158,7 @@ public final class Ko5hianInternal {
 
          for (int i = mNextViewIndex + 1; i < parent.getChildCount(); i++) {
             final View child = parent.getChildAt(i);
-            final String childName = (String) child.getTag(Ko5hianKt.VIEW_TAG_ID_NAME);
+            final String childName = (String) child.getTag(R.id.view_tag_name);
 
             if (childName == null) { continue; }
             if (childName.equals(name)) { continue; }
