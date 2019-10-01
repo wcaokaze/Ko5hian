@@ -3,9 +3,11 @@ package ko5hian
 import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.Space
+import androidx.annotation.RequiresApi
 
 import kotlin.contracts.*
 
+@RequiresApi(14)
 @ExperimentalContracts
 inline fun <P : ViewManager, L> Ko5hian<P, *, L>.space(
       ko5hianAction: Ko5hianAction<Space, L>
@@ -18,6 +20,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.space(
    )
 }
 
+@RequiresApi(14)
 @ExperimentalContracts
 inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.space(
       withName: String,

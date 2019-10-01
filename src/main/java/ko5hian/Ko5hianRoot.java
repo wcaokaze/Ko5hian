@@ -6,11 +6,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 
 public class Ko5hianRoot implements ViewManager {
-   private final Context mContext;
-
    public Ko5hianRoot(final Context context) {
-      mContext = context;
-
       Ko5hianInternal.displayDensity = context.getResources().getDisplayMetrics().density;
    }
 

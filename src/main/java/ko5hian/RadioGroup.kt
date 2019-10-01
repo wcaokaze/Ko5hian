@@ -6,6 +6,10 @@ import android.widget.RadioGroup
 
 import kotlin.contracts.*
 
+@JvmField
+val radioGroupLayoutParamsInstantiator =
+      fun () = RadioGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+
 @ExperimentalContracts
 inline fun <P : ViewManager, L> Ko5hian<P, *, L>.radioGroup(
       ko5hianAction: Ko5hianParentAction<RadioGroup, L, RadioGroup.LayoutParams>
@@ -14,7 +18,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.radioGroup(
 
    return addView(
          ::RadioGroup,
-         { RadioGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         radioGroupLayoutParamsInstantiator,
          ko5hianAction
    )
 }
@@ -28,7 +32,7 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.radioGroup(
 
    mutateView(
          withName,
-         { RadioGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         radioGroupLayoutParamsInstantiator,
          ko5hianAction
    )
 }

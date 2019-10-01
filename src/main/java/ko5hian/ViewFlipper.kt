@@ -15,7 +15,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.viewFlipper(
 
    return addView(
          ::ViewFlipper,
-         { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         frameLayoutParamsInstantiator,
          ko5hianAction
    )
 }
@@ -29,7 +29,7 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.viewFlipper(
 
    mutateView(
          withName,
-         { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         frameLayoutParamsInstantiator,
          ko5hianAction
    )
 }

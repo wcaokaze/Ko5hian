@@ -34,20 +34,20 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.imageView(
    )
 }
 
-val Ko5hianView<ImageView>.SCALE_TYPE_CENTER get() = ImageView.ScaleType.CENTER
-val Ko5hianView<ImageView>.CENTER_CROP       get() = ImageView.ScaleType.CENTER_CROP
-val Ko5hianView<ImageView>.CENTER_INSIDE     get() = ImageView.ScaleType.CENTER_INSIDE
-val Ko5hianView<ImageView>.FIT_CENTER        get() = ImageView.ScaleType.FIT_CENTER
-val Ko5hianView<ImageView>.FIT_END           get() = ImageView.ScaleType.FIT_END
-val Ko5hianView<ImageView>.FIT_START         get() = ImageView.ScaleType.FIT_START
-val Ko5hianView<ImageView>.FIT_XY            get() = ImageView.ScaleType.FIT_XY
-val Ko5hianView<ImageView>.MATRIX            get() = ImageView.ScaleType.MATRIX
+val Ko5hianView<ImageView>.SCALE_TYPE_CENTER inline get() = ImageView.ScaleType.CENTER
+val Ko5hianView<ImageView>.CENTER_CROP       inline get() = ImageView.ScaleType.CENTER_CROP
+val Ko5hianView<ImageView>.CENTER_INSIDE     inline get() = ImageView.ScaleType.CENTER_INSIDE
+val Ko5hianView<ImageView>.FIT_CENTER        inline get() = ImageView.ScaleType.FIT_CENTER
+val Ko5hianView<ImageView>.FIT_END           inline get() = ImageView.ScaleType.FIT_END
+val Ko5hianView<ImageView>.FIT_START         inline get() = ImageView.ScaleType.FIT_START
+val Ko5hianView<ImageView>.FIT_XY            inline get() = ImageView.ScaleType.FIT_XY
+val Ko5hianView<ImageView>.MATRIX            inline get() = ImageView.ScaleType.MATRIX
 
 var ImageView.image: Drawable?
-   get() = drawable
-   set(value) = setImageDrawable(value)
+   inline get() = drawable
+   inline set(value) = setImageDrawable(value)
 
 var ImageView.bitmap: Bitmap?
    @Deprecated("This getter always throws an Exception", level = DeprecationLevel.ERROR)
    get() = throw UnsupportedOperationException()
-   set(value) = setImageBitmap(value)
+   inline set(value) = setImageBitmap(value)

@@ -3,9 +3,11 @@ package ko5hian
 import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.CalendarView
+import androidx.annotation.RequiresApi
 
 import kotlin.contracts.*
 
+@RequiresApi(11)
 @ExperimentalContracts
 inline fun <P : ViewManager, L> Ko5hian<P, *, L>.calendarView(
       ko5hianAction: Ko5hianAction<CalendarView, L>
@@ -18,6 +20,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.calendarView(
    )
 }
 
+@RequiresApi(11)
 @ExperimentalContracts
 inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.calendarView(
       withName: String,

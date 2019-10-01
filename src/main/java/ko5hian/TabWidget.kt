@@ -15,7 +15,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.tabWidget(
 
    return addView(
          ::TabWidget,
-         { LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         linearLayoutParamsInstantiator,
          ko5hianAction
    )
 }
@@ -29,7 +29,7 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.tabWidget(
 
    mutateView(
          withName,
-         { LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         linearLayoutParamsInstantiator,
          ko5hianAction
    )
 }

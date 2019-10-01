@@ -5,7 +5,8 @@ import android.graphics.*
 import android.graphics.drawable.*
 import android.view.View
 
-fun Ko5hianView<View>.drawable(resId: Int): Drawable
+@Suppress("nothing_to_inline")
+inline fun Ko5hianView<View>.drawable(resId: Int): Drawable
       = (raw as View).context.resources.getDrawable(resId)!!
 
 fun Ko5hianView<View>.drawable(resId: Int, color: Int): Drawable {
@@ -15,13 +16,15 @@ fun Ko5hianView<View>.drawable(resId: Int, color: Int): Drawable {
    return drawable
 }
 
-fun Ko5hianView<View>.string(resId: Int): String
+@Suppress("nothing_to_inline")
+inline fun Ko5hianView<View>.string(resId: Int): String
       = (raw as View).context.getString(resId)
 
-fun Ko5hianView<View>.string(resId: Int, vararg formatArgs: Any?): String
+@Suppress("nothing_to_inline")
+inline fun Ko5hianView<View>.string(resId: Int, vararg formatArgs: Any?): String
       = (raw as View).context.getString(resId, *formatArgs)
 
-val Int.opaque: Int get() = opacity(100)
+val Int.opaque: Int get() = this or (0xff shl 24)
 
 /**
  * @param opacity 0..100

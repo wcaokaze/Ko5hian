@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import kotlin.contracts.*
 
 @JvmField
-val layoutParamsInstantiator =
+val linearLayoutParamsInstantiator =
       fun () = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
 
 @ExperimentalContracts
@@ -19,7 +19,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.linearLayout(
 
    return addView(
          ::LinearLayout,
-         layoutParamsInstantiator,
+         linearLayoutParamsInstantiator,
          ko5hianAction
    )
 }
@@ -33,7 +33,7 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.linearLayout(
 
    mutateView(
          withName,
-         layoutParamsInstantiator,
+         linearLayoutParamsInstantiator,
          ko5hianAction
    )
 }

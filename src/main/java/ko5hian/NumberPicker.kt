@@ -3,9 +3,11 @@ package ko5hian
 import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.NumberPicker
+import androidx.annotation.RequiresApi
 
 import kotlin.contracts.*
 
+@RequiresApi(11)
 @ExperimentalContracts
 inline fun <P : ViewManager, L> Ko5hian<P, *, L>.numberPicker(
       ko5hianAction: Ko5hianAction<NumberPicker, L>
@@ -18,6 +20,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.numberPicker(
    )
 }
 
+@RequiresApi(11)
 @ExperimentalContracts
 inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.numberPicker(
       withName: String,

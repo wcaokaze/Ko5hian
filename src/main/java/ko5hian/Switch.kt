@@ -3,9 +3,11 @@ package ko5hian
 import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.Switch
+import androidx.annotation.RequiresApi
 
 import kotlin.contracts.*
 
+@RequiresApi(14)
 @ExperimentalContracts
 inline fun <P : ViewManager, L> Ko5hian<P, *, L>.switch(
       ko5hianAction: Ko5hianAction<Switch, L>
@@ -18,6 +20,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.switch(
    )
 }
 
+@RequiresApi(14)
 @ExperimentalContracts
 inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.switch(
       withName: String,

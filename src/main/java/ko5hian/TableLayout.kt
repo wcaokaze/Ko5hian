@@ -6,6 +6,10 @@ import android.widget.TableLayout
 
 import kotlin.contracts.*
 
+@JvmField
+val tableLayoutParamsInstantiator =
+      fun () = TableLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+
 @ExperimentalContracts
 inline fun <P : ViewManager, L> Ko5hian<P, *, L>.tableLayout(
       ko5hianAction: Ko5hianParentAction<TableLayout, L, TableLayout.LayoutParams>
@@ -14,7 +18,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.tableLayout(
 
    return addView(
          ::TableLayout,
-         { TableLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         tableLayoutParamsInstantiator,
          ko5hianAction
    )
 }
@@ -28,7 +32,7 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.tableLayout(
 
    mutateView(
          withName,
-         { TableLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         tableLayoutParamsInstantiator,
          ko5hianAction
    )
 }

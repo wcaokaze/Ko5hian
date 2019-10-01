@@ -35,8 +35,8 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.view(
 var View.backgroundColor: Int
    @Deprecated(message = "The getter always throws an Exception", level = DeprecationLevel.ERROR)
    get() = throw UnsupportedOperationException()
-   set(value) = setBackgroundColor(value)
+   inline set(value) = setBackgroundColor(value)
 
-val Ko5hianView<View>.VISIBLE:   Int get() = View.VISIBLE
-val Ko5hianView<View>.INVISIBLE: Int get() = View.INVISIBLE
-val Ko5hianView<View>.GONE:      Int get() = View.GONE
+val Ko5hianView<View>.VISIBLE:   Int inline get() = View.VISIBLE
+val Ko5hianView<View>.INVISIBLE: Int inline get() = View.INVISIBLE
+val Ko5hianView<View>.GONE:      Int inline get() = View.GONE

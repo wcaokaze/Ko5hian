@@ -7,6 +7,10 @@ import android.widget.FrameLayout
 
 import kotlin.contracts.*
 
+@JvmField
+val frameLayoutParamsInstantiator =
+      fun () = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+
 @ExperimentalContracts
 inline fun <P : ViewManager, L> Ko5hian<P, *, L>.frameLayout(
       ko5hianAction: Ko5hianParentAction<FrameLayout, L, FrameLayout.LayoutParams>
@@ -15,7 +19,7 @@ inline fun <P : ViewManager, L> Ko5hian<P, *, L>.frameLayout(
 
    return addView(
          ::FrameLayout,
-         { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         frameLayoutParamsInstantiator,
          ko5hianAction
    )
 }
@@ -29,7 +33,7 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.frameLayout(
 
    mutateView(
          withName,
-         { FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         frameLayoutParamsInstantiator,
          ko5hianAction
    )
 }
