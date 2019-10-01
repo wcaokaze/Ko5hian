@@ -4,6 +4,7 @@ package ko5hian
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewManager
+import androidx.annotation.RequiresApi
 
 import kotlin.contracts.*
 
@@ -36,6 +37,9 @@ var View.backgroundColor: Int
    @Deprecated(message = "The getter always throws an Exception", level = DeprecationLevel.ERROR)
    get() = throw UnsupportedOperationException()
    inline set(value) = setBackgroundColor(value)
+
+val Ko5hianView<View>.LAYOUT_DIRECTION_LTR: Int @RequiresApi(17) inline get() = View.LAYOUT_DIRECTION_LTR
+val Ko5hianView<View>.LAYOUT_DIRECTION_RTL: Int @RequiresApi(17) inline get() = View.LAYOUT_DIRECTION_RTL
 
 val Ko5hianView<View>.VISIBLE:   Int inline get() = View.VISIBLE
 val Ko5hianView<View>.INVISIBLE: Int inline get() = View.INVISIBLE
