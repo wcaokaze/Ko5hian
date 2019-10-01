@@ -3,6 +3,7 @@ package ko5hian;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 
 import com.wcaokaze.ko5hian.R;
 
@@ -19,21 +20,12 @@ public final class Ko5hianInternal {
    public static int scannedIndex = 0;
 
    public static void addView(final Object viewManager, final View view) {
-      if (viewManager instanceof ViewGroup) {
-         final ViewGroup parent = (ViewGroup) viewManager;
+      final ViewManager parent = (ViewManager) viewManager;
 
-         final ViewGroup.LayoutParams layoutParams =
-               (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
+      final ViewGroup.LayoutParams layoutParams =
+            (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
 
-         parent.addView(view, layoutParams);
-      } else if (viewManager instanceof Ko5hianRoot) {
-         final Ko5hianRoot parent = (Ko5hianRoot) viewManager;
-         final ViewGroup.LayoutParams layoutParams = parent.createLayoutParams();
-
-         parent.addView(view, layoutParams);
-      } else {
-         throw new IllegalStateException();
-      }
+      parent.addView(view, layoutParams);
    }
 
    public static void setLayoutParams(final View view) {

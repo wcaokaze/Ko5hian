@@ -38,6 +38,10 @@ typealias Ko5hianLayoutParams<L> = Ko5hian<*, L, *>
 typealias Ko5hianAction      <V, L>     = Ko5hian<V, L, Nothing>.() -> Unit
 typealias Ko5hianParentAction<V, L, CL> = Ko5hian<V, L, CL>     .() -> Unit
 
+@JvmField
+val viewGroupLayoutParamsInstantiator =
+      fun () = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+
 @ExperimentalContracts
 inline fun <R> ko5hian(
       context: Context,
@@ -49,7 +53,7 @@ inline fun <R> ko5hian(
    val oldLayoutParamsInstantiator = Ko5hianInternal.layoutParamsInstantiator
 
    Ko5hianInternal.context = context
-   Ko5hianInternal.layoutParamsInstantiator = { ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) }
+   Ko5hianInternal.layoutParamsInstantiator = viewGroupLayoutParamsInstantiator
 
    try {
       val ko5hianRoot = Ko5hianRoot(context)
@@ -72,7 +76,7 @@ inline fun <R> ko5hian(
    val oldLayoutParamsInstantiator = Ko5hianInternal.layoutParamsInstantiator
 
    Ko5hianInternal.context = mutationTarget.context
-   Ko5hianInternal.layoutParamsInstantiator = { ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) }
+   Ko5hianInternal.layoutParamsInstantiator = viewGroupLayoutParamsInstantiator
 
    try {
       val ko5hianRoot = Ko5hianViewMutator(mutationTarget)
