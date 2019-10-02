@@ -14,6 +14,8 @@ Sample
 
 Nothing is new.
 ```kotlin
+val editText: EditText
+
 val view = ko5hian(context) {
    linearLayout {
       view.orientation = VERTICAL
@@ -23,22 +25,6 @@ val view = ko5hian(context) {
          layout.height = WRAP_CONTENT
          view.text = string(R.string.greeting)
       }
-
-      editText {
-         layout.width  = WRAP_CONTENT
-         layout.height = WRAP_CONTENT
-      }
-   }
-}
-```
-
-Each function in Ko5hian returns a View.
-```kotlin
-val editText: EditText
-
-val view = ko5hian(context) {
-   linearLayout {
-      view.orientation = VERTICAL
 
       editText = editText {
          layout.width  = WRAP_CONTENT
@@ -94,20 +80,16 @@ Perhaps you already noticed. Yes, Ko5hian let us write `5.dip`! Say goodbye to
 
 We can add extensions like the follow.
 ```kotlin
-val Ko5hianView<LinearLayout, *>.VERTICAL get() = LinearLayout.VERTICAL
-val Ko5hianView<ImageView, *>.FIT_CENTER get() = ImageView.ScaleType.FIT_CENTER
+val Ko5hianView<LinearLayout>.VERTICAL get() = LinearLayout.VERTICAL
+val Ko5hianView<ImageView>.FIT_CENTER get() = ImageView.ScaleType.FIT_CENTER
 ```
 
 ```kotlin
 ko5hian(context) {
    linearLayout {
-      layout.width  = MATCH_PARENT
-      layout.height = MATCH_PARENT
       view.orientation = VERTICAL
 
       imageView {
-         layout.width  = 24.dip
-         layout.height = 24.dip
          view.scaleType = FIT_CENTER
          view.image = drawable(R.drawable.ic_back)
       }
@@ -136,8 +118,8 @@ Sometimes we want to mutate Views, instead of creating new Views.
 ```kotlin
 val view = LinearLayout(context)
 
-// pass a view instead of context
-ko5hian(view) {
+val view2 = ko5hian(view) {
+   //               ^~~~ pass a view instead of context
    linearLayout {
       view.orientation = VERTICAL
 
@@ -153,6 +135,8 @@ ko5hian(view) {
       }
    }
 }
+
+assert(view === view2)
 ```
 
 
@@ -224,7 +208,7 @@ Use Ko5hian 2 times.
 val view = ko5hian(context) {
    linearLayout {
       usernameView = textView {
-         view.text = user.name // This is the main subject but covered with too many noises!!!
+         view.text = user.name
       }
 
       protectedIconView = imageView {
