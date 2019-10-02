@@ -32,6 +32,22 @@ val view = ko5hian(context) {
 }
 ```
 
+Each function in Ko5hian returns a View.
+```kotlin
+val editText: EditText
+
+val view = ko5hian(context) {
+   linearLayout {
+      view.orientation = VERTICAL
+
+      editText = editText {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+      }
+   }
+}
+```
+
 RecyclerView
 ```kotlin
 class ViewHolder(context: Context) : RecyclerView.ViewHolder(LinearLayout(context)) {
