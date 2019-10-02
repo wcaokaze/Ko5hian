@@ -20,12 +20,34 @@ public final class Ko5hianInternal {
    public static int scannedIndex = 0;
 
    public static void addView(final Object viewManager, final View view) {
-      final ViewManager parent = (ViewManager) viewManager;
+      if (scannedIndex == -1) {
+         final ViewManager parent = (ViewManager) viewManager;
 
-      final ViewGroup.LayoutParams layoutParams =
-            (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
+         final ViewGroup.LayoutParams layoutParams =
+               (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
 
-      parent.addView(view, layoutParams);
+         parent.addView(view, layoutParams);
+      } else if (viewManager instanceof ViewGroup) {
+         final ViewGroup parent = (ViewGroup) viewManager;
+
+         final ViewGroup.LayoutParams layoutParams =
+               (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
+
+         parent.addView(view, scannedIndex, layoutParams);
+
+         scannedIndex++;
+      } else if (viewManager instanceof Ko5hianRoot) {
+         final Ko5hianRoot parent = (Ko5hianRoot) viewManager;
+
+         final ViewGroup.LayoutParams layoutParams =
+               (ViewGroup.LayoutParams) layoutParamsInstantiator.invoke();
+
+         parent.addView(view, scannedIndex, layoutParams);
+
+         scannedIndex++;
+      } else {
+         throw new IllegalStateException();
+      }
    }
 
    public static void setLayoutParams(final View view) {
@@ -77,26 +99,24 @@ public final class Ko5hianInternal {
    public static <V extends View> V findView(final ViewGroup parent,
                                              final Class<V> viewClass)
    {
-      int scannedIndex = Ko5hianInternal.scannedIndex;
+      final int scannedIndex = Ko5hianInternal.scannedIndex;
 
       if (scannedIndex == -1) { return null; }
 
-      for (; scannedIndex < parent.getChildCount(); scannedIndex++) {
-         final View child = parent.getChildAt(scannedIndex);
+      final View child = parent.getChildAt(scannedIndex);
 
-         if (child.getClass().equals(viewClass)) {
-            Ko5hianInternal.scannedIndex = scannedIndex + 1;
+      if (!child.getClass().equals(viewClass)) { return null; }
 
-            @SuppressWarnings("unchecked")
-            final V casted = (V) child;
-
-            return casted;
-         }
+      if (scannedIndex + 1 == parent.getChildCount()) {
+         Ko5hianInternal.scannedIndex = -1;
+      } else {
+         Ko5hianInternal.scannedIndex = scannedIndex + 1;
       }
 
-      Ko5hianInternal.scannedIndex = -1;
+      @SuppressWarnings("unchecked")
+      final V casted = (V) child;
 
-      return null;
+      return casted;
    }
 
    public static Iterator<View> findChildrenByName(final ViewGroup parent,

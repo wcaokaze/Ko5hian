@@ -14,6 +14,10 @@ public class Ko5hianRoot implements ViewManager {
       return null;
    }
 
+   public void addView(final View view, final int index, final ViewGroup.LayoutParams params) {
+      view.setLayoutParams(params);
+   }
+
    @Override
    public void addView(final View view, final ViewGroup.LayoutParams params) {
       view.setLayoutParams(params);
