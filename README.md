@@ -57,8 +57,7 @@ Advantage
 
 ### Enough fast
 
-Sorry I don't have comparison. I guess Ko5hian is much faster than
-LayoutInflater, but slower than Anko.
+Sorry I don't have comparison. I guess Ko5hian is as fast as anko.
 
 
 ### Readable
@@ -98,8 +97,8 @@ Perhaps you already noticed. Yes, Ko5hian let us write `5.dip`! Say goodbye to
 
 We can add extensions like the follow.
 ```kotlin
-val Ko5hianBuilder<LinearLayout, *>.VERTICAL get() = LinearLayout.VERTICAL
-val Ko5hianBuilder<ImageView, *>.FIT_CENTER get() = ImageView.ScaleType.FIT_CENTER
+val Ko5hianView<LinearLayout, *>.VERTICAL get() = LinearLayout.VERTICAL
+val Ko5hianView<ImageView, *>.FIT_CENTER get() = ImageView.ScaleType.FIT_CENTER
 ```
 
 ```kotlin
@@ -119,10 +118,7 @@ ko5hian(context) {
 }
 ```
 
-`Ko5hianBuilder` is annotated with a
-[DslMarker](http://kotlinlang.org/docs/reference/type-safe-builders.html#scope-control-dslmarker-since-11).
-So in `imageView`, `VERTICAL` is not available.
-
+These extensions are quite narrow.
 ```kotlin
 ko5hian(context) {
    linearLayout {
@@ -135,120 +131,3 @@ ko5hian(context) {
 }
 ```
 
-
-KSS
---------------------------------------------------------------------------------
-
-Sometime we have so many boring view parameters.
-```kotlin
-val view = ko5hian(context) {
-   linearLayout {
-      layout.width  = MATCH_PARENT
-      layout.height = WRAP_CONTENT
-      view.orientation = HORIZONTAL
-
-      textView {
-         layout.width  = MATCH_PARENT
-         layout.height = WRAP_CONTENT
-         layout.marginStart = 16.dip
-         view.textColor = 0x313131.opaque
-         view.textSizeSp = 16
-         view.maxLines = 1
-         view.ellipsize = TruncateAt.END
-         view.text = user.name // This is the main subject but covered with too many noises
-      }
-
-      imageView {
-         layout.width  = WRAP_CONTENT
-         layout.height = WRAP_CONTENT
-         view.image = drawable(R.drawable.ic_locked)
-         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
-      }
-   }
-}
-```
-
-Use KSS (Ko5hian Style Sheet).
-
-```kotlin
-// concentrate construction views
-val kss = kss {
-   linearLayout("username-container") {
-      layout.width  = MATCH_PARENT
-      layout.height = WRAP_CONTENT
-      view.orientation = HORIZONTAL
-
-      textView("username") {
-         layout.width  = MATCH_PARENT
-         layout.height = WRAP_CONTENT
-         layout.marginStart = 16.dip
-         view.textColor = 0x313131.opaque
-         view.textSizeSp = 16
-         view.maxLines = 1
-         view.ellipsize = TruncateAt.END
-      }
-
-      imageView("protected-icon") {
-         layout.width  = WRAP_CONTENT
-         layout.height = WRAP_CONTENT
-         view.image = drawable(R.drawable.ic_protected)
-      }
-   }
-}
-
-// concentrate injection main subject
-val view = ko5hian(context) {
-   linearLayout("username-container") {
-      style = kss
-
-      textView("username") {
-         view.text = user.name
-      }
-
-      imageView("lock-icon") {
-         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
-      }
-   }
-}
-```
-
-We can omit style names.
-```kotlin
-val kss = kss {
-   linearLayout {
-      layout.width  = MATCH_PARENT
-      layout.height = WRAP_CONTENT
-      view.orientation = HORIZONTAL
-
-      textView {
-         layout.width  = MATCH_PARENT
-         layout.height = WRAP_CONTENT
-         layout.marginStart = 16.dip
-         view.textColor = 0x313131.opaque
-         view.textSizeSp = 16
-         view.maxLines = 1
-         view.ellipsize = TruncateAt.END
-      }
-
-      imageView {
-         layout.width  = WRAP_CONTENT
-         layout.height = WRAP_CONTENT
-         view.image = drawable(R.drawable.ic_protected)
-      }
-   }
-}
-
-val view = ko5hian(context) {
-   linearLayout {
-      style = kss
-
-      textView {
-         view.text = user.name
-      }
-
-      imageView {
-         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
-      }
-   }
-}
-```
