@@ -99,24 +99,31 @@ public final class Ko5hianInternal {
    public static <V extends View> V findView(final ViewGroup parent,
                                              final Class<V> viewClass)
    {
-      final int scannedIndex = Ko5hianInternal.scannedIndex;
+      int scannedIndex = Ko5hianInternal.scannedIndex;
 
       if (scannedIndex == -1) { return null; }
 
-      final View child = parent.getChildAt(scannedIndex);
+      for (; scannedIndex < parent.getChildCount(); scannedIndex++) {
+         final View child = parent.getChildAt(scannedIndex);
 
-      if (!child.getClass().equals(viewClass)) { return null; }
+         if (child.getTag(R.id.view_tag_name) != null) { continue; }
 
-      if (scannedIndex + 1 == parent.getChildCount()) {
-         Ko5hianInternal.scannedIndex = -1;
-      } else {
-         Ko5hianInternal.scannedIndex = scannedIndex + 1;
+         if (!child.getClass().equals(viewClass)) { return null; }
+
+         if (scannedIndex + 1 == parent.getChildCount()) {
+            Ko5hianInternal.scannedIndex = -1;
+         } else {
+            Ko5hianInternal.scannedIndex = scannedIndex + 1;
+         }
+
+         @SuppressWarnings("unchecked")
+         final V casted = (V) child;
+
+         return casted;
       }
 
-      @SuppressWarnings("unchecked")
-      final V casted = (V) child;
-
-      return casted;
+      Ko5hianInternal.scannedIndex = -1;
+      return null;
    }
 
    public static Iterator<View> findChildrenByName(final ViewGroup parent,
