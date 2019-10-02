@@ -13,7 +13,7 @@ public class Ko5hianViewMutator extends Ko5hianRoot {
 
    @Override
    @SuppressWarnings("unchecked")
-   public <V extends View> V findView(Class<V> viewClass) {
+   public <V extends View> V findView(final Class<V> viewClass) {
       return (V) mView;
    }
 }

@@ -15,17 +15,17 @@ public class Ko5hianRoot implements ViewManager {
    }
 
    @Override
-   public void addView(View view, ViewGroup.LayoutParams params) {
+   public void addView(final View view, final ViewGroup.LayoutParams params) {
       view.setLayoutParams(params);
    }
 
    @Override
-   public void removeView(View view) {
+   public void removeView(final View view) {
       // nop
    }
 
    @Override
-   public void updateViewLayout(View view, ViewGroup.LayoutParams params) {
+   public void updateViewLayout(final View view, final ViewGroup.LayoutParams params) {
       // nop
    }
 }
