@@ -48,25 +48,6 @@ val view = ko5hian(context) {
 }
 ```
 
-RecyclerView
-```kotlin
-class ViewHolder(context: Context) : RecyclerView.ViewHolder(LinearLayout(context)) {
-   // Ko5hian is supported by Contracts. Properties can be declared with `val`.
-   private val usernameView: TextView
-
-   init {
-      ko5hian(itemView as LinearLayout) {
-         view.orientation = VERTICAL
-
-         usernameView = textView {
-            layout.width  = WRAP_CONTENT
-            layout.height = WRAP_CONTENT
-         }
-      }
-   }
-}
-```
-
 
 Advantage
 --------------------------------------------------------------------------------
@@ -146,4 +127,147 @@ ko5hian(context) {
    }
 }
 ```
+
+
+Mutate View
+--------------------------------------------------------------------------------
+
+Sometimes we want to mutate Views, instead of creating new Views.
+```kotlin
+val view = LinearLayout(context)
+
+// pass a view instead of context
+ko5hian(view) {
+   linearLayout {
+      view.orientation = VERTICAL
+
+      textView {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+         view.text = string(R.string.greeting)
+      }
+
+      editText {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+      }
+   }
+}
+```
+
+
+### RecyclerView
+
+```kotlin
+class UserViewHolder(context: Context)
+      : RecyclerView.ViewHolder(LinearLayout(context))
+{
+   private val usernameView: TextView
+   private val protectedIconView: ImageView
+
+   fun bind(user: User) {
+      usernameView.text = user.name
+      protectedIconView.visibility = if (user.isProtected) { VISIBLE } else { GONE }
+   }
+
+   init {
+      ko5hian {
+         linearLayout {
+            usernameView = textView {
+            }
+
+            protectedIconView = imageView {
+               view.image = drawable(R.drawable.ic_protected)
+            }
+         }
+      }
+   }
+}
+```
+
+
+### Separating many boring view parameters
+
+Sometimes we have so many boring view parameters.
+```kotlin
+ko5hian(context) {
+   linearLayout {
+      layout.width  = MATCH_PARENT
+      layout.height = WRAP_CONTENT
+      view.orientation = HORIZONTAL
+
+      usernameView = textView {
+         layout.width  = 0
+         layout.height = WRAP_CONTENT
+         layout.weight = 1.0f
+         layout.marginStart = 16.dip
+         view.textColor = 0x313131.opaque
+         view.textSizeSp = 16
+         view.maxLines = 1
+         view.ellipsize = TRUNCATE_AT_END
+         view.text = user.name // This is the main subject but covered with too many noises!!!
+      }
+
+      protectedIconView = imageView {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+         view.image = drawable(R.drawable.ic_protected)
+         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
+      }
+   }
+}
+```
+
+Use Ko5hian 2 times.
+```kotlin
+// creating views
+val view = ko5hian(context) {
+   linearLayout {
+      usernameView = textView {
+         view.text = user.name // This is the main subject but covered with too many noises!!!
+      }
+
+      protectedIconView = imageView {
+         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
+      }
+   }
+}
+
+// configure view parameters
+ko5hian(view) {
+   linearLayout {
+      layout.width  = MATCH_PARENT
+      layout.height = WRAP_CONTENT
+      view.orientation = HORIZONTAL
+
+      textView {
+         layout.width  = 0
+         layout.height = WRAP_CONTENT
+         layout.weight = 1.0f
+         layout.marginStart = 16.dip
+         view.textColor = 0x313131.opaque
+         view.textSizeSp = 16
+         view.maxLines = 1
+         view.ellipsize = TRUNCATE_AT_END
+      }
+
+      imageView {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+         view.image = drawable(R.drawable.ic_protected)
+      }
+   }
+}
+```
+
+When the second `ko5hian` matches the first `ko5hian`, Ko5hian can scan
+the view construction. In this example, both `ko5hian`s have the follow construction.
+```kotlin
+linearLayout {
+   textView {}
+   imageView {}
+}
+```
+
+If their constructions were not matched, the second `ko5hian` would mean `addView`.
 
