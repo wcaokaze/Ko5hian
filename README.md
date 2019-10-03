@@ -379,3 +379,104 @@ ko5hian(view) {
 }
 ```
 
+
+### Skip scanning
+
+It is so difficult to mix named Views and non-named Views.
+```kotlin
+val view = ko5hian(context) {
+   linearLayout {
+      textView {
+         name = "named"
+      }
+
+      view {
+      }
+
+      textView {
+         name = "named"
+      }
+
+      view {
+      }
+   }
+}
+
+ko5hian(view) {
+   linearLayout {
+      textView("named") {
+      }
+
+      view {
+         // Which view should be found here?
+      }
+   }
+}
+```
+
+Use `skipScanningTo(String)`.
+```kotlin
+val view = ko5hian(context) {
+   linearLayout {
+      textView {
+         name = "menu-item"
+      }
+
+      view {
+      }
+
+      textView {
+         name = "menu-item"
+      }
+
+      view {
+         name = "skip-target"
+      }
+   }
+}
+
+ko5hian(view) {
+   linearLayout {
+      textView("menu-item") {
+      }
+
+      skipScanningTo("skip-target")
+
+      view {
+         // The View named "skip-target" is found here.
+      }
+   }
+}
+```
+
+Or use `skipScanningAll()`.
+```kotlin
+val view = ko5hian(context) {
+   linearLayout {
+      textView {
+         name = "menu-item"
+      }
+
+      view {
+      }
+
+      textView {
+         name = "menu-item"
+      }
+
+      view {
+      }
+   }
+}
+
+ko5hian(view) {
+   linearLayout {
+      skipScanningAll()
+
+      view {
+         // No View should be found. Ko5hian creates a new View.
+      }
+   }
+}
+```
+
