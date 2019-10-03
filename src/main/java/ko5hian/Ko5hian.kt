@@ -32,6 +32,11 @@ var Ko5hian<View, *, *>.name: String
       view.setTag(R.id.view_tag_name, value)
    }
 
+@Suppress("nothing_to_inline")
+inline fun Ko5hian<ViewGroup, *, *>.skipScanningTo(name: String) {
+   Ko5hianInternal.skipScanningTo(raw as ViewGroup, name)
+}
+
 typealias Ko5hianView<V>         = Ko5hian<V, *, *>
 typealias Ko5hianLayoutParams<L> = Ko5hian<*, L, *>
 

@@ -127,6 +127,22 @@ public final class Ko5hianInternal {
       return null;
    }
 
+   public static void skipScanningTo(final ViewGroup parent, final String name) {
+      for (int i = 0; i < parent.getChildCount(); i++) {
+         final View child = parent.getChildAt(i);
+         final String childName = (String) child.getTag(R.id.view_tag_name);
+
+         if (childName == null) { continue; }
+         if (!childName.equals(name)) { continue; }
+
+         Ko5hianInternal.scannedIndex = i;
+         return;
+      }
+
+      throw new NoSuchElementException(
+            "child View with name '" + name + "' not found");
+   }
+
    public static Iterator<View> findChildrenByName(final ViewGroup parent,
                                                    final String name)
    {
@@ -149,7 +165,7 @@ public final class Ko5hianInternal {
             final String childName = (String) child.getTag(R.id.view_tag_name);
 
             if (childName == null) { continue; }
-            if (childName.equals(name)) { continue; }
+            if (!childName.equals(name)) { continue; }
 
             mNextView = child;
             mNextViewIndex = i;
@@ -178,7 +194,7 @@ public final class Ko5hianInternal {
             final String childName = (String) child.getTag(R.id.view_tag_name);
 
             if (childName == null) { continue; }
-            if (childName.equals(name)) { continue; }
+            if (!childName.equals(name)) { continue; }
 
             mNextView = child;
             mNextViewIndex = i;
