@@ -51,9 +51,11 @@ inline fun <R> ko5hian(
 
    val oldContext = Ko5hianInternal.context
    val oldLayoutParamsInstantiator = Ko5hianInternal.layoutParamsInstantiator
+   val oldEnablesScanning = Ko5hianInternal.enablesScanning
 
    Ko5hianInternal.context = context
    Ko5hianInternal.layoutParamsInstantiator = viewGroupLayoutParamsInstantiator
+   Ko5hianInternal.enablesScanning = false
 
    try {
       val ko5hianRoot = Ko5hianRoot(context)
@@ -62,6 +64,7 @@ inline fun <R> ko5hian(
    } finally {
       Ko5hianInternal.context = oldContext
       Ko5hianInternal.layoutParamsInstantiator = oldLayoutParamsInstantiator
+      Ko5hianInternal.enablesScanning = oldEnablesScanning
    }
 }
 
@@ -74,9 +77,11 @@ inline fun <R> ko5hian(
 
    val oldContext = Ko5hianInternal.context
    val oldLayoutParamsInstantiator = Ko5hianInternal.layoutParamsInstantiator
+   val oldEnablesScanning = Ko5hianInternal.enablesScanning
 
    Ko5hianInternal.context = mutationTarget.context
    Ko5hianInternal.layoutParamsInstantiator = viewGroupLayoutParamsInstantiator
+   Ko5hianInternal.enablesScanning = true
 
    try {
       val ko5hianRoot = Ko5hianViewMutator(mutationTarget)
@@ -85,6 +90,7 @@ inline fun <R> ko5hian(
    } finally {
       Ko5hianInternal.context = oldContext
       Ko5hianInternal.layoutParamsInstantiator = oldLayoutParamsInstantiator
+      Ko5hianInternal.enablesScanning = oldEnablesScanning
    }
 }
 

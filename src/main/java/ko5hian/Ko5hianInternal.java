@@ -17,6 +17,7 @@ public final class Ko5hianInternal {
 
    public static Context context = null;
    public static Function0<?> layoutParamsInstantiator = null;
+   public static boolean enablesScanning = false;
    public static int scannedIndex = 0;
 
    public static void addView(final Object viewManager, final View view) {
@@ -110,7 +111,7 @@ public final class Ko5hianInternal {
 
          if (!child.getClass().equals(viewClass)) { return null; }
 
-         if (scannedIndex + 1 == parent.getChildCount()) {
+         if (!enablesScanning || scannedIndex + 1 == parent.getChildCount()) {
             Ko5hianInternal.scannedIndex = -1;
          } else {
             Ko5hianInternal.scannedIndex = scannedIndex + 1;
