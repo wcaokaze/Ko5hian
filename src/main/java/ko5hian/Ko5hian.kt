@@ -37,6 +37,11 @@ inline fun Ko5hian<ViewGroup, *, *>.skipScanningTo(name: String) {
    Ko5hianInternal.skipScanningTo(raw as ViewGroup, name)
 }
 
+@Suppress("nothing_to_inline")
+inline fun Ko5hian<ViewGroup, *, *>.skipScanningAll() {
+   Ko5hianInternal.scannedIndex = -1
+}
+
 typealias Ko5hianView<V>         = Ko5hian<V, *, *>
 typealias Ko5hianLayoutParams<L> = Ko5hian<*, L, *>
 
