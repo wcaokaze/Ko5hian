@@ -110,67 +110,80 @@ ko5hian(context) {
 }
 ```
 
-
-Mutate View
+Scanning child Views
 --------------------------------------------------------------------------------
 
-Sometimes we want to mutate Views, instead of creating new Views.
+`ko5hian` can receive a View instead of Context.
 ```kotlin
-val view = LinearLayout(context)
+val linearLayout = LinearLayout(context)
 
-val view2 = ko5hian(view) {
-   //               ^~~~ pass a view instead of context
+ko5hian(linearLayout) {
    linearLayout {
-      view.orientation = VERTICAL
-
-      textView {
-         layout.width  = WRAP_CONTENT
-         layout.height = WRAP_CONTENT
-         view.text = string(R.string.greeting)
-      }
-
-      editText {
-         layout.width  = WRAP_CONTENT
-         layout.height = WRAP_CONTENT
-      }
    }
 }
-
-assert(view === view2)
 ```
 
-
-### RecyclerView
-
+In this case, Ko5hian does 'scanning' the child Views.
 ```kotlin
-class UserViewHolder(context: Context)
-      : RecyclerView.ViewHolder(LinearLayout(context))
-{
-   private val usernameView: TextView
-   private val protectedIconView: ImageView
-
-   fun bind(user: User) {
-      usernameView.text = user.name
-      protectedIconView.visibility = if (user.isProtected) { VISIBLE } else { GONE }
+val linearLayout = ko5hian(context) {
+   //                      ^~~~~~~ This is normal Ko5hian
+   linearLayout {
+      textView {}
+      textView {}
+      imageView {}
    }
+}
 
-   init {
-      ko5hian {
-         linearLayout {
-            usernameView = textView {
-            }
+ko5hian(linearLayout) {
+   //   ^~~~~~~~~~~~ This is Ko5hian with scanning
+   linearLayout {
+      textView {}
+      textView {}
+      imageView {}
+   }
+}
+```
 
-            protectedIconView = imageView {
-               view.image = drawable(R.drawable.ic_protected)
-            }
-         }
+The second `ko5hian` does not create new Views, the second `ko5hian` finds
+already added Views and reuses them.
+
+![]
+
+So the following 2 snippets are equivalent.
+```kotlin
+val linearLayout = ko5hian(context) {
+   linearLayout {
+      textView {
+         view.text = "hello"
+      }
+   }
+}
+
+ko5hian(linearLayout) {
+   linearLayout {
+      textView {
+         view.textColor = 0xffffff opacity 80
+      }
+   }
+}
+```
+```kotlin
+val linearLayout = ko5hian(context) {
+   linearLayout {
+      textView {
+         view.text = "hello"
+         view.textColor = 0xffffff opacity 80
       }
    }
 }
 ```
 
+When the specified view is not found, Ko5hian creates a new View and inserts it.
 
-### Separating many boring view parameters
+![]
+
+
+### How is this useful?
 
 Sometimes we have so many boring view parameters.
 ```kotlin
@@ -202,7 +215,7 @@ ko5hian(context) {
 }
 ```
 
-Use Ko5hian 2 times.
+Utilize scanning.
 ```kotlin
 // creating views
 val view = ko5hian(context) {
@@ -244,14 +257,42 @@ ko5hian(view) {
 }
 ```
 
-When the second `ko5hian` matches the first `ko5hian`, Ko5hian can scan
-the view construction. In this example, both `ko5hian`s have the follow construction.
+
+### RecyclerView
+
 ```kotlin
-linearLayout {
-   textView {}
-   imageView {}
+class UserViewHolder(context: Context)
+      : RecyclerView.ViewHolder(LinearLayout(context))
+{
+   private val usernameView: TextView
+   private val protectedIconView: ImageView
+
+   init {
+      ko5hian(itemView) {
+         linearLayout {
+            layout.width  = MATCH_PARENT
+            layout.height = WRAP_CONTENT
+            view.orientation = HORIZONTAL
+
+            usernameView = textView {
+               layout.width  = 0
+               layout.height = WRAP_CONTENT
+               layout.weight = 1.0f
+               layout.marginStart = 16.dip
+               view.textColor = 0x313131.opaque
+               view.textSizeSp = 16
+               view.maxLines = 1
+               view.ellipsize = TRUNCATE_AT_END
+            }
+
+            protectedIconView = imageView {
+               layout.width  = WRAP_CONTENT
+               layout.height = WRAP_CONTENT
+               view.image = drawable(R.drawable.ic_protected)
+            }
+         }
+      }
+   }
 }
 ```
-
-If their constructions were not matched, the second `ko5hian` would mean `addView`.
 
