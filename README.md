@@ -193,7 +193,7 @@ ko5hian(context) {
       layout.height = WRAP_CONTENT
       view.orientation = HORIZONTAL
 
-      usernameView = textView {
+      textView {
          layout.width  = 0
          layout.height = WRAP_CONTENT
          layout.weight = 1.0f
@@ -205,7 +205,7 @@ ko5hian(context) {
          view.text = user.name // This is the main subject but covered with too many noises!!!
       }
 
-      protectedIconView = imageView {
+      imageView {
          layout.width  = WRAP_CONTENT
          layout.height = WRAP_CONTENT
          view.image = drawable(R.drawable.ic_protected)
@@ -220,11 +220,11 @@ Utilize scanning.
 // creating views
 val view = ko5hian(context) {
    linearLayout {
-      usernameView = textView {
+      textView {
          view.text = user.name
       }
 
-      protectedIconView = imageView {
+      imageView {
          view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
       }
    }
@@ -291,6 +291,89 @@ class UserViewHolder(context: Context)
                view.image = drawable(R.drawable.ic_protected)
             }
          }
+      }
+   }
+}
+```
+
+
+### Naming Views
+
+We can name our Views.
+```kotlin
+val view = ko5hian(context) {
+   linearLayout {
+      textView {
+         name = "username"
+         view.text = user.name
+      }
+
+      imageView {
+         name = "protected-icon"
+         view.visibility = if (user.isProtected) { VISIBLE } else { GONE }
+      }
+   }
+}
+
+ko5hian(view) {
+   linearLayout {
+      layout.width  = MATCH_PARENT
+      layout.height = WRAP_CONTENT
+      view.orientation = HORIZONTAL
+
+      textView("username") {
+         layout.width  = 0
+         layout.height = WRAP_CONTENT
+         layout.weight = 1.0f
+         layout.marginStart = 16.dip
+         view.textColor = 0x313131.opaque
+         view.textSizeSp = 16
+         view.maxLines = 1
+         view.ellipsize = TRUNCATE_AT_END
+      }
+
+      imageView("protected-icon") {
+         layout.width  = WRAP_CONTENT
+         layout.height = WRAP_CONTENT
+         view.image = drawable(R.drawable.ic_protected)
+      }
+   }
+}
+```
+
+Note that the name doen't need to be unique.
+```kotlin
+val view = ko5hian(context) {
+   linearLayout {
+      textView {
+         name = "menu-item"
+         view.text = "followees"
+      }
+
+      textView {
+         name = "menu-item"
+         view.text = "followers"
+      }
+
+      textView {
+         name = "menu-item"
+         view.text = "likes"
+      }
+   }
+}
+
+ko5hian(view) {
+   linearLayout {
+      layout.width  = MATCH_PARENT
+      layout.height = WRAP_CONTENT
+      view.orientation = VERTICAL
+
+      // apply all views that are named "menu-item"
+      textView("menu-item") {
+         layout.width  = MATCH_PARENT
+         layout.height = WRAP_CONTENT
+         view.textColor = 0x313131.opaque
+         view.textSizeSp = 16
       }
    }
 }
