@@ -570,3 +570,9 @@ dependencies {
 }
 ```
 
+
+LICENSE
+--------------------------------------------------------------------------------
+
+[DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE](LICENSE)
+
