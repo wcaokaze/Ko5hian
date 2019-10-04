@@ -480,3 +480,67 @@ ko5hian(view) {
 }
 ```
 
+
+How to add Ko5hian functions for external Views
+--------------------------------------------------------------------------------
+
+Ko5hian's internal functions are ugly to implement its powerful DSL.
+```kotlin
+import android.view.ViewGroup
+import android.view.ViewManager
+
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.yourViewName(
+      ko5hianAction: Ko5hianAction<YourViewName, L>
+): YourViewName {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
+
+   return addView(
+         ::YourViewName,
+         ko5hianAction
+   )
+}
+
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.yourViewName(
+      withName: String,
+      ko5hianAction: Ko5hianAction<YourViewName, L>
+) {
+   contract { callsInPlace(ko5hianAction, InvocationKind.AT_LEAST_ONCE) }
+
+   mutateView(
+         withName,
+         ko5hianAction
+   )
+}
+```
+
+For ViewGroup, please use the follow code.
+```kotlin
+import android.view.ViewGroup
+import android.view.ViewManager
+
+inline fun <P : ViewManager, L> Ko5hian<P, *, L>.yourViewGroupName(
+      ko5hianAction: Ko5hianParentAction<YourViewGroupName, L, YourViewGroupName.LayoutParams>
+): YourViewGroupName {
+   contract { callsInPlace(ko5hianAction, InvocationKind.EXACTLY_ONCE) }
+
+   return addView(
+         ::YourViewGroupName,
+         { YourViewGroupName.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         ko5hianAction
+   )
+}
+
+inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.yourViewGroupName(
+      withName: String,
+      ko5hianAction: Ko5hianParentAction<YourViewGroupName, L, YourViewGroupName.LayoutParams>
+) {
+   contract { callsInPlace(ko5hianAction, InvocationKind.AT_LEAST_ONCE) }
+
+   mutateView(
+         withName,
+         { YourViewGroupName.LayoutParams(WRAP_CONTENT, WRAP_CONTENT) },
+         ko5hianAction
+   )
+}
+```
+
