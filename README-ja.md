@@ -1,21 +1,22 @@
 
-[日本語](README-ja.md)
-
-
 Ko5hian
 ================================================================================
 
-Ko5hian is a DSL for Android View Layout. As you know, the most famous DSL for
-Android View Layout is [anko](https://github.com/Kotlin/anko).
-In Japan, "Anko" means "jam made of beans", it's often used for Japanese
-confectionery. There are various types of "Anko". Especially, "Anko" made from
-hashed beans is called "Koshian".
+Ko5hianはAndroidのレイアウト構築用のDSLライブラリです。ご存知のように、Androidの
+レイアウト構築用DSLとして最も有名なライブラリは[anko](https://github.com/Kotlin.anko)
+です。
+日本語で"Anko"と言うと和菓子などでよく使われる『餡』のことを指します。そして、
+あんこの中でも特に豆を潰して作ったもののことをこう呼びます。
+
+Koshian
+
+───と。
 
 
-Sample
+サンプル
 --------------------------------------------------------------------------------
 
-Nothing is new.
+べつに普通です。
 ```kotlin
 val editText: EditText
 
@@ -38,17 +39,18 @@ val view = ko5hian(context) {
 ```
 
 
-Advantage
+長所
 --------------------------------------------------------------------------------
 
-### Enough fast
+### 十分に速い
 
-Sorry I don't have comparison. I guess Ko5hian is as fast as anko.
+すみません、比較をできていないのですが、おそらくKo5hianはankoと同じくらい速いと
+思います。
 
+### 読みやすい
 
-### Readable
-
-anko's LayoutParams Builder is uncool. Here is sample from anko's wiki page.
+ankoのLayoutParamsのBuilderはあまりかっこよくありません。ankoのWikiにある
+サンプルがこちらです。
 
 ```kotlin
 linearLayout {
@@ -61,7 +63,7 @@ linearLayout {
 }
 ```
 
-Ko5hian:
+Ko5hianではこうです。
 ```kotlin
 linearLayout {
    button {
@@ -75,13 +77,13 @@ linearLayout {
 }
 ```
 
-Perhaps you already noticed. Yes, Ko5hian let us write `5.dip`! Say goodbye to
-`dip(5)`.
+もうお気づきになったでしょうが、Ko5hianでは `5.dip` と書くことができます！
+`dip(5)` にさよならを告げましょう。
 
 
-### Quite narrow scoped Extension Constants
+### 絶妙に狭いスコープの定数
 
-We can add extensions like the follow.
+以下のようにして拡張を追加できます。
 ```kotlin
 val Ko5hianView<LinearLayout>.VERTICAL get() = LinearLayout.VERTICAL
 val Ko5hianView<ImageView>.FIT_CENTER get() = ImageView.ScaleType.FIT_CENTER
@@ -100,24 +102,24 @@ ko5hian(context) {
 }
 ```
 
-These extensions are quite narrow.
+これらの拡張は非常に狭いスコープで有効です。
 ```kotlin
 ko5hian(context) {
    linearLayout {
-      val foo = VERTICAL // ok
+      val foo = VERTICAL // OK
 
       imageView {
-         val bar = VERTICAL // compile error!
+         val bar = VERTICAL // コンパイルエラー！
       }
    }
 }
 ```
 
 
-Scanning child Views
+子Viewのスキャン
 --------------------------------------------------------------------------------
 
-`ko5hian` can receive a View instead of Context.
+`ko5hian` はContextではなくViewを受け取ることができます。
 ```kotlin
 val linearLayout = LinearLayout(context)
 
@@ -127,10 +129,10 @@ ko5hian(linearLayout) {
 }
 ```
 
-In this case, Ko5hian does 'scanning' the child Views.
+この場合、Ko5hianは子Viewの「スキャン」を行います。
 ```kotlin
 val linearLayout = ko5hian(context) {
-   //                      ^~~~~~~ This is normal Ko5hian
+   //                      ^~~~~~~ これは通常のKo5hianです。
    linearLayout {
       textView {}
       textView {}
@@ -139,7 +141,7 @@ val linearLayout = ko5hian(context) {
 }
 
 ko5hian(linearLayout) {
-   //   ^~~~~~~~~~~~ This is Ko5hian with scanning
+   //   ^~~~~~~~~~~~ これはスキャンを行うKo5hianです。
    linearLayout {
       textView {}
       textView {}
@@ -148,12 +150,12 @@ ko5hian(linearLayout) {
 }
 ```
 
-The second `ko5hian` does not create new Views, the second `ko5hian` finds
-already added Views and reuses them.
+2番目の `ko5hian` はViewを生成せず、代わりに既に存在するViewを探し、
+それを使います。
 
-![]
 
-So the following 2 snippets are equivalent.
+
+ですので以下のふたつのスニペットは同等の結果になります。
 ```kotlin
 val linearLayout = ko5hian(context) {
    linearLayout {
@@ -182,14 +184,13 @@ val linearLayout = ko5hian(context) {
 }
 ```
 
-When the specified view is not found, Ko5hian creates a new View and inserts it.
-
-![]
+指定されたViewが見つからないときは、Ko5hianは新しいViewを生成して挿入します。
 
 
-### How is this useful?
 
-Sometimes we have so many boring view parameters.
+### これがどう便利なのか？
+
+Viewが邪魔なパラメータを大量に持つことがあります。
 ```kotlin
 ko5hian(context) {
    linearLayout {
@@ -206,7 +207,7 @@ ko5hian(context) {
          view.textSizeSp = 16
          view.maxLines = 1
          view.ellipsize = TRUNCATE_AT_END
-         view.text = user.name // This is the main subject but covered with too many noises!!!
+         view.text = user.name // これが一番メインなのに周りのゴミに埋もれてしまっている！！！
       }
 
       imageView {
@@ -219,9 +220,9 @@ ko5hian(context) {
 }
 ```
 
-Utilize scanning.
+スキャンを活用しましょう。
 ```kotlin
-// creating views
+// Viewを生成する
 val view = ko5hian(context) {
    linearLayout {
       textView {
@@ -234,7 +235,7 @@ val view = ko5hian(context) {
    }
 }
 
-// configure view parameters
+// Viewのパラメータをセットする
 ko5hian(view) {
    linearLayout {
       layout.width  = MATCH_PARENT
@@ -301,9 +302,9 @@ class UserViewHolder(context: Context)
 ```
 
 
-### Naming Views
+### 名前付きView
 
-We can name our Views.
+Viewに名前をつけることができます。
 ```kotlin
 val view = ko5hian(context) {
    linearLayout {
@@ -345,7 +346,7 @@ ko5hian(view) {
 }
 ```
 
-Note that the name doen't need to be unique.
+名前は一意でなくても構いません。
 ```kotlin
 val view = ko5hian(context) {
    linearLayout {
@@ -372,7 +373,7 @@ ko5hian(view) {
       layout.height = WRAP_CONTENT
       view.orientation = VERTICAL
 
-      // apply all views that are named "menu-item"
+      // "menu-item"という名前のViewすべてに適用
       textView("menu-item") {
          layout.width  = MATCH_PARENT
          layout.height = WRAP_CONTENT
@@ -384,9 +385,9 @@ ko5hian(view) {
 ```
 
 
-### Skip scanning
+### スキャンのスキップ
 
-It is so difficult to mix named Views and non-named Views.
+名前付きViewと名前なしのViewを混在させるととても複雑になります。
 ```kotlin
 val view = ko5hian(context) {
    linearLayout {
@@ -412,13 +413,13 @@ ko5hian(view) {
       }
 
       view {
-         // Which view should be found here?
+         // ここではどちらのViewが使われるべきでしょう？
       }
    }
 }
 ```
 
-Use `skipScanningTo(String)`.
+`skipScanningTo(String)` を使ってください。
 ```kotlin
 val view = ko5hian(context) {
    linearLayout {
@@ -447,13 +448,13 @@ ko5hian(view) {
       skipScanningTo("skip-target")
 
       view {
-         // The View named "skip-target" is found here.
+         // ここでは"skip-target"のViewが使われます。
       }
    }
 }
 ```
 
-Or use `skipScanningAll()`.
+もしくは、 `skipScanningAll()` も使えます。
 ```kotlin
 val view = ko5hian(context) {
    linearLayout {
@@ -478,17 +479,17 @@ ko5hian(view) {
       skipScanningAll()
 
       view {
-         // No View should be found. Ko5hian creates a new View.
+         // Viewは見つからなくなります。Ko5hianは新しいViewを生成します。
       }
    }
 }
 ```
 
 
-How to add Ko5hian functions for external Views
+非標準のViewをKo5hianで使うための関数
 --------------------------------------------------------------------------------
 
-Ko5hian's internal functions are ugly to implement its powerful DSL.
+Ko5hianは強力なDSLを実現するために内部関数が醜くなっています。
 ```kotlin
 import android.view.ViewGroup
 import android.view.ViewManager
@@ -517,7 +518,7 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.yourViewName(
 }
 ```
 
-For ViewGroup, please use the follow code.
+ViewGroupには以下のコードを利用してください。
 ```kotlin
 import android.view.ViewGroup
 import android.view.ViewManager
@@ -549,7 +550,7 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.yourViewGroupName(
 ```
 
 
-Install
+インストール
 --------------------------------------------------------------------------------
 
 Gradle
@@ -575,7 +576,7 @@ dependencies {
 ```
 
 
-LICENSE
+ライセンス
 --------------------------------------------------------------------------------
 
 [DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE](LICENSE)
