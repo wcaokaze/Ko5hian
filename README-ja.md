@@ -557,22 +557,22 @@ inline fun <P : ViewGroup, L> Ko5hian<P, *, L>.yourViewGroupName(
 Gradle
 ```groovy
 repositories {
-   maven { url 'https://2wiqua.wcaokaze.com/maven' }
+   jcenter()
 }
 
 dependencies {
-   implementation 'com.wcaokaze:ko5hian:2.0.0-rc1'
+   implementation 'com.wcaokaze:ko5hian:3.0.0-RC2'
 }
 ```
 
 Gradle (Kotlin)
 ```kotlin
 repositories {
-   maven(url = "https://2wiqua.wcaokaze.com/maven")
+   jcenter()
 }
 
 dependencies {
-   implementation("com.wcaokaze:ko5hian:2.0.0-rc1")
+   implementation("com.wcaokaze:ko5hian:3.0.0-RC2")
 }
 ```
 
