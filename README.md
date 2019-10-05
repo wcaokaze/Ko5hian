@@ -151,7 +151,7 @@ ko5hian(linearLayout) {
 The second `ko5hian` does not create new Views, the second `ko5hian` finds
 already added Views and reuses them.
 
-![]
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Ko5hian/raw/master/imgs/scanning.svg)
 
 So the following 2 snippets are equivalent.
 ```kotlin
@@ -184,7 +184,7 @@ val linearLayout = ko5hian(context) {
 
 When the specified view is not found, Ko5hian creates a new View and inserts it.
 
-![]
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Ko5hian/raw/master/imgs/scanning_not_found.svg)
 
 
 ### How is this useful?

@@ -153,7 +153,7 @@ ko5hian(linearLayout) {
 2番目の `ko5hian` はViewを生成せず、代わりに既に存在するViewを探し、
 それを使います。
 
-
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Ko5hian/raw/master/imgs/scanning.svg)
 
 ですので以下のふたつのスニペットは同等の結果になります。
 ```kotlin
@@ -186,6 +186,7 @@ val linearLayout = ko5hian(context) {
 
 指定されたViewが見つからないときは、Ko5hianは新しいViewを生成して挿入します。
 
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Ko5hian/raw/master/imgs/scanning_not_found.svg)
 
 
 ### これがどう便利なのか？
