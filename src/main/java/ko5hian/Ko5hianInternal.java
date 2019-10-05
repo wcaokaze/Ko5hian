@@ -20,6 +20,9 @@ public final class Ko5hianInternal {
    public static boolean enablesScanning = false;
    public static int scannedIndex = 0;
 
+   /**
+    * Internal implementation for {@code Ko5hian<ViewManager>.addView}
+    */
    public static void addView(final Object viewManager, final View view) {
       if (scannedIndex == -1) {
          final ViewManager parent = (ViewManager) viewManager;
@@ -51,6 +54,9 @@ public final class Ko5hianInternal {
       }
    }
 
+   /**
+    * Internal implementation for {@code Ko5hian<ViewManager>.addView}
+    */
    public static void setLayoutParams(final View view) {
       if (view.getLayoutParams() != null) { return; }
 
@@ -60,6 +66,9 @@ public final class Ko5hianInternal {
       view.setLayoutParams(layoutParams);
    }
 
+   /**
+    * Internal implementation for {@code Int.dip}
+    */
    public static int dipToPx(final int dip) {
       final int px = (int) (dip * displayDensity);
 
@@ -72,6 +81,9 @@ public final class Ko5hianInternal {
       }
    }
 
+   /**
+    * Internal implementation for {@code Double.dip}
+    */
    public static int dipToPx(final double dip) {
       final int px = (int) (dip * displayDensity);
 
@@ -84,6 +96,9 @@ public final class Ko5hianInternal {
       }
    }
 
+   /**
+    * Internal implementation for scanning in {@code Ko5hian<ViewManager>.addView}
+    */
    public static <V extends View> V findView(final Object viewManager,
                                              final Class<V> viewClass)
    {
@@ -97,6 +112,9 @@ public final class Ko5hianInternal {
       }
    }
 
+   /**
+    * Internal implementation for scanning in {@code Ko5hian<ViewManager>.addView}
+    */
    public static <V extends View> V findView(final ViewGroup parent,
                                              final Class<V> viewClass)
    {
@@ -127,6 +145,9 @@ public final class Ko5hianInternal {
       return null;
    }
 
+   /**
+    * Internal implementation for {@code Ko5hian<ViewGroup>.skipScanningTo(String)}
+    */
    public static void skipScanningTo(final ViewGroup parent, final String name) {
       for (int i = 0; i < parent.getChildCount(); i++) {
          final View child = parent.getChildAt(i);
@@ -143,6 +164,9 @@ public final class Ko5hianInternal {
             "child View with name '" + name + "' not found");
    }
 
+   /**
+    * Internal implementation for {@code Ko5hian<ViewGroup>.mutateView}
+    */
    public static Iterator<View> findChildrenByName(final ViewGroup parent,
                                                    final String name)
    {
